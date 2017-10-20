@@ -1,0 +1,80 @@
+﻿@using MyExams.Models
+@model LoginViewModel
+@{ 
+    Layout = "";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>MYEXAMS - LOGIN</title>
+
+    @Styles.Render("~/Content/dashboard")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body class="app flex-row align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card-group mb-0">
+                    <div class="card p-4">
+                        <div class="card-body">
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                        {
+
+                            @Html.AntiForgeryToken()
+                            <hr/>
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <h1>Вход</h1>
+                            <p class="text-muted">Влезте в своя акаунт</p>
+                            <div class="input-group mb-3">
+                                <span class="input-group-addon">
+                                    <i class="icon-user"></i>
+                                </span>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Имейл" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="input-group mb-4">
+                                <span class="input-group-addon">
+                                    <i class="icon-lock"></i>
+                                </span>
+                               @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Парола" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="submit" class="btn btn-primary px-4">Напред</button>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" href="@Url.Action("ForgotPassword", "Account")" class="btn btn-link px-0">Забравена парола?</button>
+                                </div>
+                            </div>
+                        }
+                        </div>
+                        
+                    </div>
+                    <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
+                        <div class="card-body text-center">
+                            <div>
+                                <h2>Регистрация</h2>
+                                <p>Направете своят акаунт сега и се възползвайте от предимствата на приложението MYEXAMS</p>
+                                <button type="button" href="@Url.Action("RegisterTeacher", "Account")" class="btn btn-primary active mt-3">Регистрация за учители</button>
+                                <button type="button"  href="@Url.Action("RegisterStudent", "Account")" class="btn btn-primary active mt-3">Регистрация за ученици</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/dashboard")
+    
+</body>
+
+</html>
+

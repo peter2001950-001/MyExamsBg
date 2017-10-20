@@ -1,0 +1,114 @@
+﻿@model MyExams.Models.RegisterTeacherViewModel
+@{
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+   
+
+    <title>MYEXAMS - Регистрация</title>
+
+    @Styles.Render("~/Content/dashboard")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body class="app flex-row align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card mx-4">
+                    <div class="card-body p-4">
+@using (Html.BeginForm("RegisterTeacher", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+{
+
+    @Html.AntiForgeryToken()
+                        <h1>Регистрация</h1>
+                        <p class="text-muted">Създайте своя акаунт</p>
+                        <div class="input-group mb-3">
+                            <span class="input-group-addon">
+                                <i class="icon-user"></i>
+                            </span>
+                            <hr />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "Име" })
+                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-addon"></span>
+
+                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Фамилия" })
+                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-addon">
+                                <i class="icon-lock"></i>
+                            </span>
+                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Телефон" })
+                            @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-addon">
+                                <i class="icon-lock"></i>
+                            </span>
+                            @Html.TextBoxFor(m => m.DateOfBirth, new { @class = "form-control", @placeholder = "Дата на раждане [ДД/ММ/ГГГГ]", @id = "datepicker" })
+                            @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "text-danger", })
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-addon">
+                                <i class="icon-lock"></i>
+                            </span>
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Имейл" })
+                            @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "text-danger", })
+                        </div>
+
+
+                        <div class="input-group mb-4">
+                            <span class="input-group-addon">
+                                <i class="icon-lock"></i>
+                            </span>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Парола" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="input-group mb-4">
+                            <span class="input-group-addon">
+                                <i class="icon-lock"></i>
+                            </span>
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Повторете паролата" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>
+
+                        <button type="submit" class="btn btn-block btn-success">Напред</button>
+} 
+                    </div>
+                    <div class="card-footer p-4">
+                        <div class="row">
+                            <div class="col-12" style="text-align: center">
+                                <button class="btn btn-light" type="button">
+                                  Вече имате акаунт?
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   @Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/dashboard")
+@*<script>
+( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+</script>*@
+
+</body>
+
+
+</html>

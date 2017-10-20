@@ -1,0 +1,57 @@
+﻿@model MyExams.Models.DisplayClassViewModel
+@{
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+
+<ul class="nav nav-pills nav-fill"  style="background: white">
+    <li class="nav-item">
+        <a class="nav-link active" href="#">Последни тестове</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Ученици и оценки</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Справки</a>
+    </li>
+    
+</ul>
+<div class="card bg-dark text-white" style="height: 180px;overflow: hidden;">
+    <img class="card-img" src="~/Content/images/cool-background.jpg" alt="Card image">
+    <div class="card-img-overlay" style="text-align: center; padding: 2rem">
+        <h1 class="card-title" style="font-size: 50px">@Model.ClassName</h1>
+        <p class="card-text">@Model.Subject</p>
+    </div>
+</div>
+
+
+<div class="card-deck" style="max-width: 70rem;margin: 0 auto;">
+        <div class="card ">
+            <div class="card-body">
+                <h4 class="card-title">Card title</h4>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Card title</h4>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+        </div>
+   
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Card title</h4>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+        </div>
+        </div>

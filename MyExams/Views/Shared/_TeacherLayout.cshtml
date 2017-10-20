@@ -1,0 +1,98 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Untitled Document</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet">
+    @Styles.Render("~/Content/dashboard")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+    <header class="app-header navbar">
+        <button class="navbar-toggler mobile-sidebar-toggler d-lg-none mr-auto" type="button">☰</button>
+
+        <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button">☰</button>
+        <a class="navbar-brand" href="#">MY EXAMS</a>
+        <ul class="nav navbar-nav d-md-down-none">
+            <li class="nav-item px-3">
+                <a class="btn btn-primary" href="#"><i class="material-icons md-12">file_upload</i> КАЧИ ФАЙЛОВЕ</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav ml-auto">
+            
+            <li class="nav-item">
+                <a class="nav-link nav-dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    
+                    <span class="d-md-down-none">@(ViewData["FullName"])</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-header text-center">
+                        <strong>Account</strong>
+                    </div>
+                    <a class="dropdown-item" href="#"><i class="fa fa-wrench"></i>Настройки</a>
+
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item"><i class="zmdi zmdi-time-restore"></i> Излез</a>
+                    }
+                  
+                </div>
+            </li>
+        </ul>
+
+    </header>
+
+    <div class="app-body">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","Teacher")"><i class="icon-speedometer"></i> Начало <span class="badge badge-primary">NEW</span></a>
+                    </li>
+
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Classes","Teacher")"><i class="icon-calculator"></i> Класове <span class="badge badge-primary">NEW</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Tests", "Teacher")"><i class="icon-pie-chart"></i> Тестове</a>
+                    </li>
+                </ul>
+            </nav>
+            <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+        </div>
+
+        <!-- Main content -->
+        <main class="main">
+
+            @RenderBody()
+            </main>
+        </div>
+        </body>
+          
+
+
+            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/jquery.unobtrusive-ajax")
+            @Scripts.Render("~/bundles/bootstrap")
+            @*@Scripts.Render("~/bundles/bootstrap")*@
+
+            @RenderSection("scripts", required: false)
+
+<script>
+    $(".nav-dropdown-toggle").click(function () {
+        if ($(this).next().hasClass("show")) {
+            $(this).next().removeClass("show");
+        } else {
+            $(this).next().addClass("show");
+        }
+    })
+</script>
+</html>
+
+
