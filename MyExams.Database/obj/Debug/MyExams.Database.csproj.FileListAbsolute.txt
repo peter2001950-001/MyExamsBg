@@ -1,0 +1,12 @@
+C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\bin\Debug\MyExams.Database.dll.config
+C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\bin\Debug\MyExams.Database.dll
+C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\bin\Debug\MyExams.Database.pdb
+C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\bin\Debug\EntityFramework.dll
+C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\bin\Debug\MyExams.Models.dll
+C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\bin\Debug\MyExams.Models.pdb
+C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\bin\Debug\EntityFramework.xml
+C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\obj\Debug\MyExams.Database.csprojResolveAssemblyReference.cache
+C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\obj\Debug\MyExams.Database.dll
+C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\obj\Debug\MyExams.Database.pdb
