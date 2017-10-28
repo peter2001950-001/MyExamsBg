@@ -15,7 +15,8 @@ namespace MyExams.Models
         public Teacher Teacher { get; set; }
         public string Name { get; set; }
         public string Subject { get; set; }
-
+        public int StudentsCount { get; set; }
+        public double AverageMark { get; set; }
 
     }
 }

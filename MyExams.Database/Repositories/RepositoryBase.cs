@@ -20,27 +20,28 @@ namespace MyExams.Database.Repositories
             _dbSet = _database.Set<T>();
             _dbList = _dbSet.AsQueryable();
         }
-        public void Add(T item)
+        public virtual void Add(T item)
         {
             _dbSet.Add(item);
            
         }
-        public void Remove(T item)
+        public virtual void Remove(T item)
         {
             _dbSet.Remove(item);
         }
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return _dbList.ToList();
         }
-        public IEnumerable<T> Where(Expression<Func<T, bool>> where)
+        public virtual IEnumerable<T> Where(Expression<Func<T, bool>> where)
         {
             return _dbList.Where(where);
         }
        
-        public void SaveChanges()
+        public virtual void SaveChanges()
         {
             _database.SaveChanges();
+            _dbList = _dbSet.AsQueryable();
         }
     }
 }

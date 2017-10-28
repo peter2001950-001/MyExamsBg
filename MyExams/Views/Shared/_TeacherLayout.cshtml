@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet">
     @Styles.Render("~/Content/dashboard")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/knockout")
 </head>
 <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
     <header class="app-header navbar">
@@ -77,10 +79,10 @@
           
 
 
-            @Scripts.Render("~/bundles/jquery")
+            
             @Scripts.Render("~/bundles/jquery.unobtrusive-ajax")
             @Scripts.Render("~/bundles/bootstrap")
-            @*@Scripts.Render("~/bundles/bootstrap")*@
+           
 
             @RenderSection("scripts", required: false)
 

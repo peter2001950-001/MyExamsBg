@@ -5,6 +5,7 @@
 }
 <div id="dane">
      
+
 </div>
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="@Url.Action("Classes","Teacher")">Класове</a></li>
@@ -14,6 +15,27 @@
         </div>
     </li>
 </ol>
+
+<div class="card-deck" style="max-width: 70rem;margin: 0 auto;" data-bind="foreach: classes">
+   
+     <div class="card-3 card" style="cursor:pointer" data-bind="click: $parent.gotoUrl">
+        <div class="social-box">
+            <h4 class="card-title" style="padding: 35px 0;margin: 0;background: #57a7da;color: white;" data-bind="text: name"></h4>
+            
+            <ul>
+                <li>
+                    <strong data-bind="text: studentsCount"></strong>
+                    <span>УЧЕНИЦИ</span>
+                </li>
+                <li>
+                    <strong data-bind="text: averageMark"></strong>
+                    <span>Среден успех</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 
 <div class="modal fade" id="createClass" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -55,4 +77,5 @@
     </div>
 </div>
 
+    @Scripts.Render("~/bundles/classesViewModel")
 

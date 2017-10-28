@@ -48,6 +48,18 @@ namespace MyExams.Controllers
             _classService.CreateNewClass(userId, model.Name, model.Subject);
             return Json(new { });
         }
+        [HttpGet]
+        public ActionResult GetClasses()
+        {
+            var userId = User.Identity.GetUserId();
+            var classes = _classService.GetAll().Where(x => x.Teacher.UserId == userId).ToList();
+            object[] clasesInput = new object[classes.Count()];
+            for (int i = 0; i < classes.Count(); i++)
+            {
+                clasesInput[i] = new { name = classes[i].Name, studentsCount = classes[i].StudentsCount, averageMark = classes[i].AverageMark, code = classes[i].UniqueCode };
+            }
+            return Json(new {classes = clasesInput, status = "OK" }, JsonRequestBehavior.AllowGet);
+        }
              
     }
 }
