@@ -1,8 +1,76 @@
-﻿
+﻿@model MyExams.Models.JoinClassViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
-<h2>Index</h2>
+
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="@Url.Action("Index","Student")">Класове</a></li>
+    <li class="breadcrumb-menu d-md-down-none">
+        <div class="btn-group" role="group">
+            <button class="btn btn-success" data-toggle="modal" data-target="#joinClass"><i class="material-icons md-12">add</i>&nbsp; Нов клас</button>
+        </div>
+    </li>
+</ol>
+
+<div class="card-deck" style="max-width: 70rem;margin: 0 auto;" data-bind="foreach: classes">
+
+    <div class="card-3 card" style="cursor:pointer" data-bind="click: $parent.gotoUrl">
+        <div class="social-box">
+            <div class="card-title" style="padding: 30px 0;margin: 0;background: #57a7da;color: white;" data-bind="style: {background: color}"><h4 data-bind="text: subject"></h4><p data-bind="text: name"></p></div>
+
+            <ul>
+                <li>
+                    <strong data-bind="text: studentsCount"></strong>
+                    <span>УЧЕНИЦИ</span>
+                </li>
+                <li>
+                    <strong data-bind="text: teacher"></strong>
+                    <span>Преподавател</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="joinClass" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Ajax.BeginForm("JoinClass", new AjaxOptions() { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, OnSuccess = "JoinClassRedirection" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createClassLabel">Присъедини се към клас</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            @Html.TextBoxFor(x => x.ClassCode, new { @class = "form-control", @placeholder = "Уникален код на класа" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            @Html.TextBoxFor(x => x.noInClass, new { @class = "form-control", @placeholder = "Номер в класа" })
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
+                        <button type="submit" class="btn btn-primary">Напред</button>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+    <script src="@Url.Content("~/Scripts/app/student/classesViewModel.js")" type="text/javascript"></script>
 

@@ -17,6 +17,7 @@ namespace MyExams.Models
         public string Subject { get; set; }
         public int StudentsCount { get; set; }
         public double AverageMark { get; set; }
-
+        public bool FirstMessageShowed { get; set; }
+        public string ClassColor { get; set; }
     }
 }

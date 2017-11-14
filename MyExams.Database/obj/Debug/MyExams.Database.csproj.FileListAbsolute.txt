@@ -10,3 +10,5 @@ C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\bi
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\obj\Debug\MyExams.Database.csprojResolveAssemblyReference.cache
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\obj\Debug\MyExams.Database.dll
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Database\obj\Debug\MyExams.Database.pdb
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Database\bin\Debug\MyExams.Models.dll.config
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Database\obj\Debug\MyExams.Database.csproj.CoreCompileInputs.cache

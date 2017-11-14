@@ -21,6 +21,10 @@ namespace MyExams.Services
         {
             return _teacherRepository.GetTeacherByUserId(userId);
         }
+        public IEnumerable<Teacher> GetAll()
+        {
+            return _teacherRepository.GetAll();
+        }
         public void AddTeacher(Teacher item)
         {
             _teacherRepository.Add(item);

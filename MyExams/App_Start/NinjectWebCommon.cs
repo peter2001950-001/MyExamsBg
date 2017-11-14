@@ -89,6 +89,10 @@ namespace MyExams.App_Start
               .To<ClassRepository>()
               .InRequestScope();
             kernel
+             .Bind<IStudentClassRepository>()
+             .To<StudentClassRepository>()
+             .InRequestScope();
+            kernel
               .Bind<IClassService>()
               .To<ClassService>()
               .InRequestScope();

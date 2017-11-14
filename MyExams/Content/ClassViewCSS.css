@@ -1,0 +1,14 @@
+﻿.card.bg-dark.text-white{
+    height: 180px;overflow: hidden; box-shadow:2px 2px 2px 1px rgba(0, 0, 0, .2); border: none;
+}
+
+.card.bg-dark.text-white .card-img-overlay{
+    text-align: center; padding: 2rem;
+}
+.card.bg-dark.text-white .card-img-overlay .card-title{
+    font-size: 50px;
+}
+
+@media (min-width: 889px){
+    
+}

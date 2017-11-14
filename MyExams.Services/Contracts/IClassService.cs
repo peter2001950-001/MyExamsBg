@@ -9,8 +9,13 @@ namespace MyExams.Services.Contracts
 {
    public interface IClassService
     {
-        void CreateNewClass(string userId, string name, string subject);
+        Class CreateNewClass(string userId, string name, string subject);
+        IEnumerable<StudentClass> GetClassStudents(string uniqueClassCode);
+        IEnumerable<Class> GetStudentClasses(string studentUserId);
+        Class AddStudentToClass(string userId, string classCode, int noInClass);
+        string GenerateColor(int seed=0);
         bool IsTeacherOfClass(string teacherUserId, string uniqueClassCode);
+        bool IsStudentOfClass(string studentUserId, string uniqueClassCode);
         IEnumerable<Class> GetAll();
     }
 }

@@ -1,31 +1,44 @@
-﻿@model MyExams.Models.DisplayClassViewModel
+﻿@model MyExams.Models.DisplayClassTeacherViewModel
 @{
     Layout = "~/Views/Shared/_TeacherLayout.cshtml";
 }
+@section AddToHead{
+    <link href="@Url.Content("~/Content/ClassViewCSS.css")" rel="stylesheet" type="text/css" />
+}
 
-
-<ul class="nav nav-pills nav-fill"  style="background: white">
+<ul class="nav nav-pills nav-fill" style="background: white">
     <li class="nav-item">
-        <a class="nav-link active" href="#">Последни тестове</a>
+        <a id="lastExams-link" class="nav-link active" href="#" data-bind="click: GetLastExams">Последни тестове</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Ученици и оценки</a>
+        <a id="marks-link" class="nav-link" href="#" data-bind="click: GetStudents">Ученици и оценки</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Справки</a>
     </li>
-    
+
 </ul>
-<div class="card bg-dark text-white" style="height: 180px;overflow: hidden;">
+<div class="card bg-dark text-white">
     <img class="card-img" src="~/Content/images/cool-background.jpg" alt="Card image">
-    <div class="card-img-overlay" style="text-align: center; padding: 2rem">
-        <h1 class="card-title" style="font-size: 50px">@Model.ClassName</h1>
+    <div class="card-img-overlay">
+        <h1 class="card-title">@Model.ClassName</h1>
         <p class="card-text">@Model.Subject</p>
+
+        <div class="card-left">
+            <small>Уникален код:</small>
+            <h5><strong>@Model.UniqueCode</strong></h5>
+        </div>
+        <div class="card-right">
+            <ul>
+                <li>Брой ученици: @Model.StudentsCount</li>
+                <li>Среднен успех: @Model.AverageMark</li>
+            </ul>
+        </div>
+
     </div>
 </div>
-
-
-<div class="card-deck" style="max-width: 70rem;margin: 0 auto;">
+<div id="lastExams" style="display:none;">
+    <div class="card-deck" style="max-width: 70rem;margin: 0 auto;">
         <div class="card ">
             <div class="card-body">
                 <h4 class="card-title">Card title</h4>
@@ -44,7 +57,7 @@
                 <small class="text-muted">Last updated 3 mins ago</small>
             </div>
         </div>
-   
+
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Card title</h4>
@@ -54,4 +67,61 @@
                 <small class="text-muted">Last updated 3 mins ago</small>
             </div>
         </div>
-        </div>
+    </div>
+</div>
+
+<div id="marks" style="display:none; background:white;">
+    <table class="table table-striped">
+        <thead >
+            <tr>
+                <th>Номер в класа</th>
+                <th>Име</th>
+                <th>Фамилия</th>
+                <!-- ko foreach: tests -->
+                <th data-bind="text: name"></th>
+                <!-- /ko -->
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: students">
+            <tr>
+                <th scope="row" data-bind="text: noInClass">1</th>
+                <td data-bind="text: firstName"></td>
+                <td data-bind="text: lastName"></td>
+                <!-- ko foreach: marks -->
+                <td data-bind="text: mark"></td>
+                <!-- /ko -->
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<script> 
+    var classColor = "@Model.ClassColor";
+    var classCode = "@Model.UniqueCode"
+    function applyDesign(view) {
+    if(view == "lastExams"){
+             $("#lastExams").css("display", "block");
+              $("#marks").css("display", "none");
+               $("#marks-link").removeClass("active");
+              $("#lastExams-link").addClass("active");
+             
+        }else if(view == "marks"){
+          $("#lastExams").css("display", "none");
+              $("#marks").css("display", "block");
+               $("#marks-link").addClass("active");
+              $("#lastExams-link").removeClass("active");
+        }  
+
+        $(".card-img-overlay").css("background", classColor);
+        
+        $(".nav-pills a.nav-link").css("color", classColor);
+        $(".nav-pills a.nav-link").css("background", "white");
+        $(".nav-pills .nav-link.active").css("background-color", classColor);
+        $(".nav-pills a.nav-link.active").css("color", "white");
+        
+    }
+
+</script>
+<script src="@Url.Content("~/Scripts/app/teacher/classViewModel.js")" type="text/javascript" ></script>

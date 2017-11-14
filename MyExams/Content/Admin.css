@@ -2200,7 +2200,10 @@ tbody.collapse.show {
 .show > .nav-pills .navbar .dropdown-toggle, .navbar
 .show > .nav-pills .dropdown-toggle {
   color: #fff;
-  background-color: #20a8d8; }
+  background-color: #20a8d8; 
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.14);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
 
 .nav-fill .nav-item {
   flex: 1 1 auto;
@@ -2551,6 +2554,14 @@ tbody.collapse.show {
   left: 0;
   padding: 1.25rem; }
 
+.card-left, .card-right{
+    display:none;
+}
+.card-left ul, .card-right ul{
+    list-style:none;
+    padding:0;
+}
+
 .card-img {
   width: 100%; }
 
@@ -2579,7 +2590,14 @@ tbody.collapse.show {
       flex-direction: column;
       margin-right: 15px;
       margin-left: 15px; }
-     
+     .card-img-overlay .card-left{
+         position:absolute; right:30px; top: 15px;
+         display: block;
+     }
+     .card-img-overlay .card-right{
+         position:absolute; top: 15px;
+          display: block;
+     }
 
 }
 

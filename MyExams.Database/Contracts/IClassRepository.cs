@@ -9,5 +9,6 @@ namespace MyExams.Database.Contracts
 {
     public interface IClassRepository: IRepositoryBase<Class>
     {
+        void Update(Class item);
     }
 }

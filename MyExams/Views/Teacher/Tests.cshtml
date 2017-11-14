@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Tests";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="@Url.Action("Tests","Teacher")">Тестове</a></li>
+    <li class="breadcrumb-menu d-md-down-none">
+        <div class="btn-group" role="group">
+            <button class="btn btn-success" data-toggle="modal" data-target="#createClass"><i class="material-icons md-12">add</i>&nbsp; Създай тест</button>
+        </div>
+    </li>
+</ol>
+<div class="card-deck" style="max-width: 70rem;margin: 0 auto;" data-bind="foreach: classes">
+
+    <div class="card card-3">
+        <div class="card-body">
+            <h4 class="card-title">Контролен тест върху Рационални числа</h4>
+            <p class="card-text">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="callout callout-info">
+                            <small class="text-muted">Брой ученици</small><br>
+                            <strong class="h4">9,123</strong>
+                        </div>
+                    </div><!--/.col-->
+
+                    <div class="col-sm-6">
+                        <div class="callout callout-warning">
+                            <small class="text-muted">Брой класове</small><br>
+                            <strong class="h4">78,623</strong>
+                        </div>
+                    </div><!--/.col--><div class="col-sm-6">
+                        <div class="callout callout-danger">
+                            <small class="text-muted">Слаби оценки</small><br>
+                            <strong class="h4">22,643</strong>
+                        </div>
+                    </div><!--/.col-->
+                    <div class="col-sm-6">
+                        <div class="callout callout-success">
+                            <small class="text-muted">Средна оценка</small><br>
+                            <strong class="h4">49,123</strong>
+                        </div>
+                    </div><!--/.col-->
+                </div>
+            </p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+    </div>
+

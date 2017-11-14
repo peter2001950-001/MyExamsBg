@@ -11,17 +11,25 @@ namespace MyExams.Database.Repositories
 {
     public class ClassRepository: RepositoryBase<Class>, IClassRepository
     {
-        private readonly IDatabase _database;
+      
         public ClassRepository(IDatabase database)
             :base(database)
         {
-            _database = database;
+           
             this._dbList = this._dbSet.Include(x => x.Teacher).AsQueryable() ;
         }
+        public void Update(Class item)
+        {
+           var itemToUpdate = _dbSet.SingleOrDefault(c => c.Id == item.Id);
+            if (itemToUpdate != null)
+            {
+                itemToUpdate = item;
+            }
 
+        }
         public override void SaveChanges()
         {
-            _database.SaveChanges();
+            base.SaveChanges();
             this._dbList = this._dbSet.Include(x => x.Teacher).AsQueryable();
         }
       

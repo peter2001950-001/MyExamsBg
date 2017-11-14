@@ -9,6 +9,7 @@ namespace MyExams.Services.Contracts
 {
     public interface ITeacherService
     {
+        IEnumerable<Teacher> GetAll();
         Teacher GetTeacherByUserId(string userId);
         void AddTeacher(Teacher item);
     }

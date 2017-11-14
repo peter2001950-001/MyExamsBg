@@ -99,3 +99,9 @@ C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams\bin\MyExams
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams\bin\Ninject.xml
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams\bin\Ninject.Web.Common.xml
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams\bin\Ninject.Web.Mvc.xml
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\MyExams.Database.dll.config
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\MyExams.Models.dll.config
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\MyExams.Services.dll.config
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\obj\Debug\MyExams.Web.csproj.CoreCompileInputs.cache
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\Microsoft.AspNet.TelemetryCorrelation.xml

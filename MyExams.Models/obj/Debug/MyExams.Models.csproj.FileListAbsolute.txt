@@ -4,3 +4,4 @@ C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Models\obj\
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Models\obj\Debug\MyExams.Models.dll
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Models\obj\Debug\MyExams.Models.pdb
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Models\bin\Debug\MyExams.Models.dll.config
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Models\obj\Debug\MyExams.Models.csproj.CoreCompileInputs.cache

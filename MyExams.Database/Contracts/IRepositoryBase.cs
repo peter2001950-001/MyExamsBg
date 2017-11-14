@@ -12,7 +12,6 @@ namespace MyExams.Database.Contracts
         void Add(T item);
         void Remove(T item);
         IEnumerable<T> GetAll();
-
         IEnumerable<T> Where(Expression<Func<T, bool>> where);
         void SaveChanges();
 
