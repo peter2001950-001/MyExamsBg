@@ -97,6 +97,13 @@
         } else {
             $(this).next().addClass("show");
         }
+    });
+    $(".sidebar-toggler").click(function () {
+        if ($("body").hasClass("sidebar-hidden")) {
+            $("body").removeClass("sidebar-hidden");
+        } else {
+            $("body").addClass("sidebar-hidden");
+        }
     })
 </script>
 </html>

@@ -244,8 +244,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Admin.css" />
     <Content Include="Content\ClassViewCSS.css" />
+    <Content Include="Content\images\868142-200.png" />
     <Content Include="Content\images\cool-background.jpg" />
     <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\testDesign.css" />
     <Content Include="favicon.ico" />
     <Content Include="Content\material-icons.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -256,6 +258,7 @@
     <Content Include="Scripts\app\teacher\classesViewModel.js" />
     <Content Include="Scripts\app\teacher\classViewModel.js" />
     <Content Include="Scripts\app\student\classesViewModel.js" />
+    <Content Include="Scripts\app\teacher\testDesignViewModel.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">

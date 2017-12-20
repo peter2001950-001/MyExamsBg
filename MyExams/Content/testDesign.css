@@ -1,0 +1,36 @@
+﻿#questions {
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+.input-group .input-group-lg {
+    margin: 15px 0;
+}
+.question {
+    margin: 15px 0;
+    padding: 15px 0;
+  
+    background: #f5f6f7;
+}
+.question .form-group{
+    margin: 15px;
+}
+button.btn.addOption{
+    
+}
+
+.correct-answer  {
+    position: absolute;
+    top: 8px;
+    right: 45px;
+    z-index: 99;
+    background: none;
+    border: none;
+    color: #00000070;
+}
+    .correct-answer:focus {
+        outline: 0;
+    }
+.option-checked {
+    color: #19cd04;
+}
