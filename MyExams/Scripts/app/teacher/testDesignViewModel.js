@@ -52,7 +52,17 @@ function Question(questionText, questionId, focus) {
 
     }.bind(this);
     
-    }
+}
+
+function Section(sectionText, sectionId) {
+    this.sectionText = sectionText;
+    this.sectionId = sectionId;
+    this.questions = ko.observableArray();
+    this.focus = true;
+    this.addQuestion = function (question) {
+        this.questions.push(question);
+    }.bind(this);
+}
 
 function TestDesignViewModel() {
     var stopDelete = true;
@@ -66,46 +76,50 @@ function TestDesignViewModel() {
     }
     self.testName = ko.observable();
 
-    self.questions = ko.observableArray();
-    self.AddQuestion = function () {
-        var question = new Question("", self.questions().length, true);
-        self.questions.push(question);
-        console.log("pushed");
+    self.sections = ko.observableArray();
+    self.AddQuestion = function (item) {
+        var question = new Question("", self.sections()[item.sectionId].questions().length, true);
+        self.sections()[item.sectionId].addQuestion(question);
+        console.log(item);
     }
-    self.AddAnswer = function (item) {
-        console.log("addAnswer");
-        self.questions()[item.questionId].addOption("Отговор " + getLetter(item), getLetter(item));
+    self.AddSection = function () {
+        self.sections.push(new Section("", self.sections().length));
+        console.log("sectionAdded");
+    }
+    self.AddAnswer = function (item, parentId) {
+        console.log(item.questionId);
+        self.sections()[parentId].questions()[item.questionId].addOption("Отговор " + getLetter(item, parentId), getLetter(item, parentId));
         stopDelete = true;
     }
-    self.CheckOption = function (item, parentId) {
+    self.CheckOption = function (item, parentId, section) {
         if (item != undefined && parentId != undefined) {
-            self.questions()[parentId].CheckOption(item.id);
+            self.sections()[section.sectionId].questions()[parentId].CheckOption(item.id);
         }
        
         
     }
    
-    self.DeleteOption = function (item, parentId) {
+    self.DeleteOption = function (item, parentId, section) {
         console.log(stopDelete);
-        if (!self.questions()[parentId].options()[item.id].firstTime)
+        if (! self.sections()[section.sectionId].questions()[parentId].options()[item.id].firstTime)
         {
             console.log(item);
-            self.questions()[parentId].options.remove(self.questions()[parentId].options()[item.id]);
-            for (var i = item.id; i < self.questions()[parentId].options().length; i++) {
+             self.sections()[section.sectionId].questions()[parentId].options.remove( self.sections()[section.sectionId].questions()[parentId].options()[item.id]);
+            for (var i = item.id; i <  self.sections()[section.sectionId].questions()[parentId].options().length; i++) {
                 
-                self.questions()[parentId].options()[i].id -= 1;
-                self.questions()[parentId].options()[i].optionNum(bgAlphabet[self.questions()[parentId].options()[i].id]);
-                console.log(self.questions()[parentId].options()[i]);
+                 self.sections()[section.sectionId].questions()[parentId].options()[i].id -= 1;
+                 self.sections()[section.sectionId].questions()[parentId].options()[i].optionNum(bgAlphabet[ self.sections()[section.sectionId].questions()[parentId].options()[i].id]);
+                console.log( self.sections()[section.sectionId].questions()[parentId].options()[i]);
             }
         } else {
-            self.questions()[parentId].options()[item.id].firstTime = false;
+             self.sections()[section.sectionId].questions()[parentId].options()[item.id].firstTime = false;
         }
         
     }
   
-    function getLetter(item) {
-       
-        return bgAlphabet[self.questions()[item.questionId].options().length];
+    function getLetter(item, parentId) {
+
+        return bgAlphabet[self.sections()[parentId].questions()[item.questionId].options().length];
     }
 }
 

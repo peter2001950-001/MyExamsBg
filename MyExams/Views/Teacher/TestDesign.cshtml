@@ -15,43 +15,52 @@
     <li class="nav-item">
         <a id="marks-link" class="nav-link active" href="#" data-bind="click: GetResults" style="color: rgb(255, 255, 255); background: rgb(236, 128, 65);">Справки</a>
     </li>
-    
+
 
 </ul>
 
 <div id="questions">
     <div class="input-group input-group-lg">
-        <input type="text" data-bind="value: testName" class="form-control"  placeholder="Наименование на теста" aria-label="Username" aria-describedby="sizing-addon1">
-     </div>
-    <div class="question-group" data-bind="foreach: questions">
-        <div class="question">
+        <input type="text" data-bind="value: testName" class="form-control" placeholder="Наименование на теста" aria-label="Username" aria-describedby="sizing-addon1">
+    </div>
+    <div class="question-group" data-bind="foreach: sections">
+        <div class="section" >
             <div class="form-group">
-        <div class="input-group question-text">
-            <span class="input-group-addon" data-bind="text: questionId+1"></span>
-            <input type="text" data-bind="value: questionText, hasFocus: focus" class="form-control" placeholder="Въпрос" aria-label="Username" aria-describedby="sizing-addon1">
-        </div>
+                <input type="text" class="form-control" placeholder="Наименование на секцията" data-bind="value: sectionText, hasFocus: focus" />
             </div>
-        <div class="form-group form-answer" data-bind="foreach: options">
-            <div class="form-group">
-            <div class="input-group" data-bind="event: { mouseover: CheckOptionShow($data, $parent.questionId)}">
-                <span class="input-group-addon" data-bind="text: optionNum"></span>
-               <input type="text" class="form-control" data-bind="value: optionText, hasFocus: focus, selected: focus, event: {mouseout: CheckOptionHide($data, $parent.questionId)}" />
-                <button class="correct-answer" data-bind="click: $root.CheckOption($data, $parent.questionId), visible: isCheckOptionVisible"><span data-bind="visible: isChecked">Правилен отговор</span><i class="material-icons md-10" data-bind="text: checkLabel, css: checkedClass">done</i></button>
-                <button class="input-group-addon" data-bind="click: $root.DeleteOption($data, $parent.questionId)"><i class="material-icons md-10">delete</i></button>
-               
-            </div>
+            <div data-bind="foreach: questions">
+            <div class="question">
+                <div class="form-group">
+                    <div class="input-group question-text">
+                        <span class="input-group-addon" data-bind="text: questionId+1"></span>
+                        <input type="text" data-bind="value: questionText, hasFocus: focus" class="form-control" placeholder="Въпрос" aria-label="Username" aria-describedby="sizing-addon1">
+                    </div>
                 </div>
+                <div class="form-group form-answer" data-bind="foreach: options">
+                    <div class="form-group">
+                        <div class="input-group" data-bind="event: { mouseover: CheckOptionShow($data, $parent.questionId)}">
+                            <span class="input-group-addon" data-bind="text: optionNum"></span>
+                            <input type="text" class="form-control" data-bind="value: optionText, hasFocus: focus, selected: focus, event: {mouseout: CheckOptionHide($data, $parent.questionId)}" />
+                            <button class="correct-answer" data-bind="click: $root.CheckOption($data, $parent.questionId, $parents[1]), visible: isCheckOptionVisible"><span data-bind="visible: isChecked">Правилен отговор</span><i class="material-icons md-10" data-bind="text: checkLabel, css: checkedClass">done</i></button>
+                            <button class="input-group-addon" data-bind="click: $root.DeleteOption($data, $parent.questionId, $parents[1])"><i class="material-icons md-10">delete</i></button>
+
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-success addOption" style="font-size: 11px;margin: 0 24px;" data-bind="click: $root.AddAnswer($data, $parent.sectionId)"><i class="material-icons md-12">add</i>&nbsp; Добави отговор</button>
             </div>
-            <button type="button" class="btn btn-outline-success addOption" style="font-size: 11px;margin: 0 24px;" data-bind="click: $parent.AddAnswer"><i class="material-icons md-12">add</i>&nbsp; Добави отговор</button>
+               </div>           
+                <button class="btn btn-success" data-bind="click: $root.AddQuestion"><i class="material-icons md-12">add</i>&nbsp; Добави въпрос</button>
+           
         </div>
+        
     </div>
-
-
-    <div class="btn-group" role="group">
-        <button class="btn btn-success" data-bind="click: AddQuestion"><i class="material-icons md-12">add</i>&nbsp; Добави въпрос</button>
+    <div class="form-group">
+        <button type="button" class="btn btn-primary btn-sm btn-block" data-bind="click: $root.AddSection"><i class="material-icons md-12">add</i>&nbsp; Добави секция</button>
     </div>
-
-    </div>
+    
+   
+</div>
 
 <div id="results"></div>
 
