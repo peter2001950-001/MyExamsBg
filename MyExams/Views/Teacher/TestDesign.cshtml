@@ -33,10 +33,10 @@
             </div>
         <div class="form-group form-answer" data-bind="foreach: options">
             <div class="form-group">
-            <div class="input-group">
+            <div class="input-group" data-bind="event: { mouseover: CheckOptionShow($data, $parent.questionId)}">
                 <span class="input-group-addon" data-bind="text: optionNum"></span>
-               <input type="text" class="form-control" data-bind="value: optionText, hasFocus: focus, selected: focus" />
-                <button class="correct-answer" data-bind="click: $root.CheckOption($data, $parent.questionId)"><span data-bind="visible: isChecked">Правилен отговор</span><i class="material-icons md-10" data-bind="text: checkLabel, css: checkedClass">done</i></button>
+               <input type="text" class="form-control" data-bind="value: optionText, hasFocus: focus, selected: focus, event: {mouseout: CheckOptionHide($data, $parent.questionId)}" />
+                <button class="correct-answer" data-bind="click: $root.CheckOption($data, $parent.questionId), visible: isCheckOptionVisible"><span data-bind="visible: isChecked">Правилен отговор</span><i class="material-icons md-10" data-bind="text: checkLabel, css: checkedClass">done</i></button>
                 <button class="input-group-addon" data-bind="click: $root.DeleteOption($data, $parent.questionId)"><i class="material-icons md-10">delete</i></button>
                
             </div>

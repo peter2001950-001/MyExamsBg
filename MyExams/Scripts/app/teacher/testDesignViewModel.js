@@ -6,6 +6,7 @@
     this.checkLabel = ko.observable("");
     this.id = id;
     this.isChecked = ko.observable(false);
+    this.isCheckOptionVisible = ko.observable(false)
     this.firstTime = true;
     this.CheckOption = function () {
       
@@ -20,7 +21,18 @@
                 this.checkedClass("");
                 this.isChecked(false);
             }
-        };
+    };
+    this.CheckOptionShow = function (item, parentId) {
+        console.log(item.id + " show");
+        this.isCheckOptionVisible(true);
+    }
+    this.CheckOptionHide = function (item, parentId) {
+        console.log(item.id + " hide");
+        if (this.isChecked() == false) {
+            this.isCheckOptionVisible(false);
+        }
+      
+    }
 }
 
 
@@ -90,6 +102,7 @@ function TestDesignViewModel() {
         }
         
     }
+  
     function getLetter(item) {
        
         return bgAlphabet[self.questions()[item.questionId].options().length];
