@@ -14,8 +14,12 @@ namespace MyExams.Database
         DbSet<T> Set<T>() where T: class;
         DbSet<Teacher> Teachers { get; set; }
         DbSet<Class> Classes { get; set; }
-         DbSet<StudentClass> StudentsClases { get; set; }
-         DbSet<Student> Students { get; set; }
+        DbSet<StudentClass> StudentsClases { get; set; }
+        DbSet<Student> Students { get; set; }
+        DbSet<Test> Tests { get; set; }
+        DbSet<Section> Sections { get; set; }
+        DbSet<Question> Questions { get; set; }
+        DbSet<Answer> Answers { get; set; }
         void SaveChanges();
     }
 }

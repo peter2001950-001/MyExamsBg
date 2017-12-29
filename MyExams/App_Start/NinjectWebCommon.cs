@@ -93,13 +93,45 @@ namespace MyExams.App_Start
              .To<StudentClassRepository>()
              .InRequestScope();
             kernel
-              .Bind<IClassService>()
-              .To<ClassService>()
-              .InRequestScope();
+            .Bind<ITestRepository>()
+            .To<TestRepository>()
+            .InRequestScope();
+            kernel
+            .Bind<ISectionRepository>()
+            .To<SectionRepository>()
+            .InRequestScope();
+            kernel
+            .Bind<IQuestionRepository>()
+            .To<QuestionRepository>()
+            .InRequestScope();
+            kernel
+            .Bind<IAnswerRepository>()
+            .To<AnswerRepository>()
+            .InRequestScope();
+            kernel
+            .Bind<IClassService>()
+            .To<ClassService>()
+            .InRequestScope();
             kernel
               .Bind<ITeacherService>()
               .To<TeacherService>()
               .InRequestScope();
-        }        
+            kernel
+            .Bind<ITestService>()
+            .To<TestService>()
+            .InRequestScope();
+            kernel
+            .Bind<ISectionService>()
+            .To<SectionService>()
+            .InRequestScope();
+            kernel
+            .Bind<IQuestionService>()
+            .To<QuestionService>()
+            .InRequestScope();
+            kernel
+            .Bind<IAnswerService>()
+            .To<AnswerService>()
+            .InRequestScope();
+        }
     }
 }

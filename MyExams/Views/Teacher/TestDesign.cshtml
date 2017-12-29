@@ -10,7 +10,7 @@
 <script>$("body").addClass("sidebar-hidden")</script>
 <ul class="nav nav-pills nav-fill" style="background: white">
     <li class="nav-item">
-        <a id="lastExams-link" class="nav-link" href="#" data-bind="click: GetQuestions" style="color: rgb(236, 128, 65); background: white;">Въпроси</a>
+        <a id="lastExams-link" class="nav-link" href="#" data-bind="click: GetTest" style="color: rgb(236, 128, 65); background: white;">Въпроси</a>
     </li>
     <li class="nav-item">
         <a id="marks-link" class="nav-link active" href="#" data-bind="click: GetResults" style="color: rgb(255, 255, 255); background: rgb(236, 128, 65);">Справки</a>
@@ -21,7 +21,7 @@
 
 <div id="questions">
     <div class="input-group input-group-lg">
-        <input type="text" data-bind="value: testName" class="form-control" placeholder="Наименование на теста" aria-label="Username" aria-describedby="sizing-addon1">
+        <input type="text" data-bind="value: testName" class="form-control" placeholder="Наименование на теста" aria-label="Username" aria-describedby="sizing-addon1" value="@ViewBag.title">
     </div>
     <div class="question-group" data-bind="foreach: sections">
         <div class="section" >
@@ -36,6 +36,7 @@
                         <input type="text" data-bind="value: questionText, hasFocus: focus" class="form-control" placeholder="Въпрос" aria-label="Username" aria-describedby="sizing-addon1">
                     </div>
                 </div>
+                <!-- ko if: type() == 0 -->
                 <div class="form-group form-answer" data-bind="foreach: options">
                     <div class="form-group">
                         <div class="input-group" data-bind="event: { mouseover: CheckOptionShow($data, $parent.questionId)}">
@@ -43,14 +44,38 @@
                             <input type="text" class="form-control" data-bind="value: optionText, hasFocus: focus, selected: focus, event: {mouseout: CheckOptionHide($data, $parent.questionId)}" />
                             <button class="correct-answer" data-bind="click: $root.CheckOption($data, $parent.questionId, $parents[1]), visible: isCheckOptionVisible"><span data-bind="visible: isChecked">Правилен отговор</span><i class="material-icons md-10" data-bind="text: checkLabel, css: checkedClass">done</i></button>
                             <button class="input-group-addon" data-bind="click: $root.DeleteOption($data, $parent.questionId, $parents[1])"><i class="material-icons md-10">delete</i></button>
-
                         </div>
                     </div>
                 </div>
                 <button type="button" class="btn btn-outline-success addOption" style="font-size: 11px;margin: 0 24px;" data-bind="click: $root.AddAnswer($data, $parent.sectionId)"><i class="material-icons md-12">add</i>&nbsp; Добави отговор</button>
+                <!-- /ko -->
+                <!--ko if: type() == 1-->
+                <div class="form-group">
+                    <div class="form-group">
+                        <label class="mr-sm-2" for="answerSizeSelect">Изберете размер на отговора</label>
+                        <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="answerSizeSelect" data-bind="options: answerSizeOptions,
+                                                                                                              optionsCaption: 'Избери...',
+                                                                                                              value: selectedAnswerSize"></select>
+                    </div>
+                    <div class="form-group" data-bind="visible: inputVisible">
+                        <!--ko if: inputCss() !="textarea"-->
+
+                        <input class="form-control" placeholder="Правилен отговор..." data-bind="css: inputCss, value: correctAnswer" />
+                        <!--/ko-->
+                        <!--ko if: inputCss() == "textarea"-->
+                        <textarea class="form-control" placeholder="Правилен отговор..." data-bind="value: correctAnswer" rows="3"></textarea>
+                        <!--/ko-->
+
+                    </div>
+                </div>
+                <!--/ko-->
             </div>
                </div>           
-                <button class="btn btn-success" data-bind="click: $root.AddQuestion"><i class="material-icons md-12">add</i>&nbsp; Добави въпрос</button>
+                <button class="btn btn-success" data-bind="click: $root.AddQuestion, visible: $root.addBtnVisibility"><i class="material-icons md-12">add</i>&nbsp; Добави въпрос</button>
+                <div class="btn-group" data-bind="visible: !$root.addBtnVisibility">
+                    <button class="btn btn-default" data-bind="click: $root.AddChoiceQuestion"><i class="material-icons">adjust</i> Избор</button>
+                    <button class="btn btn-default" data-bind="click: $root.AddTextQuestion"><i class="material-icons">format_color_text</i> Текст</button>
+                </div>
            
         </div>
         
@@ -66,3 +91,4 @@
 
 
 <script src="@Url.Content("~/Scripts/app/teacher/testDesignViewModel.js")" type="text/javascript"></script>
+<script>var testUniqueCode = "@ViewBag.id"</script>

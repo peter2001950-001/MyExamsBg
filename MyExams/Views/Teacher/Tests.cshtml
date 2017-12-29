@@ -10,7 +10,13 @@
     <li class="breadcrumb-item"><a href="@Url.Action("Tests","Teacher")">Тестове</a></li>
     <li class="breadcrumb-menu d-md-down-none">
         <div class="btn-group" role="group">
-            <button class="btn btn-success" data-toggle="modal" data-target="#createClass"><i class="material-icons md-12">add</i>&nbsp; Създай тест</button>
+          @using (Ajax.BeginForm("CreateTest", new AjaxOptions() { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, OnSuccess = "createTestRedirection"}))
+          {
+            @Html.AntiForgeryToken()
+         
+            <button class="btn btn-success" type= "submit"><i class="material-icons md-12">add</i>&nbsp; Създай тест</button>
+          }
+
         </div>
     </li>
 </ol>
@@ -51,3 +57,11 @@
         </div>
     </div>
     </div>
+
+<script>
+    function createTestRedirection(data) {
+        if (data.status == "OK") {
+            window.location.href = "/t/testDesign?id=" + data.id;
+        }
+    }
+</script>

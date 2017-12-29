@@ -14,10 +14,20 @@ namespace MyExams.Controllers
     {
         private readonly IClassService _classService;
         private readonly IStudentService _studentService;
-        public TeacherController(IClassService classService, IStudentService studentService)
+        private readonly ITestService _testService;
+        private readonly ITeacherService _teacherService;
+        private readonly ISectionService _sectionService;
+        private readonly IQuestionService _questionService;
+        private readonly IAnswerService _answerService;
+        public TeacherController(IClassService classService, IStudentService studentService, ITestService testService, ITeacherService teacherService, ISectionService sectionService, IQuestionService questionService, IAnswerService  answerService)
         {
             _classService = classService;
             _studentService = studentService;
+            _testService = testService;
+            _teacherService = teacherService;
+            _sectionService = sectionService;
+            _questionService = questionService;
+            _answerService = answerService;
         }
         // GET: Teacher
         public ActionResult Index()
@@ -32,9 +42,150 @@ namespace MyExams.Controllers
         {
             return View();
         }
-        public ActionResult TestDesign()
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateTest()
         {
+            var userId = User.Identity.GetUserId();
+            var teacher = _teacherService.GetTeacherByUserId(userId);
+            Test test = new Test()
+            {
+                LastUpdated = DateTime.Now,
+                Teacher = teacher
+
+            };
+            _testService.AddNewTest(test);
+
+            return Json(new {status = "OK", id=test.UniqueNumber });
+        }
+        public ActionResult TestDesign(string id)
+        {
+            var test = _testService.GetTestByUniqueNumber(id);
+            ViewBag.id = id;
+            ViewBag.title = test.TestTitle;
             return View();
+        }
+        public ActionResult ElementUpdate(string type, string action, int index, string testUniqueCode,int sectionId=0, int questionId=0,  int questionType = 0)
+        {
+            var test = _testService.GetTestByUniqueNumber(testUniqueCode);
+            if (test != null)
+            {
+                switch (type)
+                {
+                    case "section":
+                        if (action == "added")
+                        {
+                            Section section = new Section()
+                            {
+                                Active = true,
+                                IsInUse = false,
+                                OrderNo = index,
+                                SectionTitle = "",
+                                Test = test
+                            };
+                            _sectionService.AddSection(section);
+                        return Json(new { status = "OK" });
+                        }
+                        break;
+                    case "question":
+                        if (action == "added")
+                        {
+                            var section = _sectionService.GetAllSectionsByTestId(test.Id).Where(x => x.OrderNo == sectionId).FirstOrDefault();
+                            if (section != null)
+                            {
+                                Question question = new Question()
+                                {
+                                    Active = true,
+                                    OrderNo = index,
+                                    IsInUse = false,
+                                    QuestionType = (QuestionType)questionType,
+                                    Text = ""
+                                };
+                                _questionService.AddQuestion(question);
+                                return Json(new { status = "OK" });
+                            }
+                            return Json(new { status = "ERR1" });
+
+                        }
+                       
+                        break;
+                    case "option":
+                        if (action == "added")
+                        {
+                            var questionObj = _questionService.GetAllQuestionsBy(test.Id, sectionId).FirstOrDefault(x => x.OrderNo == questionId);
+                            if (questionObj != null)
+                            {
+                                Answer answer = new Answer()
+                                {
+                                    Active = true,
+                                    IsInUse = false,
+                                    Text = "",
+                                    IsCorrect = false,
+                                    OrderNo = index,
+                                    Question = questionObj
+                                };
+                                _answerService.AddAnswer(answer);
+                                return Json(new { status = "OK" });
+                            }
+                            return Json(new { status = "ERR1" });
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                return Json(new { status = "ERR2" });
+            }
+            return Json(new { status = "ERR3" });
+        }
+
+        public ActionResult GetTest(string testUniqueCode)
+        {
+            var test = _testService.GetTestByUniqueNumber(testUniqueCode);
+            var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
+            if (test !=null && teacher.Id == test.Teacher.Id)
+            {
+                var testObj = _testService.GetTestByUniqueNumber(testUniqueCode);
+                if (testObj != null)
+                {
+                    var sections = _sectionService.GetAllSectionsByTestId(testObj.Id);
+                    List<object> sectionsList = new List<object>();
+                    
+                    foreach (var section in sections)
+                    {
+                        if (section.Active) {
+                            var questionsList = new List<object>();
+
+                            var questions = _questionService.GetAllQuestionsBy(test.Id, section.OrderNo);
+                            foreach (var question in questions)
+                            {
+                                if (question.Active) {
+                                    var optionsList = new List<object>();
+                                    if (question.QuestionType == QuestionType.Choice)
+                                    {
+                                        var options = _answerService.GetAllBy(test.Id, section.OrderNo, question.OrderNo);
+                                        foreach (var option in options)
+                                        {
+                                            if (option.Active)
+                                            {
+                                                optionsList.Add(new { id = option.OrderNo, text = option.Text, isCorrect = option.IsCorrect });
+                                            }
+
+                                        }
+                                        questionsList.Add(new { id = question.OrderNo, text = question.Text, type = (int)question.QuestionType, options = optionsList });
+                                    } else if (question.QuestionType == QuestionType.Text)
+                                    {
+                                        questionsList.Add(new { id = question.OrderNo, text = question.Text, type = (int)question.QuestionType, answerSize = (int)question.QuestionAnswerSize, correctAnswer = question.CorrectAnswer });
+                                    }
+                                }
+
+                            }
+                            sectionsList.Add(new { id = section.OrderNo, text = section.SectionTitle, questions = questionsList});
+                                }
+                    }
+                    return Json(new { status = "OK", sections = sectionsList });
+                }
+                return Json(new { status = "ERR1" });
+            }
+            return Json(new { status = "ERR2" });
         }
 
         public ActionResult Class(string id)

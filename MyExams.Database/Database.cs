@@ -20,6 +20,10 @@ namespace MyExams.Database
         public DbSet<Class> Classes { get; set; }
         public DbSet<StudentClass> StudentsClases { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<Test> Tests { get; set; }
+        public DbSet<Section> Sections { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
         public void SaveChanges()
         {
             base.SaveChanges();
