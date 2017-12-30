@@ -9,6 +9,6 @@ namespace MyExams.Database.Contracts
 {
     public interface IQuestionRepository: IRepositoryBase<Question>
     {
-
+        void Update(Question question);
     }
 }

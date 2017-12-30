@@ -20,11 +20,17 @@ namespace MyExams.Services.Contracts
         public void AddQuestion(Question question)
         {
             _questionRepository.Add(question);
+            _questionRepository.SaveChanges();
+        }
+        public void Update(Question question)
+        {
+            _questionRepository.Update(question);
         }
         public IEnumerable<Question> GetAll()
         {
             return _questionRepository.GetAll();
         }
+
         public IEnumerable<Question> GetAllQuestionsBy(int testId, int sectionNo)
         {
             var section = _sectionRepository.GetAll().Where(x => x.Test.Id == testId).FirstOrDefault(c=>c.OrderNo == sectionNo);

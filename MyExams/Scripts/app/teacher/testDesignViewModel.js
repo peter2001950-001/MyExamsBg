@@ -12,6 +12,9 @@ function QuestionOption(optionText, optionNum, id, questionId, sectionId) {
     self.isChecked = ko.observable(false);
     self.isCheckOptionVisible = ko.observable(false)
     self.firstTime = true;
+    self.placeholder = ko.computed(function () {
+        return "Отговор " + self.optionNum();
+    }, self)
     self.CheckOption = function () {
       
         if (self.checkLabel() == "done") {
@@ -59,9 +62,15 @@ function Question(questionText, questionId, focus, type, sectionId) {
     self.questionId = questionId;
     self.sectionId = sectionId;
     self.focus = focus;
+    var firstTime = true;
     self.addOption = function (optionText, optionNum) {
+        if (!firstTime) {
+
         var option = new QuestionOption(optionText, optionNum, self.options().length, self.questionId, self.sectionId);
         self.options.push(option);
+        } else {
+            firstTime = false;
+        }
     }.bind(self);
     self.type = ko.observable(type); // 0 - choice, 1 - text
     self.answerSizeOptions = ko.observableArray(["Кратък", "Среден", "Дълъг"]);
@@ -108,23 +117,28 @@ function Question(questionText, questionId, focus, type, sectionId) {
     });
     self.options.subscribe(function (item) {
         if (subscribeActivate) {
-
+            $.ajax({
+                type: "post",
+                datatype: "json",
+                contenttype: "application/json",
+                url: "/t/elementupdate",
+                data: {
+                    action: item[0].status,
+                    index: item[0].index,
+                    type: "option",
+                    sectionId: self.sectionId,
+                    questionId: self.questionId,
+                    testUniqueCode: testUniqueCode
+                },
+                success: function (data) {
+                    if (data.status === "ok") {
+                        self.tests(data.tests);
+                        self.students(data.students);
+                    }
+                }
+            });
         }
-        //$.ajax({
-        //    type: "post",
-        //    datatype: "json",
-        //    contenttype: "application/json",
-        //    url: "/t/elementupdate",
-        //    data: {
-               
-        //    },
-        //    success: function (data) {
-        //        if (data.status === "ok") {
-        //            self.tests(data.tests);
-        //            self.students(data.students);
-        //        }
-        //    }
-        //});
+        
               
     }, self, "arrayChange");
    
@@ -142,28 +156,28 @@ function Section(sectionText, sectionId) {
         self.questions.push(question);
     }.bind(this);
     self.questions.subscribe(function (item) {
-        //if (subscribeActivate) {
-        //    $.ajax({
-        //        type: "post",
-        //        datatype: "json",
-        //        contenttype: "application/json",
-        //        url: "/t/elementupdate",
-        //        data: {
-        //            action: item[0].status,
-        //            index: item[0].index,
-        //            type: "question",
-        //            sectionId: self.sectionId(),
-        //            questionType: item[0],
-        //            testUniqueCode: testUniqueCode
-        //        },
-        //        success: function (data) {
-        //            if (data.status === "OK") {
-        //                console.log(data);
-        //            }
-        //        }
-        //    });
-        //}
-        console.log(item);
+        if (subscribeActivate) {
+            $.ajax({
+                type: "post",
+                datatype: "json",
+                contenttype: "application/json",
+                url: "/t/elementupdate",
+                data: {
+                    action: item[0].status,
+                    index: item[0].index,
+                    type: "question",
+                    sectionId: self.sectionId,
+                    questionType: item[0].value.type(),
+                    testUniqueCode: testUniqueCode
+                },
+                success: function (data) {
+                    if (data.status === "OK") {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+       
     }, self, "arrayChange");
 }
 
@@ -187,10 +201,18 @@ function TestDesignViewModel() {
                         self.sections.push(new Section(data.sections[i].text, data.sections[i].id));
                         console.log(new Section(data.sections[i].text, Number(data.sections[i].id)))
                         for (var p in data.sections[i].questions) {
-                            self.sections()[i].AddQuestion(new Question(data.sections[i].questions[p].text, data.sections[i].questions[p].id, false, data.sections[i].questions[p].type, data.sections[i].id));
+                            self.sections()[i].addQuestion(new Question(data.sections[i].questions[p].text, data.sections[i].questions[p].id, false, data.sections[i].questions[p].type, data.sections[i].id));
                             if (data.sections[i].questions[p].type == "0") {
                                 for (var q in data.sections[i].questions[p].options) {
-                                    self.sections()[i].questions()[p].addOption(new QuestionOption(data.sections[i].questions[p].options[q].text, bgAlphabet[data.sections[i].questions[p].options[q].i], data.sections[i].questions[p].options[q].id, data.sections[i].questions[p].id, data.sections[i].id));
+                                    console.log(new QuestionOption(data.sections[i].questions[p].options[q].text, bgAlphabet[data.sections[i].questions[p].options[q].id], data.sections[i].questions[p].options[q].id, data.sections[i].questions[p].id, data.sections[i].id));
+                                    self.sections()[i].questions()[p].addOption(data.sections[i].questions[p].options[q].text, bgAlphabet[data.sections[i].questions[p].options[q].id]);
+                                    if (data.sections[i].questions[p].options[q].isCorrect == true) {
+                                        console.log("correct");
+                                        self.sections()[i].questions()[p].options()[q].isChecked(true);
+                                        self.sections()[i].questions()[p].options()[q].checkLabel("check_circle");
+                                        self.sections()[i].questions()[p].options()[q].checkedClass("option-checked");
+                                        self.sections()[i].questions()[p].options()[q].isCheckOptionVisible(true);
+                                    }
                                 }
                             } else if (data.sections[i].questions[p].type == "1") {
                                 self.sections()[i].questions()[p].selectedAnswerSize(questionSizeOptions[data.sections[i].questions[p].answerSize]);
@@ -207,7 +229,37 @@ function TestDesignViewModel() {
 
     }
     self.onQuestionUpdate = function (sectionId, questionId) {
-        console.log("section: " + sectionId + ", question: " + questionId);
+        var question = self.sections()[sectionId].questions()[questionId];
+        var questionObj = { id: questionId, text:  question.questionText() };
+        if (question.type() == "0") {
+            questionObj.options = [];
+            for (var i in question.options()) {
+                questionObj.options.push({ id: question.options()[i].id, text: question.options()[i].optionText(), isCorrect: question.options()[i].isChecked() });
+            }
+        } else if (question.type() == "1") {
+            questionObj.correctAnswer = question.correctAnswer();
+            questionObj.selectedAnswerSize = question.selectedAnswerSize();
+
+        }
+        console.log(JSON.stringify({ testCode: testUniqueCode, sectionId: sectionId, question: questionObj }));
+        $.ajax({
+            type: "post",
+            datatype: "json",
+            contenttype: "application/json",
+            url: "/t/questionupdate",
+            data: {
+             data:  JSON.stringify({
+                    testCode: testUniqueCode,
+                    sectionId: sectionId,
+                    question: questionObj
+                })
+            },
+            success: function (data) {
+                if (data.status === "OK") {
+                    console.log(data);
+                }
+            }
+        });
     }
     self.testName = ko.observable();
     self.addBtnVisiblity = ko.observable(true);
@@ -259,8 +311,8 @@ function TestDesignViewModel() {
         console.log(new Section("", self.sections().length));
     }
     self.AddAnswer = function (item, parentId) {
-        console.log(item.questionId);
-        self.sections()[parentId].questions()[item.questionId].addOption("Отговор " + getLetter(item, parentId), getLetter(item, parentId));
+        console.log(getLetter(item, parentId));
+        self.sections()[parentId].questions()[item.questionId].addOption("", getLetter(item, parentId));
         stopDelete = true;
     }
     self.CheckOption = function (item, parentId, section) {
@@ -306,5 +358,11 @@ ko.bindingHandlers.selected = {
     update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
         var selected = ko.utils.unwrapObservable(valueAccessor());
         if (selected) element.select();
+    }
+};
+ko.bindingHandlers.placeholder = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        var underlyingObservable = valueAccessor();
+        ko.applyBindingsToNode(element, { attr: { placeholder: underlyingObservable } });
     }
 };

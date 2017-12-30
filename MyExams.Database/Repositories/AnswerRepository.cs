@@ -13,5 +13,18 @@ namespace MyExams.Database.Repositories
         public AnswerRepository(IDatabase database) : base(database)
         {
         }
+        public void Update(Answer answer)
+        {
+            var item = _dbSet.Where(x => x.Id == answer.Id).FirstOrDefault();
+            if (item != null)
+            {
+                item.Active = answer.Active;
+                item.IsCorrect = answer.IsCorrect;
+                item.IsInUse = answer.IsInUse;
+                item.OrderNo = answer.OrderNo;
+                item.Text = answer.Text;
+            }
+            SaveChanges();
+        }
     }
 }

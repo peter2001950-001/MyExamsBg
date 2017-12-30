@@ -9,8 +9,9 @@ namespace MyExams.Services.Contracts
 {
     public interface IQuestionService
     {
-         void AddQuestion(Question question);
-         IEnumerable<Question> GetAll();
-         IEnumerable<Question> GetAllQuestionsBy(int testId, int sectionNo);
+        void AddQuestion(Question question);
+        IEnumerable<Question> GetAll();
+        IEnumerable<Question> GetAllQuestionsBy(int testId, int sectionNo);
+        void Update(Question question);
     }
 }

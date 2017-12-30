@@ -12,5 +12,6 @@ namespace MyExams.Services.Contracts
         IEnumerable<Answer> GetAll();
         IEnumerable<Answer> GetAllBy(int testId, int sectionNo, int questionNo);
         void AddAnswer(Answer answer);
+        void Update(Answer answer);
     }
 }

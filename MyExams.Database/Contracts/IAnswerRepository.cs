@@ -9,5 +9,6 @@ namespace MyExams.Database.Contracts
 {
     public interface IAnswerRepository:IRepositoryBase<Answer>
     {
+        void Update(Answer answer);
     }
 }

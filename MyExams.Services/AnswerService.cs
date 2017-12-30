@@ -29,6 +29,10 @@ namespace MyExams.Services
         {
             return _answerRepository.GetAll();
         }
+        public void Update(Answer answer)
+        {
+            _answerRepository.Update(answer);
+        }
 
         public IEnumerable<Answer> GetAllBy(int testId, int sectionNo, int questionNo)
         {

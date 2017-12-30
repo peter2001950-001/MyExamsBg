@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace MyExams.Controllers
 {
@@ -98,7 +99,9 @@ namespace MyExams.Controllers
                                     OrderNo = index,
                                     IsInUse = false,
                                     QuestionType = (QuestionType)questionType,
-                                    Text = ""
+                                    Text = "",
+                                     Section = section
+                                      
                                 };
                                 _questionService.AddQuestion(question);
                                 return Json(new { status = "OK" });
@@ -135,6 +138,69 @@ namespace MyExams.Controllers
                 return Json(new { status = "ERR2" });
             }
             return Json(new { status = "ERR3" });
+        }
+
+        public ActionResult QuestionUpdate(string data)
+        {
+            var obj = new JavaScriptSerializer().Deserialize<ParseQuestionClass>(data);
+            var test = _testService.GetTestByUniqueNumber(obj.testCode);
+            if (test != null)
+            {
+                var section = _sectionService.GetAllSectionsByTestId(test.Id).Where(x => x.OrderNo == obj.sectionId).FirstOrDefault(x => x.Active == true);
+                if (section != null)
+                {
+                    var question = _questionService.GetAllQuestionsBy(test.Id, obj.sectionId).Where(x => x.OrderNo == obj.question.id).FirstOrDefault(x => x.Active == true);
+                    if (question != null)
+                    {
+                        question.Text = obj.question.text;
+                        if(question.QuestionType == QuestionType.Choice)
+                        {
+                            var options = _answerService.GetAllBy(test.Id, obj.sectionId, obj.question.id).Where(x=>x.Active == true);
+                            foreach (var item in options)
+                            {
+                                var option = obj.question.options.Where(x => x.id == item.OrderNo).FirstOrDefault();
+                                if (option != null)
+                                {
+                                    item.Text = option.text;
+                                    item.IsCorrect = option.isCorrect;
+                                }
+                                _answerService.Update(item);
+                            }
+                        }else if(question.QuestionType == QuestionType.Text)
+                        {
+                            string[] sizes = { "Кратък", "Среден", "Дълъг" };
+                            var index = Array.IndexOf(sizes, obj.question.selectedAnswerSize);
+                            question.QuestionAnswerSize = (QuestionAnswerSize)index;
+                            question.CorrectAnswer = obj.question.correctAnswer;
+                        }
+                        _questionService.Update(question);
+                        return Json(new { status = "OK" });
+                    }
+                    return Json(new { status = "ERR1" });
+                }
+                return Json(new { status = "ERR2" });
+            }
+            return Json(new { status = "ERR3" });
+        }
+        public class ParseQuestionClass
+        {
+            public string testCode { get; set; }
+            public int sectionId { get; set; }
+            public Question question { get; set; }
+            public class Question
+            {
+                public int id { get; set; }
+                public string text { get; set; }
+                public List<Option> options { get; set; }
+                public string correctAnswer { get; set; }
+                public string selectedAnswerSize { get; set; }
+                public class Option
+                {
+                    public int id { get; set; }
+                    public string text { get; set; }
+                    public bool isCorrect { get; set; }
+                }
+            }
         }
 
         public ActionResult GetTest(string testUniqueCode)
