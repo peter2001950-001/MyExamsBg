@@ -41,9 +41,59 @@ button.btn.addOption{
     box-shadow: 0px 0px 13px 0px rgba(173,173,173,1);
 
 }
-.points-input{
+.points-input {
     width: 65px;
     float: right;
     margin: 0 0 0 15px;
     height: 26px;
 }
+
+.right-corder-container {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+}
+    .right-corder-container .right-corder-container-button {
+        height: 62px;
+        width: 62px;
+        border: none;
+        background-color: #6FB583;
+        border-radius: 62px; 
+        transition: all 300ms;
+        box-shadow: 0px 0px 13px 0px rgba(173,173,173,1);
+        cursor: pointer;
+    }
+        .right-corder-container .right-corder-container-button span {
+            font-size: 38px;
+            color: white;
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            line-height: 28px;
+        }
+
+        .right-corder-container .right-corder-container-button:hover {
+            transition: all 400ms cubic-bezier(.62,.1,.5,1);
+            width: 200px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        .right-corder-container .right-corder-container-button .long-text {
+            transition: opacity 1000ms; 
+            opacity: 0;
+            color: white;
+            white-space: nowrap;
+            font-size: 0;
+            width: 0; 
+            margin: 0; 
+        }
+            .right-corder-container .right-corder-container-button .long-text.show-long-text {
+                transition: opacity 700ms, width 1ms linear 270ms, 
+                font-size 1ms linear 270ms; 
+                opacity: 1;
+                margin-top: 2px; 
+                margin-left: 65px; 
+                font-size: 20px; 
+                width: auto; 
+            }

@@ -41,7 +41,6 @@ C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Tests\bin\D
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\Microsoft.Owin.Host.SystemWeb.dll
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\MyExams.Database.dll
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\MyExams.pdb
-C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\System.Web.Helpers.xml
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\System.Web.Mvc.xml
@@ -66,3 +65,14 @@ C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Tests\bin\D
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Tests\obj\Debug\MyExams.Tests.csprojResolveAssemblyReference.cache
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Tests\obj\Debug\MyExams.Tests.dll
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Tests\obj\Debug\MyExams.Tests.pdb
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\Hangfire.Core.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\Hangfire.SqlServer.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\MyExams.dll.config
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\MyExams.Services.dll.config
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\MyExams.Models.dll.config
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\Hangfire.Core.xml
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\Hangfire.SqlServer.xml
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\MyExams.Database.dll.config
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\es\Hangfire.Core.resources.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\zh\Hangfire.Core.resources.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\obj\Debug\MyExams.Tests.csproj.CoreCompileInputs.cache

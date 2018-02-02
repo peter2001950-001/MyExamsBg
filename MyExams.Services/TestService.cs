@@ -12,9 +12,11 @@ namespace MyExams.Services
    public class TestService: ITestService
     {
         private readonly ITestRepository _testRepository;
-        public TestService(ITestRepository testRepository)
+        private readonly IGTestRepository _gTestRepository;
+        public TestService(ITestRepository testRepository, IGTestRepository  gTestRepository)
         {
             _testRepository = testRepository;
+            _gTestRepository = gTestRepository;
         }
 
         public void AddNewTest(Test item)
@@ -23,7 +25,7 @@ namespace MyExams.Services
             _testRepository.SaveChanges();
         }
 
-        public IEnumerable<Test> GetAll()
+        public IEnumerable<Test> GetAllTests()
         {
             return _testRepository.GetAll();
         }
@@ -31,6 +33,15 @@ namespace MyExams.Services
         public Test GetTestByUniqueNumber(string uniqueNumber)
         {
             return _testRepository.GetAll().Where(x => x.UniqueNumber == uniqueNumber).FirstOrDefault();
+        }
+        public IEnumerable<GTest> GetAllGTests()
+        {
+            return _gTestRepository.GetAll();
+        } 
+        public void AddNewGTest(GTest item)
+        {
+            _gTestRepository.Add(item);
+            _gTestRepository.SaveChanges();
         }
         public void Update()
         {

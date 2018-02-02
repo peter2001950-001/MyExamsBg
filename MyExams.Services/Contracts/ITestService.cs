@@ -10,8 +10,10 @@ namespace MyExams.Services.Contracts
     public interface ITestService
     {
         void AddNewTest(Test item);
-        IEnumerable<Test> GetAll();
+        IEnumerable<Test> GetAllTests();
         Test GetTestByUniqueNumber(string uniqueNumber);
+        IEnumerable<GTest> GetAllGTests();
+        void AddNewGTest(GTest item);
         void Update();
     }
 }

@@ -65,7 +65,7 @@ namespace MyExams.Controllers
             var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
             if (teacher != null)
             {
-                var tests = _testService.GetAll().Where(x => x.Teacher.Id == teacher.Id);
+                var tests = _testService.GetAllTests().Where(x => x.Teacher.Id == teacher.Id);
                 List<object> testsResult = new List<object>();
                 foreach (var item in tests)
                 {
@@ -365,6 +365,7 @@ namespace MyExams.Controllers
             }
             return Json(new { status = "ERR2" });
         }
+        
 
         public ActionResult Class(string id)
         {

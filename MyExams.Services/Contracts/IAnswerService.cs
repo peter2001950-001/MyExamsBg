@@ -14,5 +14,7 @@ namespace MyExams.Services.Contracts
         void AddAnswer(Answer answer);
         void Update(Answer answer);
         void RemoveAnswer(Answer answer);
+        IEnumerable<GAnswer> GetAllGAnswers();
+        void AddGAnswer(GAnswer gAnswer);
     }
 }

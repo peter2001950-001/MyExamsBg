@@ -43,6 +43,12 @@
   <ItemGroup>
     <Compile Include="Answer.cs" />
     <Compile Include="Class.cs" />
+    <Compile Include="GAnswer.cs" />
+    <Compile Include="GAnswerSheet.cs" />
+    <Compile Include="GQuestion.cs" />
+    <Compile Include="GQuestionToBeChecked.cs" />
+    <Compile Include="GTest.cs" />
+    <Compile Include="GWrittenQuestion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Question.cs" />
     <Compile Include="Section.cs" />

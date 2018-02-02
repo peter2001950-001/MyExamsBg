@@ -10,3 +10,4 @@ C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.Models\bin\Debug\MyExams
 C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.Models\obj\Debug\MyExams.Models.csprojResolveAssemblyReference.cache
 C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.Models\obj\Debug\MyExams.Models.dll
 C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.Models\obj\Debug\MyExams.Models.pdb
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Models\obj\Debug\MyExams.Models.csproj.CoreCompileInputs.cache

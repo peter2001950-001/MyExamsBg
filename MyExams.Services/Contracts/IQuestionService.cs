@@ -14,5 +14,7 @@ namespace MyExams.Services.Contracts
         IEnumerable<Question> GetAllQuestionsBy(int testId, int sectionNo);
         void Update(Question question);
         void RemoveQuestion(Question question);
+        IEnumerable<GQuestion> GetAllGQuestion();
+        void AddNewGQuestion(GQuestion gQuestion);
     }
 }

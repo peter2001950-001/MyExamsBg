@@ -22,3 +22,6 @@ C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.Services\bin\Debug\Entit
 C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.Services\obj\Debug\MyExams.Services.csprojResolveAssemblyReference.cache
 C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.Services\obj\Debug\MyExams.Services.dll
 C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.Services\obj\Debug\MyExams.Services.pdb
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Services\bin\Debug\MyExams.Database.dll.config
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Services\bin\Debug\MyExams.Models.dll.config
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Services\obj\Debug\MyExams.Services.csproj.CoreCompileInputs.cache

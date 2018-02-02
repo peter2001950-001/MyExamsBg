@@ -19,6 +19,13 @@
 
 </ul>
 
+<div class="right-corder-container">
+    <button class="right-corder-container-button">
+        <span class="short-text"><i class="material-icons">print</i></span>
+        <span class="long-text">Принтирай</span>
+    </button>
+</div>
+
 <div id="questions">
     <div class="input-group input-group-lg">
         <input type="text" data-bind="value: testName" class="form-control" placeholder="Наименование на теста" aria-label="Username" aria-describedby="sizing-addon1" value="@ViewBag.title">
@@ -118,3 +125,8 @@
 
 <script src="@Url.Content("~/Scripts/app/teacher/testDesignViewModel.js")" type="text/javascript"></script>
 <script>var testUniqueCode = "@ViewBag.id"</script>
+<script>$(".right-corder-container-button").hover(function () {
+        $(".long-text").addClass("show-long-text");
+    }, function () {
+        $(".long-text").removeClass("show-long-text");
+    });</script>

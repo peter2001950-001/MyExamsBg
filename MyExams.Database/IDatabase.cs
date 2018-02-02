@@ -20,6 +20,12 @@ namespace MyExams.Database
         DbSet<Section> Sections { get; set; }
         DbSet<Question> Questions { get; set; }
         DbSet<Answer> Answers { get; set; }
+        DbSet<GTest> GTests { get; set; }
+        DbSet<GQuestion> GQuestions { get; set; }
+        DbSet<GAnswer> GAnswers { get; set; }
+        DbSet<GAnswerSheet> GAnswerSheets { get; set; }
+        DbSet<GWrittenQuestion> GWrittenQuestions { get; set; }
+        DbSet<GQuestionToBeChecked> GQuestionsToBeChecked { get; set; }
         void SaveChanges();
     }
 }

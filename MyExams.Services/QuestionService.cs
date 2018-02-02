@@ -12,10 +12,12 @@ namespace MyExams.Services.Contracts
     {
         private readonly IQuestionRepository _questionRepository;
         private readonly ISectionRepository _sectionRepository;
-        public QuestionService(IQuestionRepository questionRepository, ISectionRepository sectionRepository)
+        private readonly IGQuestionRepository _gQuestionRepository;
+        public QuestionService(IQuestionRepository questionRepository, ISectionRepository sectionRepository, IGQuestionRepository gQuestionRepository)
         {
             _questionRepository = questionRepository;
             _sectionRepository = sectionRepository;
+            _gQuestionRepository = gQuestionRepository;
         }
         public void AddQuestion(Question question)
         {
@@ -53,6 +55,16 @@ namespace MyExams.Services.Contracts
             }
             _questionRepository.Remove(question);
             _questionRepository.SaveChanges();
+        }
+
+        public IEnumerable<GQuestion> GetAllGQuestion()
+        {
+            return _gQuestionRepository.GetAll();
+        } 
+        public void AddNewGQuestion(GQuestion gQuestion)
+        {
+            _gQuestionRepository.Add(gQuestion);
+            _gQuestionRepository.SaveChanges();
         }
     }
 }

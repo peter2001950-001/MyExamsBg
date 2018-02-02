@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Hangfire;
+using Hangfire.Dashboard;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Owin;
 using Owin;
 
@@ -10,7 +12,14 @@ namespace MyExams
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            GlobalConfiguration.Configuration
+               .UseSqlServerStorage("DefaultConnection");
+
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
         }
      
     }
+
+    
 }

@@ -5,9 +5,7 @@ namespace MyExams.App_Start
 {
     using System;
     using System.Web;
-
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
     using Ninject;
     using Ninject.Web.Common;
     using Database;
@@ -15,6 +13,8 @@ namespace MyExams.App_Start
     using Database.Repositories;
     using Services.Contracts;
     using Services;
+    using TestProcessing.Contracts;
+    using TestProcessing;
 
     public static class NinjectWebCommon 
     {
@@ -109,6 +109,34 @@ namespace MyExams.App_Start
             .To<AnswerRepository>()
             .InRequestScope();
             kernel
+            .Bind<IGTestRepository>()
+            .To<GTestRepository>()
+            .InRequestScope();
+            kernel
+           .Bind<IGQuestionRepository>()
+           .To<GQuestionRepository>()
+           .InRequestScope();
+            kernel
+           .Bind<IGAnswerRepository>()
+           .To<GAnswerRepository>()
+           .InRequestScope();
+            kernel
+           .Bind<IGAnswerSheetRepository>()
+           .To<GAnswerSheetRepository>()
+           .InRequestScope();
+            kernel
+           .Bind<IGWrittenQuestionRepository>()
+           .To<GWrittenQuestionRepository>()
+           .InRequestScope();
+            kernel
+           .Bind<IGQuestionsToBeCheckedRepository>()
+           .To<GQuestionsToBeCheckedRepository>()
+           .InRequestScope();
+
+
+
+
+            kernel
             .Bind<IClassService>()
             .To<ClassService>()
             .InRequestScope();
@@ -131,6 +159,16 @@ namespace MyExams.App_Start
             kernel
             .Bind<IAnswerService>()
             .To<AnswerService>()
+            .InRequestScope();
+            kernel
+            .Bind<IGAnswerSheetService>()
+            .To<GAnswerSheetService>()
+            .InRequestScope();
+
+
+            kernel
+            .Bind<ITestGeneration>()
+            .To<TestGeneration>()
             .InRequestScope();
         }
     }
