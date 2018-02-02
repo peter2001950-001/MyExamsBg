@@ -19,6 +19,8 @@ namespace MyExams.Models
         public QuestionAnswerSize QuestionAnswerSize { get; set; }
         public bool Active { get; set; }
         public bool IsInUse { get; set; }
+        public bool MixupAnswers { get; set; }
+        public int Points { get; set; }
 
     }
 

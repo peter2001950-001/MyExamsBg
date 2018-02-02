@@ -12,5 +12,6 @@ namespace MyExams.Services.Contracts
         void AddNewTest(Test item);
         IEnumerable<Test> GetAll();
         Test GetTestByUniqueNumber(string uniqueNumber);
+        void Update();
     }
 }

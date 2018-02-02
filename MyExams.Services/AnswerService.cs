@@ -44,6 +44,19 @@ namespace MyExams.Services
             }
             return null;
         }
-        
+
+        public void RemoveAnswer(Answer answer)
+        {
+            var answers = _answerRepository.GetAll().Where(x => x.Question.Id == answer.Question.Id);
+            foreach (var item in answers)
+            {
+                if (item.OrderNo > answer.OrderNo)
+                {
+                    item.OrderNo--;
+                }
+            }
+            _answerRepository.Remove(answer);
+            _answerRepository.SaveChanges();
+        }
     }
 }

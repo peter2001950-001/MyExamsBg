@@ -12,5 +12,7 @@ namespace MyExams.Services.Contracts
          IEnumerable<Section> GetAll();
         IEnumerable<Section> GetAllSectionsByTestId(int testId);
         void AddSection(Section section);
+        void Update();
+        void RemoveSection(Section section);
     }
 }

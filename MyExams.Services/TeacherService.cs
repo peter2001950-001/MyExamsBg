@@ -11,11 +11,12 @@ namespace MyExams.Services
 {
     public class TeacherService:ITeacherService
     {
-        private ITeacherRepository _teacherRepository;
-
-        public TeacherService(ITeacherRepository teacherRepository)
+        private readonly ITeacherRepository _teacherRepository;
+        private readonly ITestRepository _testRepository;
+        public TeacherService(ITeacherRepository teacherRepository, ITestRepository testRepository)
         {
             _teacherRepository = teacherRepository;
+            _testRepository = testRepository;
         }
         public Teacher GetTeacherByUserId(string userId)
         {
@@ -29,6 +30,22 @@ namespace MyExams.Services
         {
             _teacherRepository.Add(item);
             _teacherRepository.SaveChanges();
+        }
+        public bool IsTeacherOfTest(string userId, int testId)
+        {
+            var teacher = GetTeacherByUserId(userId);
+            if (teacher != null)
+            {
+                var test = _testRepository.GetAll().FirstOrDefault(x => x.Id == testId);
+                if (test != null)
+                {
+                    if(test.Teacher.Id == teacher.Id)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

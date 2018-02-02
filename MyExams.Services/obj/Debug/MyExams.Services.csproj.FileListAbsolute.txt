@@ -10,9 +10,6 @@ C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Services\bi
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Services\obj\Debug\MyExams.Services.csprojResolveAssemblyReference.cache
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Services\obj\Debug\MyExams.Services.dll
 C:\Users\Peter\documents\visual studio 2015\Projects\MyExams\MyExams.Services\obj\Debug\MyExams.Services.pdb
-C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Services\bin\Debug\MyExams.Database.dll.config
-C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Services\bin\Debug\MyExams.Models.dll.config
-C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Services\obj\Debug\MyExams.Services.csproj.CoreCompileInputs.cache
 C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.Services\bin\Debug\MyExams.Services.dll.config
 C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.Services\bin\Debug\MyExams.Services.dll
 C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.Services\bin\Debug\MyExams.Services.pdb

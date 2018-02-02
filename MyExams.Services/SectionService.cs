@@ -29,5 +29,22 @@ namespace MyExams.Services
             _sectionRepository.Add(section);
             _sectionRepository.SaveChanges();
         }
+        public void RemoveSection (Section section)
+        {
+            var sections = _sectionRepository.GetAll().Where(x => x.Test.Id == section.Test.Id);
+            foreach (var item in sections)
+            {
+                if (item.OrderNo > section.OrderNo)
+                {
+                    item.OrderNo--;
+                }
+            }
+            _sectionRepository.Remove(section);
+            _sectionRepository.SaveChanges();
+        }
+        public void Update()
+        {
+            _sectionRepository.SaveChanges();
+        }
     }
 }

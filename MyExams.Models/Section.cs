@@ -16,5 +16,6 @@ namespace MyExams.Models
         public int OrderNo { get; set; }
         public bool Active { get; set; }
         public bool IsInUse { get; set; }
+        public bool MixupQuestions { get; set; }
     }
 }

@@ -32,5 +32,9 @@ namespace MyExams.Services
         {
             return _testRepository.GetAll().Where(x => x.UniqueNumber == uniqueNumber).FirstOrDefault();
         }
+        public void Update()
+        {
+            _testRepository.SaveChanges();
+        }
     }
 }

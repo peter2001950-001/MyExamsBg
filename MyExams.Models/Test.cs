@@ -19,5 +19,7 @@ namespace MyExams.Models
         public Teacher Teacher { get; set; }
         public string TestTitle { get; set; }
         public DateTime LastUpdated { get; set; }
+        public int Students { get; set; }
+        public int AverageMark { get; set; }
     }
 }

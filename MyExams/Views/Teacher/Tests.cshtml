@@ -20,35 +20,23 @@
         </div>
     </li>
 </ol>
-<div class="card-deck" style="max-width: 70rem;margin: 0 auto;" data-bind="foreach: classes">
+<div class="card-deck" style="max-width: 70rem;margin: 0 auto;" data-bind="foreach: tests">
 
-    <div class="card card-3">
+    <div class="card card-3" data-bind="click: $parent.gotoUrl" style="cursor: pointer">
         <div class="card-body">
-            <h4 class="card-title">Контролен тест върху Рационални числа</h4>
+            <h4 class="card-title" data-bind="text: testTitle">Контролен тест върху Рационални числа</h4>
             <p class="card-text">
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="callout callout-info">
                             <small class="text-muted">Брой ученици</small><br>
-                            <strong class="h4">9,123</strong>
+                            <strong class="h4" data-bind="text: students">9,123</strong>
                         </div>
                     </div><!--/.col-->
-
                     <div class="col-sm-6">
                         <div class="callout callout-warning">
-                            <small class="text-muted">Брой класове</small><br>
-                            <strong class="h4">78,623</strong>
-                        </div>
-                    </div><!--/.col--><div class="col-sm-6">
-                        <div class="callout callout-danger">
-                            <small class="text-muted">Слаби оценки</small><br>
-                            <strong class="h4">22,643</strong>
-                        </div>
-                    </div><!--/.col-->
-                    <div class="col-sm-6">
-                        <div class="callout callout-success">
                             <small class="text-muted">Средна оценка</small><br>
-                            <strong class="h4">49,123</strong>
+                            <strong class="h4" data-bind="text: averageMark">49,123</strong>
                         </div>
                     </div><!--/.col-->
                 </div>
@@ -58,10 +46,4 @@
     </div>
     </div>
 
-<script>
-    function createTestRedirection(data) {
-        if (data.status == "OK") {
-            window.location.href = "/t/testDesign?id=" + data.id;
-        }
-    }
-</script>
+<script src="@Url.Content("~/Scripts/app/teacher/testsViewModel.js")" type="text/javascript"></script>

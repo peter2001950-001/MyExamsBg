@@ -76,6 +76,8 @@ function Question(questionText, questionId, focus, type, sectionId) {
     self.answerSizeOptions = ko.observableArray(["Кратък", "Среден", "Дълъг"]);
     self.selectedAnswerSize = ko.observable();
     self.correctAnswer = ko.observable();
+    self.mixupOptions = ko.observable(true);
+    self.points = ko.observable("");
     self.inputCss = ko.computed(function () {
 
         switch (self.selectedAnswerSize()) {
@@ -111,6 +113,16 @@ function Question(questionText, questionId, focus, type, sectionId) {
         }
     });
     self.selectedAnswerSize.subscribe(function (item) {
+        if (subscribeActivate) {
+            testDesignViewModel.onQuestionUpdate(self.sectionId, self.questionId);
+        }
+    });
+    self.mixupOptions.subscribe(function (item) {
+        if (subscribeActivate) {
+            testDesignViewModel.onQuestionUpdate(self.sectionId, self.questionId);
+        }
+    })
+    self.points.subscribe(function (item) {
         if (subscribeActivate) {
             testDesignViewModel.onQuestionUpdate(self.sectionId, self.questionId);
         }
@@ -152,6 +164,7 @@ function Section(sectionText, sectionId) {
     self.sectionId = sectionId;
     self.questions = ko.observableArray();
     self.focus = true;
+    self.mixupQuestions = ko.observable(true);
     self.addQuestion = function (question) {
         self.questions.push(question);
     }.bind(this);
@@ -179,6 +192,16 @@ function Section(sectionText, sectionId) {
         }
        
     }, self, "arrayChange");
+    self.mixupQuestions.subscribe(function (item) {
+        if (subscribeActivate) {
+            testDesignViewModel.onSectionUpdate(self.sectionId);
+        }
+    })
+    self.sectionText.subscribe(function (item) {
+        if (subscribeActivate) {
+            testDesignViewModel.onSectionUpdate(self.sectionId);
+        }
+    })
 }
 
 function TestDesignViewModel() {
@@ -196,7 +219,8 @@ function TestDesignViewModel() {
             },
             success: function (data) {
                 if (data.status === "OK") {
-                    var questionSizeOptions = ["Кратък", "Среден", "Дълъг"]
+                    var questionSizeOptions = ["Кратък", "Среден", "Дълъг"];
+                    self.testName(data.testTitle);
                     for (var i in data.sections) {
                         self.sections.push(new Section(data.sections[i].text, data.sections[i].id));
                         console.log(new Section(data.sections[i].text, Number(data.sections[i].id)))
@@ -214,13 +238,17 @@ function TestDesignViewModel() {
                                         self.sections()[i].questions()[p].options()[q].isCheckOptionVisible(true);
                                     }
                                 }
+                                self.sections()[i].questions()[p].mixupOptions(data.sections[i].questions[p].mixupOptions);
                             } else if (data.sections[i].questions[p].type == "1") {
                                 self.sections()[i].questions()[p].selectedAnswerSize(questionSizeOptions[data.sections[i].questions[p].answerSize]);
                                 self.sections()[i].questions()[p].correctAnswer(data.sections[i].questions[p].correctAnswer);
                             }
+                            self.sections()[i].questions()[p].points(data.sections[i].questions[p].points);
                         }
                     }
                     subscribeActivate = true;
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
                 }
             }
         });
@@ -230,16 +258,23 @@ function TestDesignViewModel() {
     }
     self.onQuestionUpdate = function (sectionId, questionId) {
         var question = self.sections()[sectionId].questions()[questionId];
-        var questionObj = { id: questionId, text:  question.questionText() };
+        var questionObj = { id: questionId, text:  question.questionText()};
         if (question.type() == "0") {
             questionObj.options = [];
             for (var i in question.options()) {
                 questionObj.options.push({ id: question.options()[i].id, text: question.options()[i].optionText(), isCorrect: question.options()[i].isChecked() });
             }
+            questionObj.mixupOptions = question.mixupOptions();
         } else if (question.type() == "1") {
             questionObj.correctAnswer = question.correctAnswer();
             questionObj.selectedAnswerSize = question.selectedAnswerSize();
 
+        }
+        console.log(parseInt(question.points()));
+        if(parseInt(question.points())){
+            questionObj.points = parseInt(question.points());
+        } else {
+            question.points("");
         }
         console.log(JSON.stringify({ testCode: testUniqueCode, sectionId: sectionId, question: questionObj }));
         $.ajax({
@@ -261,7 +296,44 @@ function TestDesignViewModel() {
             }
         });
     }
+    self.onSectionUpdate = function (sectionId) {
+        $.ajax({
+            type: "post",
+            datatype: "json",
+            contenttype: "application/json",
+            url: "/t/sectionupdate",
+            data: {
+                    testUniqueCode: testUniqueCode,
+                    index: sectionId,
+                    name: self.sections()[sectionId].sectionText(),
+                    mixupQuestions: self.sections()[sectionId].mixupQuestions()
+            },
+            success: function (data) {
+                if (data.status === "OK") {
+                    console.log(data);
+                }
+            }
+        });
+    }
     self.testName = ko.observable();
+    self.testName.subscribe(function (item) {
+        $.ajax({
+            type: "post",
+            datatype: "json",
+            contenttype: "application/json",
+            url: "/t/testnameupdate",
+            data: {
+                
+                testUniqueCode: testUniqueCode,
+                name: self.testName()
+            },
+            success: function (data) {
+                if (data.status === "OK") {
+                    console.log(data);
+                }
+            }
+        });
+    })
     self.addBtnVisiblity = ko.observable(true);
 
     self.sections = ko.observableArray();
@@ -353,6 +425,8 @@ ko.applyBindings(testDesignViewModel);
 
 $(document).ready(function () {
     testDesignViewModel.GetTest();
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
 })
 ko.bindingHandlers.selected = {
     update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {

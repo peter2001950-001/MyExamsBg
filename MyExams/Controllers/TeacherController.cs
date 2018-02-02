@@ -33,7 +33,9 @@ namespace MyExams.Controllers
         // GET: Teacher
         public ActionResult Index()
         {
+           
             return View();
+
         }
         public ActionResult Classes()
         {
@@ -58,6 +60,25 @@ namespace MyExams.Controllers
 
             return Json(new {status = "OK", id=test.UniqueNumber });
         }
+        public ActionResult GetTests()
+        {
+            var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
+            if (teacher != null)
+            {
+                var tests = _testService.GetAll().Where(x => x.Teacher.Id == teacher.Id);
+                List<object> testsResult = new List<object>();
+                foreach (var item in tests)
+                {
+                    if(item.TestTitle == null)
+                    {
+                        item.TestTitle = "Неозаглавен тест";
+                    }
+                    testsResult.Add(new { testTitle = item.TestTitle, students = item.Students, averageMark = item.AverageMark, testCode = item.UniqueNumber });
+                }
+                return Json(new { status = "OK", tests = testsResult }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { status = "ERR1" },  JsonRequestBehavior.AllowGet);
+        }
         public ActionResult TestDesign(string id)
         {
             var test = _testService.GetTestByUniqueNumber(id);
@@ -65,79 +86,141 @@ namespace MyExams.Controllers
             ViewBag.title = test.TestTitle;
             return View();
         }
+        public ActionResult TestNameUpdate(string testUniqueCode, string name)
+        {
+            var test = _testService.GetTestByUniqueNumber(testUniqueCode);
+
+            if (test != null)
+            {
+                if (_teacherService.IsTeacherOfTest(User.Identity.GetUserId(), test.Id))
+                {
+                    test.TestTitle = name;
+                    _testService.Update();
+                    return Json(new { status = "OK" });
+                }
+                return Json(new { status = "ERR1" });
+            }
+            return Json(new { status = "ERR2" });
+        }
         public ActionResult ElementUpdate(string type, string action, int index, string testUniqueCode,int sectionId=0, int questionId=0,  int questionType = 0)
         {
             var test = _testService.GetTestByUniqueNumber(testUniqueCode);
             if (test != null)
             {
-                switch (type)
+                if (_teacherService.IsTeacherOfTest(User.Identity.GetUserId(), test.Id))
                 {
-                    case "section":
-                        if (action == "added")
-                        {
-                            Section section = new Section()
+                    switch (type)
+                    {
+                        case "section":
+                            if (action == "added")
                             {
-                                Active = true,
-                                IsInUse = false,
-                                OrderNo = index,
-                                SectionTitle = "",
-                                Test = test
-                            };
-                            _sectionService.AddSection(section);
-                        return Json(new { status = "OK" });
-                        }
-                        break;
-                    case "question":
-                        if (action == "added")
-                        {
-                            var section = _sectionService.GetAllSectionsByTestId(test.Id).Where(x => x.OrderNo == sectionId).FirstOrDefault();
-                            if (section != null)
-                            {
-                                Question question = new Question()
+                                Section section = new Section()
                                 {
                                     Active = true,
-                                    OrderNo = index,
                                     IsInUse = false,
-                                    QuestionType = (QuestionType)questionType,
-                                    Text = "",
-                                     Section = section
-                                      
+                                    OrderNo = index,
+                                    SectionTitle = "",
+                                    Test = test
                                 };
-                                _questionService.AddQuestion(question);
+                                _sectionService.AddSection(section);
                                 return Json(new { status = "OK" });
                             }
-                            return Json(new { status = "ERR1" });
+                            else if (action == "deleted")
+                            {
+                                var sections = _sectionService.GetAllSectionsByTestId(test.Id);
 
-                        }
-                       
-                        break;
-                    case "option":
-                        if (action == "added")
-                        {
-                            var questionObj = _questionService.GetAllQuestionsBy(test.Id, sectionId).FirstOrDefault(x => x.OrderNo == questionId);
-                            if (questionObj != null)
-                            {
-                                Answer answer = new Answer()
+                                var sectionToRemove = sections.FirstOrDefault(x => x.OrderNo == index);
+                                var questionsToRemove = _questionService.GetAllQuestionsBy(test.Id, sectionToRemove.OrderNo);
+                                foreach (var item in questionsToRemove)
                                 {
-                                    Active = true,
-                                    IsInUse = false,
-                                    Text = "",
-                                    IsCorrect = false,
-                                    OrderNo = index,
-                                    Question = questionObj
-                                };
-                                _answerService.AddAnswer(answer);
-                                return Json(new { status = "OK" });
+                                    if (item.QuestionType == QuestionType.Choice)
+                                    {
+                                        var options = _answerService.GetAllBy(test.Id, sectionToRemove.OrderNo, item.OrderNo);
+                                        foreach (var option in options)
+                                        {
+                                            _answerService.RemoveAnswer(option);
+                                        }
+                                    }
+                                    _questionService.RemoveQuestion(item);
+                                }
+                                _sectionService.RemoveSection(sectionToRemove);
+
                             }
-                            return Json(new { status = "ERR1" });
-                        }
-                        break;
-                    default:
-                        break;
+                            break;
+                        case "question":
+                            if (action == "added")
+                            {
+                                var section = _sectionService.GetAllSectionsByTestId(test.Id).Where(x => x.OrderNo == sectionId).FirstOrDefault();
+                                if (section != null)
+                                {
+                                    Question question = new Question()
+                                    {
+                                        Active = true,
+                                        OrderNo = index,
+                                        IsInUse = false,
+                                        QuestionType = (QuestionType)questionType,
+                                        Text = "",
+                                        Section = section,
+                                        MixupAnswers = true
+
+                                    };
+                                    _questionService.AddQuestion(question);
+                                    return Json(new { status = "OK" });
+                                }
+                                return Json(new { status = "ERR1" });
+
+                            }
+                            else if (action == "deleted")
+                            {
+                                var questions = _questionService.GetAllQuestionsBy(test.Id, sectionId);
+                                var questionToRemove = questions.FirstOrDefault(x => x.OrderNo == index);
+                                if (questionToRemove.QuestionType == QuestionType.Choice)
+                                {
+                                    var options = _answerService.GetAllBy(test.Id, sectionId, questionToRemove.OrderNo);
+                                    foreach (var item in options)
+                                    {
+                                        _answerService.RemoveAnswer(item);
+                                    }
+                                }
+                                _questionService.RemoveQuestion(questionToRemove);
+                            }
+
+                            break;
+                        case "option":
+                            if (action == "added")
+                            {
+                                var questionObj = _questionService.GetAllQuestionsBy(test.Id, sectionId).FirstOrDefault(x => x.OrderNo == questionId);
+                                if (questionObj != null)
+                                {
+                                    Answer answer = new Answer()
+                                    {
+                                        Active = true,
+                                        IsInUse = false,
+                                        Text = "",
+                                        IsCorrect = false,
+                                        OrderNo = index,
+                                        Question = questionObj
+                                    };
+                                    _answerService.AddAnswer(answer);
+                                    return Json(new { status = "OK" });
+                                }
+                                return Json(new { status = "ERR1" });
+                            }
+                            else if (action == "deleted")
+                            {
+                                var option = _answerService.GetAllBy(test.Id, sectionId, questionId).FirstOrDefault(x => x.OrderNo == index);
+                                _answerService.RemoveAnswer(option);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    return Json(new { status = "ERR2" });
                 }
-                return Json(new { status = "ERR2" });
+                return Json(new { status = "ERR3" });
             }
-            return Json(new { status = "ERR3" });
+            return Json(new { status = "ERR4" });
+
         }
 
         public ActionResult QuestionUpdate(string data)
@@ -146,41 +229,48 @@ namespace MyExams.Controllers
             var test = _testService.GetTestByUniqueNumber(obj.testCode);
             if (test != null)
             {
-                var section = _sectionService.GetAllSectionsByTestId(test.Id).Where(x => x.OrderNo == obj.sectionId).FirstOrDefault(x => x.Active == true);
-                if (section != null)
+                if (_teacherService.IsTeacherOfTest(User.Identity.GetUserId(), test.Id))
                 {
-                    var question = _questionService.GetAllQuestionsBy(test.Id, obj.sectionId).Where(x => x.OrderNo == obj.question.id).FirstOrDefault(x => x.Active == true);
-                    if (question != null)
+                    var section = _sectionService.GetAllSectionsByTestId(test.Id).Where(x => x.OrderNo == obj.sectionId).FirstOrDefault(x => x.Active == true);
+                    if (section != null)
                     {
-                        question.Text = obj.question.text;
-                        if(question.QuestionType == QuestionType.Choice)
+                        var question = _questionService.GetAllQuestionsBy(test.Id, obj.sectionId).Where(x => x.OrderNo == obj.question.id).FirstOrDefault(x => x.Active == true);
+                        if (question != null)
                         {
-                            var options = _answerService.GetAllBy(test.Id, obj.sectionId, obj.question.id).Where(x=>x.Active == true);
-                            foreach (var item in options)
+                            question.Text = obj.question.text;
+                            question.Points = obj.question.points;
+                            if (question.QuestionType == QuestionType.Choice)
                             {
-                                var option = obj.question.options.Where(x => x.id == item.OrderNo).FirstOrDefault();
-                                if (option != null)
+                                var options = _answerService.GetAllBy(test.Id, obj.sectionId, obj.question.id).Where(x => x.Active == true);
+                                foreach (var item in options)
                                 {
-                                    item.Text = option.text;
-                                    item.IsCorrect = option.isCorrect;
+                                    var option = obj.question.options.Where(x => x.id == item.OrderNo).FirstOrDefault();
+                                    if (option != null)
+                                    {
+                                        item.Text = option.text;
+                                        item.IsCorrect = option.isCorrect;
+                                    }
+                                    _answerService.Update(item);
                                 }
-                                _answerService.Update(item);
+                                question.MixupAnswers = obj.question.mixupOptions;
                             }
-                        }else if(question.QuestionType == QuestionType.Text)
-                        {
-                            string[] sizes = { "Кратък", "Среден", "Дълъг" };
-                            var index = Array.IndexOf(sizes, obj.question.selectedAnswerSize);
-                            question.QuestionAnswerSize = (QuestionAnswerSize)index;
-                            question.CorrectAnswer = obj.question.correctAnswer;
+                            else if (question.QuestionType == QuestionType.Text)
+                            {
+                                string[] sizes = { "Кратък", "Среден", "Дълъг" };
+                                var index = Array.IndexOf(sizes, obj.question.selectedAnswerSize);
+                                question.QuestionAnswerSize = (QuestionAnswerSize)index;
+                                question.CorrectAnswer = obj.question.correctAnswer;
+                            }
+                            _questionService.Update(question);
+                            return Json(new { status = "OK" });
                         }
-                        _questionService.Update(question);
-                        return Json(new { status = "OK" });
+                        return Json(new { status = "ERR1" });
                     }
-                    return Json(new { status = "ERR1" });
+                    return Json(new { status = "ERR2" });
                 }
-                return Json(new { status = "ERR2" });
+                return Json(new { status = "ERR3" });
             }
-            return Json(new { status = "ERR3" });
+            return Json(new { status = "ERR4" });
         }
         public class ParseQuestionClass
         {
@@ -194,6 +284,8 @@ namespace MyExams.Controllers
                 public List<Option> options { get; set; }
                 public string correctAnswer { get; set; }
                 public string selectedAnswerSize { get; set; }
+                public bool mixupOptions { get; set; }
+                public int points { get; set; }
                 public class Option
                 {
                     public int id { get; set; }
@@ -201,6 +293,26 @@ namespace MyExams.Controllers
                     public bool isCorrect { get; set; }
                 }
             }
+        }
+
+        public ActionResult SectionUpdate(string testUniqueCode, string name, bool mixupQuestions, int index)
+        {
+            var test = _testService.GetTestByUniqueNumber(testUniqueCode);
+            if (test != null)
+            {
+               if(_teacherService.IsTeacherOfTest(User.Identity.GetUserId(), test.Id)) { 
+                        var section = _sectionService.GetAllSectionsByTestId(test.Id).Where(x => x.OrderNo == index).FirstOrDefault();
+                        if (section != null)
+                        {
+                            section.SectionTitle = name;
+                            section.MixupQuestions = mixupQuestions;
+                            _sectionService.Update();
+                            return Json(new { status = "OK" });
+                        }
+                    }
+                    return Json(new { status = "ERR1" });
+                }
+            return Json(new { status = "ERR2" });
         }
 
         public ActionResult GetTest(string testUniqueCode)
@@ -236,10 +348,10 @@ namespace MyExams.Controllers
                                             }
 
                                         }
-                                        questionsList.Add(new { id = question.OrderNo, text = question.Text, type = (int)question.QuestionType, options = optionsList });
+                                        questionsList.Add(new { id = question.OrderNo, text = question.Text, points = question.Points, type = (int)question.QuestionType, mixupOptions = question.MixupAnswers, options = optionsList });
                                     } else if (question.QuestionType == QuestionType.Text)
                                     {
-                                        questionsList.Add(new { id = question.OrderNo, text = question.Text, type = (int)question.QuestionType, answerSize = (int)question.QuestionAnswerSize, correctAnswer = question.CorrectAnswer });
+                                        questionsList.Add(new { id = question.OrderNo, text = question.Text, points = question.Points, type = (int)question.QuestionType, answerSize = (int)question.QuestionAnswerSize, correctAnswer = question.CorrectAnswer });
                                     }
                                 }
 
@@ -247,7 +359,7 @@ namespace MyExams.Controllers
                             sectionsList.Add(new { id = section.OrderNo, text = section.SectionTitle, questions = questionsList});
                                 }
                     }
-                    return Json(new { status = "OK", sections = sectionsList });
+                    return Json(new { status = "OK", sections = sectionsList, testTitle = test.TestTitle });
                 }
                 return Json(new { status = "ERR1" });
             }

@@ -40,5 +40,19 @@ namespace MyExams.Services.Contracts
             }
             return null;
         }
+
+        public void RemoveQuestion(Question question)
+        {
+            var questions = _questionRepository.GetAll().Where(x => x.Section.Id == question.Section.Id);
+            foreach (var item in questions)
+            {
+                if (item.OrderNo > question.OrderNo)
+                {
+                    item.OrderNo--;
+                }
+            }
+            _questionRepository.Remove(question);
+            _questionRepository.SaveChanges();
+        }
     }
 }
