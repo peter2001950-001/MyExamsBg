@@ -20,7 +20,7 @@
 </ul>
 
 <div class="right-corder-container">
-    <button class="right-corder-container-button">
+    <button class="right-corder-container-button" data-toggle="modal" data-target="#printTest" data-bind="click: $root.ShowPrintMenu">
         <span class="short-text"><i class="material-icons">print</i></span>
         <span class="long-text">Принтирай</span>
     </button>
@@ -31,76 +31,76 @@
         <input type="text" data-bind="value: testName" class="form-control" placeholder="Наименование на теста" aria-label="Username" aria-describedby="sizing-addon1" value="@ViewBag.title">
     </div>
     <div class="question-group" data-bind="foreach: sections">
-        <div class="section" >
+        <div class="section">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Наименование на секцията" data-bind="value: sectionText, hasFocus: focus" />
             </div>
             <div data-bind="foreach: questions">
-            <div class="question">
-                <div class="form-group">
-                    <div class="input-group question-text">
-                        <span class="input-group-addon" data-bind="text: questionId+1"></span>
-                        <input type="text" data-bind="value: questionText, hasFocus: focus" class="form-control" placeholder="Въпрос" aria-label="Username" aria-describedby="sizing-addon1">
-                    </div>
-                </div>
-                <!-- ko if: type() == 0 -->
-                <div class="form-group form-answer" data-bind="foreach: options">
+                <div class="question">
                     <div class="form-group">
-                        <div class="input-group" data-bind="event: { mouseover: CheckOptionShow($data, $parent.questionId)}">
-                            <span class="input-group-addon" data-bind="text: optionNum"></span>
-                            <input type="text" class="form-control" data-bind="value: optionText, hasFocus: focus, selected: focus, event: {mouseout: CheckOptionHide($data, $parent.questionId)}, placeholder: placeholder" />
-                            <button class="correct-answer" data-bind="click: $root.CheckOption($data, $parent.questionId, $parents[1]), visible: isCheckOptionVisible"><span data-bind="visible: isChecked">Правилен отговор</span><i class="material-icons md-10" data-bind="text: checkLabel, css: checkedClass">done</i></button>
-                            <button class="input-group-addon" data-bind="click: $root.DeleteOption($data, $parent.questionId, $parents[1])"><i class="material-icons md-10">delete</i></button>
+                        <div class="input-group question-text">
+                            <span class="input-group-addon" data-bind="text: questionId+1"></span>
+                            <input type="text" data-bind="value: questionText, hasFocus: focus" class="form-control" placeholder="Въпрос" aria-label="Username" aria-describedby="sizing-addon1">
                         </div>
                     </div>
-                </div>
-                <button type="button" class="btn btn-outline-success addOption" style="font-size: 11px;margin: 0 24px;" data-bind="click: $root.AddAnswer($data, $parent.sectionId)"><i class="material-icons md-12">add</i>&nbsp; Добави отговор</button>
-               <div style="float: right;margin-right: 30px;">
-                <label style="margin-right: 5px;">Разбъркай отговорите</label>
-                 <label class="switch switch-default switch-pill switch-primary">
-                    <input type="checkbox" class="switch-input" data-bind="checked: mixupOptions">
-                    <span class="switch-label"></span>
-                    <span class="switch-handle"></span>
-                </label>
-                   
-                   <input type="text" class="form-control points-input" placeholder="Точки" data-bind="value: points" />
-                   <label style="float:right;margin-top: 2px;margin-left: 15px;">Точки:</label>
-                   </div>
-                <!-- /ko -->
-                <!--ko if: type() == 1-->
-                <div class="form-group">
+                    <!-- ko if: type() == 0 -->
+                    <div class="form-group form-answer" data-bind="foreach: options">
+                        <div class="form-group">
+                            <div class="input-group" data-bind="event: { mouseover: CheckOptionShow($data, $parent.questionId)}">
+                                <span class="input-group-addon" data-bind="text: optionNum"></span>
+                                <input type="text" class="form-control" data-bind="value: optionText, hasFocus: focus, selected: focus, event: {mouseout: CheckOptionHide($data, $parent.questionId)}, placeholder: placeholder" />
+                                <button class="correct-answer" data-bind="click: $root.CheckOption($data, $parent.questionId, $parents[1]), visible: isCheckOptionVisible"><span data-bind="visible: isChecked">Правилен отговор</span><i class="material-icons md-10" data-bind="text: checkLabel, css: checkedClass">done</i></button>
+                                <button class="input-group-addon" data-bind="click: $root.DeleteOption($data, $parent.questionId, $parents[1])"><i class="material-icons md-10">delete</i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-success addOption" style="font-size: 11px;margin: 0 24px;" data-bind="click: $root.AddAnswer($data, $parent.sectionId)"><i class="material-icons md-12">add</i>&nbsp; Добави отговор</button>
+                    <div style="float: right;margin-right: 30px;">
+                        <label style="margin-right: 5px;">Разбъркай отговорите</label>
+                        <label class="switch switch-default switch-pill switch-primary">
+                            <input type="checkbox" class="switch-input" data-bind="checked: mixupOptions">
+                            <span class="switch-label"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+
+                        <input type="text" class="form-control points-input" placeholder="Точки" data-bind="value: points" />
+                        <label style="float:right;margin-top: 2px;margin-left: 15px;">Точки:</label>
+                    </div>
+                    <!-- /ko -->
+                    <!--ko if: type() == 1-->
                     <div class="form-group">
-                        <label class="mr-sm-2" for="answerSizeSelect">Изберете размер на отговора</label>
-                        <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="answerSizeSelect" data-bind="options: answerSizeOptions,
+                        <div class="form-group">
+                            <label class="mr-sm-2" for="answerSizeSelect">Изберете размер на отговора</label>
+                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="answerSizeSelect" data-bind="options: answerSizeOptions,
                                                                                                               optionsCaption: 'Избери...',
                                                                                                               value: selectedAnswerSize"></select>
-                       
-                    </div>
-                    
-                    <div class="form-group" data-bind="visible: inputVisible">
-                        <!--ko if: inputCss() !="textarea"-->
 
-                        <input class="form-control" placeholder="Правилен отговор..." data-bind="css: inputCss, value: correctAnswer" />
-                        <!--/ko-->
-                        <!--ko if: inputCss() == "textarea"-->
-                        <textarea class="form-control" placeholder="Правилен отговор..." data-bind="value: correctAnswer" rows="3"></textarea>
-                        <!--/ko-->
-
-                        <div class="form-group" style="text-align:right">
-                            <input type="text" class="form-control points-input" style="display:inline" placeholder="Точки" data-bind="value: points" />
-                            <label style="display:inline;margin-top:7px;margin-left:5px;">Точки:</label>
                         </div>
 
+                        <div class="form-group" data-bind="visible: inputVisible">
+                            <!--ko if: inputCss() !="textarea"-->
+
+                            <input class="form-control" placeholder="Правилен отговор..." data-bind="css: inputCss, value: correctAnswer" />
+                            <!--/ko-->
+                            <!--ko if: inputCss() == "textarea"-->
+                            <textarea class="form-control" placeholder="Правилен отговор..." data-bind="value: correctAnswer" rows="3"></textarea>
+                            <!--/ko-->
+
+                            <div class="form-group" style="text-align:right">
+                                <input type="text" class="form-control points-input" style="display:inline" placeholder="Точки" data-bind="value: points" />
+                                <label style="display:inline;margin-top:7px;margin-left:5px;">Точки:</label>
+                            </div>
+
+                        </div>
                     </div>
+                    <!--/ko-->
                 </div>
-                <!--/ko-->
             </div>
-               </div>           
-                <button class="btn btn-success" data-bind="click: $root.AddQuestion, visible: $root.addBtnVisibility"><i class="material-icons md-12">add</i>&nbsp; Добави въпрос</button>
-                <div class="btn-group" data-bind="visible: !$root.addBtnVisibility">
-                    <button class="btn btn-default" data-bind="click: $root.AddChoiceQuestion"><i class="material-icons">adjust</i> Избор</button>
-                    <button class="btn btn-default" data-bind="click: $root.AddTextQuestion"><i class="material-icons">format_color_text</i> Текст</button>
-                </div>
+            <button class="btn btn-success" data-bind="click: $root.AddQuestion, visible: $root.addBtnVisibility"><i class="material-icons md-12">add</i>&nbsp; Добави въпрос</button>
+            <div class="btn-group" data-bind="visible: !$root.addBtnVisibility">
+                <button class="btn btn-default" data-bind="click: $root.AddChoiceQuestion"><i class="material-icons">adjust</i> Избор</button>
+                <button class="btn btn-default" data-bind="click: $root.AddTextQuestion"><i class="material-icons">format_color_text</i> Текст</button>
+            </div>
             <div style="float: right;margin-right: 30px;">
                 <label style="margin-right: 5px;">Разбъркай въпросите</label>
                 <label class="switch switch-default switch-pill switch-success">
@@ -108,16 +108,43 @@
                     <span class="switch-label"></span>
                     <span class="switch-handle"></span>
                 </label>
-               
+
             </div>
-           
+
         </div>
-        
+
     </div>
     <div class="form-group">
         <button type="button" class="btn btn-primary btn-sm btn-block" data-bind="click: $root.AddSection"><i class="material-icons md-12">add</i>&nbsp; Добави секция</button>
-        
+
+    </div>
+</div>
+
+<div class="modal fade" id="printTest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createClassLabel">Изберете класове...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div data-bind="foreach: classes">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" data-bind="checked: isChecked" class="custom-control-input">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description" data-bind="text: label">10Ж (Математика) - 26 ученици</span>
+                    </label>
+                    <div />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
+                <button type="submit" class="btn btn-primary" data-bind="click: $root.ChooseClasses">Избери</button>
+            </div>
         </div>
+    </div>
 </div>
 
 <div id="results"></div>
@@ -125,8 +152,11 @@
 
 <script src="@Url.Content("~/Scripts/app/teacher/testDesignViewModel.js")" type="text/javascript"></script>
 <script>var testUniqueCode = "@ViewBag.id"</script>
-<script>$(".right-corder-container-button").hover(function () {
+<script>
+    $(".right-corder-container-button").hover(function () {
         $(".long-text").addClass("show-long-text");
     }, function () {
         $(".long-text").removeClass("show-long-text");
-    });</script>
+        });
+     var getUrl = '@Url.Action("GetFile", "Teacher")';
+</script>

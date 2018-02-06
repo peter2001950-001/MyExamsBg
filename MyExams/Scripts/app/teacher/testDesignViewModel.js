@@ -208,6 +208,12 @@ function TestDesignViewModel() {
     var stopDelete = true;
     var self = this;
     var bgAlphabet = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЬЮЯ";
+
+    self.addBtnVisiblity = ko.observable(true);
+    self.sections = ko.observableArray();
+    self.testName = ko.observable();
+    self.classes = ko.observable();
+
     self.GetTest = function () {
         $.ajax({
             type: "post",
@@ -222,15 +228,20 @@ function TestDesignViewModel() {
                     var questionSizeOptions = ["Кратък", "Среден", "Дълъг"];
                     self.testName(data.testTitle);
                     for (var i in data.sections) {
+
                         self.sections.push(new Section(data.sections[i].text, data.sections[i].id));
-                        console.log(new Section(data.sections[i].text, Number(data.sections[i].id)))
                         for (var p in data.sections[i].questions) {
+
                             self.sections()[i].addQuestion(new Question(data.sections[i].questions[p].text, data.sections[i].questions[p].id, false, data.sections[i].questions[p].type, data.sections[i].id));
                             if (data.sections[i].questions[p].type == "0") {
+
                                 for (var q in data.sections[i].questions[p].options) {
+
                                     console.log(new QuestionOption(data.sections[i].questions[p].options[q].text, bgAlphabet[data.sections[i].questions[p].options[q].id], data.sections[i].questions[p].options[q].id, data.sections[i].questions[p].id, data.sections[i].id));
                                     self.sections()[i].questions()[p].addOption(data.sections[i].questions[p].options[q].text, bgAlphabet[data.sections[i].questions[p].options[q].id]);
+
                                     if (data.sections[i].questions[p].options[q].isCorrect == true) {
+
                                         console.log("correct");
                                         self.sections()[i].questions()[p].options()[q].isChecked(true);
                                         self.sections()[i].questions()[p].options()[q].checkLabel("check_circle");
@@ -240,6 +251,7 @@ function TestDesignViewModel() {
                                 }
                                 self.sections()[i].questions()[p].mixupOptions(data.sections[i].questions[p].mixupOptions);
                             } else if (data.sections[i].questions[p].type == "1") {
+
                                 self.sections()[i].questions()[p].selectedAnswerSize(questionSizeOptions[data.sections[i].questions[p].answerSize]);
                                 self.sections()[i].questions()[p].correctAnswer(data.sections[i].questions[p].correctAnswer);
                             }
@@ -256,6 +268,52 @@ function TestDesignViewModel() {
     self.GetResults = function () {
 
     }
+    self.ShowPrintMenu = function () {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json",
+            url: "/t/GetClasses",
+            success: function (data) {
+                if (data.status === "OK") {
+                    for (var i in data.classes) {
+                        data.classes[i].isChecked = false;
+                        var studentLabel = (data.classes[i].studentsCount != 1) ? "ученици" : "ученик";
+                        data.classes[i].label = data.classes[i].name + " (" + data.classes[i].subject + ") - " + data.classes[i].studentsCount + " " + studentLabel;
+                        
+                    }
+                    self.classes(data.classes);
+                }
+            }
+        });
+    }
+
+    self.ChooseClasses = function () {
+        var chosenClasses = [];
+        for (var i in self.classes()) {
+            if (self.classes()[i].isChecked == true) {
+                chosenClasses.push(self.classes()[i].code);
+                console.log(self.classes()[i].code);
+            }
+        }
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({
+                testUniqueCode: testUniqueCode,
+                chosenClasses: JSON.stringify(chosenClasses)
+            }),
+            url: "/t/ChooseClassesForTest",
+            success: function (data) {
+                if (data.status === "OK") {
+                    window.location = getUrl + "?path=" + data.fName;
+                }
+            }
+        });
+    }
+
     self.onQuestionUpdate = function (sectionId, questionId) {
         var question = self.sections()[sectionId].questions()[questionId];
         var questionObj = { id: questionId, text:  question.questionText()};
@@ -315,7 +373,7 @@ function TestDesignViewModel() {
             }
         });
     }
-    self.testName = ko.observable();
+  
     self.testName.subscribe(function (item) {
         $.ajax({
             type: "post",
@@ -334,9 +392,7 @@ function TestDesignViewModel() {
             }
         });
     })
-    self.addBtnVisiblity = ko.observable(true);
-
-    self.sections = ko.observableArray();
+    
 
 
     self.sections.subscribe(function (changes) {

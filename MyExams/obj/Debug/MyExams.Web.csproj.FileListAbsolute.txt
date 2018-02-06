@@ -237,3 +237,4 @@ C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\Microso
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\System.Text.Encodings.Web.xml
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\MyExams.TestProcessing.dll
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\MyExams.TestProcessing.pdb
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\MyExams.TestProcessing.dll.config

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNet.Identity;
 using MyExams.Models;
 using MyExams.Services.Contracts;
+using MyExams.TestProcessing.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -20,7 +22,8 @@ namespace MyExams.Controllers
         private readonly ISectionService _sectionService;
         private readonly IQuestionService _questionService;
         private readonly IAnswerService _answerService;
-        public TeacherController(IClassService classService, IStudentService studentService, ITestService testService, ITeacherService teacherService, ISectionService sectionService, IQuestionService questionService, IAnswerService  answerService)
+        private readonly ITestGeneration _testGeneration;
+        public TeacherController(IClassService classService, IStudentService studentService, ITestService testService, ITeacherService teacherService, ISectionService sectionService, IQuestionService questionService, IAnswerService  answerService, ITestGeneration testGeneration)
         {
             _classService = classService;
             _studentService = studentService;
@@ -29,6 +32,7 @@ namespace MyExams.Controllers
             _sectionService = sectionService;
             _questionService = questionService;
             _answerService = answerService;
+            _testGeneration = testGeneration;
         }
         // GET: Teacher
         public ActionResult Index()
@@ -60,25 +64,7 @@ namespace MyExams.Controllers
 
             return Json(new {status = "OK", id=test.UniqueNumber });
         }
-        public ActionResult GetTests()
-        {
-            var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
-            if (teacher != null)
-            {
-                var tests = _testService.GetAllTests().Where(x => x.Teacher.Id == teacher.Id);
-                List<object> testsResult = new List<object>();
-                foreach (var item in tests)
-                {
-                    if(item.TestTitle == null)
-                    {
-                        item.TestTitle = "Неозаглавен тест";
-                    }
-                    testsResult.Add(new { testTitle = item.TestTitle, students = item.Students, averageMark = item.AverageMark, testCode = item.UniqueNumber });
-                }
-                return Json(new { status = "OK", tests = testsResult }, JsonRequestBehavior.AllowGet);
-            }
-            return Json(new { status = "ERR1" },  JsonRequestBehavior.AllowGet);
-        }
+       
         public ActionResult TestDesign(string id)
         {
             var test = _testService.GetTestByUniqueNumber(id);
@@ -315,6 +301,58 @@ namespace MyExams.Controllers
             return Json(new { status = "ERR2" });
         }
 
+        public ActionResult ChooseClassesForTest(string testUniqueCode, string chosenClasses)
+        {
+            var classesCodes = new JavaScriptSerializer().Deserialize<List<string>>(chosenClasses);
+            var testRef = _testService.GetTestByUniqueNumber(testUniqueCode);
+            var classRefList = new List<Class>();
+            if (testRef != null) {
+                foreach (var item in classesCodes)
+                {
+                    var classRef = _classService.GetAll().Where(x => x.UniqueCode == item).FirstOrDefault();
+                    if (classRef != null)
+                    {
+                        classRefList.Add(classRef);
+                       
+                    }
+
+                }
+                var fileName = RandomString(16);
+                Session[fileName] = _testGeneration.GenerateFile(testRef, classRefList);
+                return Json(new { status = "OK", fName = fileName });
+            }
+            return Json(new { status = "OK" });
+        }
+        public ActionResult GetFile(string path)
+        {
+            var file = Session[path] as FileContentResult;
+            if (file == null)
+            {
+                return new EmptyResult();
+            }
+            Session[path] = null;
+            return file;
+        }
+
+        public ActionResult GetTests()
+        {
+            var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
+            if (teacher != null)
+            {
+                var tests = _testService.GetAllTests().Where(x => x.Teacher.Id == teacher.Id);
+                List<object> testsResult = new List<object>();
+                foreach (var item in tests)
+                {
+                    if(item.TestTitle == null)
+                    {
+                        item.TestTitle = "Неозаглавен тест";
+                    }
+                    testsResult.Add(new { testTitle = item.TestTitle, students = item.Students, averageMark = item.AverageMark, testCode = item.UniqueNumber });
+                }
+                return Json(new { status = "OK", tests = testsResult }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { status = "ERR1" },  JsonRequestBehavior.AllowGet);
+        }
         public ActionResult GetTest(string testUniqueCode)
         {
             var test = _testService.GetTestByUniqueNumber(testUniqueCode);
@@ -365,8 +403,6 @@ namespace MyExams.Controllers
             }
             return Json(new { status = "ERR2" });
         }
-        
-
         public ActionResult Class(string id)
         {
             var userId = User.Identity.GetUserId();
@@ -404,7 +440,9 @@ namespace MyExams.Controllers
         public ActionResult GetClasses()
         {
             var userId = User.Identity.GetUserId();
-            var classes = _classService.GetAll().Where(x => x.Teacher.UserId == userId).OrderBy(x => x.Name).ToList();
+            var classesIEnum = _classService.GetAll().Where(x => x.Teacher.UserId == userId);
+            CultureInfo info = new CultureInfo("bg-BG");
+            var classes = classesIEnum.OrderBy(x => x.Name, StringComparer.Create(info, false)).ToList();
             object[] clasesInput = new object[classes.Count()];
             for (int i = 0; i < classes.Count(); i++)
             {
@@ -431,6 +469,14 @@ namespace MyExams.Controllers
             }
             return Json(new { status = "ERR" }, JsonRequestBehavior.AllowGet);
          
+        }
+
+        private static string RandomString(int length)
+        {
+            var random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
     }
