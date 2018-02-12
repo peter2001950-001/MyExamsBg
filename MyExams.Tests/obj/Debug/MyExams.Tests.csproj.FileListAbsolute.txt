@@ -76,3 +76,9 @@ C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\D
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\es\Hangfire.Core.resources.dll
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\zh\Hangfire.Core.resources.dll
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\obj\Debug\MyExams.Tests.csproj.CoreCompileInputs.cache
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\MyExams.TestProcessing.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\zxing.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\MyExams.TestProcessing.pdb
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\MyExams.TestProcessing.dll.config
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\zxing.pdb
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\zxing.xml

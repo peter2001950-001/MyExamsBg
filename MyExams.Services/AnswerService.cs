@@ -14,12 +14,10 @@ namespace MyExams.Services
 
         private readonly IAnswerRepository _answerRepository;
         private readonly IQuestionService _questionService;
-        private readonly IGAnswerRepository _gAnswerRepository;
-        public AnswerService(IAnswerRepository answerRepository, IQuestionService questionService, IGAnswerRepository gAnswerRepository)
+        public AnswerService(IAnswerRepository answerRepository, IQuestionService questionService)
         {
             _answerRepository = answerRepository;
             _questionService = questionService;
-            _gAnswerRepository = gAnswerRepository;
         }
         public void AddAnswer(Answer answer)
         {
@@ -60,15 +58,7 @@ namespace MyExams.Services
             _answerRepository.Remove(answer);
             _answerRepository.SaveChanges();
         }
-        public IEnumerable<GAnswer> GetAllGAnswers()
-        {
-            return _gAnswerRepository.GetAll();
-        }
-        public void AddGAnswer(GAnswer gAnswer)
-        {
-            _gAnswerRepository.Add(gAnswer);
-            _gAnswerRepository.SaveChanges();
-        }
+      
         
     }
 }

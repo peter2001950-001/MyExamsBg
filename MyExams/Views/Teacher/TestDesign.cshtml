@@ -8,6 +8,9 @@
     <link href="@Url.Content("~/Content/testDesign.css")" rel="stylesheet" type="text/css" />
 }
 <script>$("body").addClass("sidebar-hidden")</script>
+
+
+
 <ul class="nav nav-pills nav-fill" style="background: white">
     <li class="nav-item">
         <a id="lastExams-link" class="nav-link" href="#" data-bind="click: GetTest" style="color: rgb(236, 128, 65); background: white;">Въпроси</a>
@@ -121,6 +124,7 @@
 </div>
 
 <div class="modal fade" id="printTest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -140,12 +144,21 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <!--ko if: showLoading() == false-->
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
                 <button type="submit" class="btn btn-primary" data-bind="click: $root.ChooseClasses">Избери</button>
+                <!--/ko-->
+
+                <!--ko if: showLoading() == true-->
+                <div>
+                <img style="width: 35%;float: right;" src="~/Content/images/Flickr-1s-200px.gif" />
+                    </div>
+                <!--/ko-->
             </div>
         </div>
     </div>
-</div>
+    </div>
+
 
 <div id="results"></div>
 

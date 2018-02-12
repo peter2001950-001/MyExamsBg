@@ -9,27 +9,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Xml;
 
 namespace MyExams.TestProcessing
 {
-    public class TestGeneration:ITestGeneration
-    {   private TPTest tpTest;
+    public class TestGeneration : ITestGeneration
+    {
+        private TPTest tpTest;
         private readonly ITestService _testService;
         private readonly ISectionService _sectionService;
         private readonly IQuestionService _questionService;
         private readonly IAnswerService _answerService;
         private readonly IClassService _classService;
-       
-        public TestGeneration(ITestService testService, ISectionService sectionService, IQuestionService questionService, IAnswerService answerService, IClassService classService)
+        private readonly IGAnswerSheetService _gAnswerSheetService;
+        public TestGeneration(ITestService testService, ISectionService sectionService, IQuestionService questionService, IAnswerService answerService, IClassService classService, IGAnswerSheetService gAnswerSheetService)
         {
             if (_testService == null) _testService = testService;
             if (_sectionService == null) _sectionService = sectionService;
             if (_questionService == null) _questionService = questionService;
             if (_answerService == null) _answerService = answerService;
             if (_classService == null) _classService = classService;
+            if (_gAnswerSheetService == null) _gAnswerSheetService = gAnswerSheetService;
         }
 
-        public FileContentResult GenerateFile(Test test, List<Class> classes)
+        public FileContentResult GenerateFile(Test test, List<Class> classes, Teacher teacher)
         {
             if (test == null && classes == null) throw new ArgumentNullException();
             var allTPTest = new List<TPTest>();
@@ -38,7 +41,7 @@ namespace MyExams.TestProcessing
                 var studentsInClass = _classService.GetClassStudents(classItem.UniqueCode);
                 foreach (var studentClass in studentsInClass)
                 {
-                    var tpTest = GenerateTest(test, studentClass.Student, classItem);
+                    var tpTest = GenerateTest(test, studentClass.Student, classItem, teacher);
                     if (tpTest != null)
                     {
                         allTPTest.Add(tpTest);
@@ -46,18 +49,19 @@ namespace MyExams.TestProcessing
                 }
             }
 
-            PdfBuilder builder = new PdfBuilder();
-           return builder.TPTestToPdf(allTPTest);
+            PdfBuilder builder = new PdfBuilder(_testService, _gAnswerSheetService);
+            return builder.TPTestToPdf(allTPTest);
 
             //export to PDF and return result
         }
 
-        private TPTest GenerateTest(Test test, Student student, Class classObj)
+        private TPTest GenerateTest(Test test, Student student, Class classObj, Teacher teacher)
         {
-           
-            if (test == null|| student==null|| classObj == null) throw new ArgumentNullException();
-            var studentClass = _classService.GetClassStudents(classObj.UniqueCode).Where(x=>x.Student.Id == student.Id).FirstOrDefault();
+
+            if (test == null || student == null || classObj == null && teacher == null) throw new ArgumentNullException();
+            var studentClass = _classService.GetClassStudents(classObj.UniqueCode).Where(x => x.Student.Id == student.Id).FirstOrDefault();
             if (studentClass == null) throw new ArgumentNullException();
+            int points = 0;
 
             tpTest = new TPTest()
             {
@@ -96,6 +100,7 @@ namespace MyExams.TestProcessing
                 var tpQuestions = new List<TPQuestion>();
                 foreach (var num in questionGenOrder)
                 {
+                    points += questions[num].Points;
                     var tpQuestion = new TPQuestion()
                     {
                         QuestionId = questions[num].Id,
@@ -104,7 +109,7 @@ namespace MyExams.TestProcessing
                         Title = questions[num].Text,
                         Type = questions[num].QuestionType
                     };
-                    if(questions[num].QuestionType == QuestionType.Choice)
+                    if (questions[num].QuestionType == QuestionType.Choice)
                     {
                         var answers = _answerService.GetAllBy(test.Id, section.OrderNo, questions[num].OrderNo).ToList();
                         var answersGenOrder = new int[answers.Count];
@@ -140,10 +145,52 @@ namespace MyExams.TestProcessing
                 tpSections.Add(tpSection);
             };
             tpTest.Sections = tpSections;
+            tpTest.MaxPoints = points;
 
 
+            var gTest = new GTest()
+            {
+                Test = test,
+                MaxPoints = points,
+                Student = student,
+                Teacher = teacher,
 
-            //TODO: save the test
+            };
+            string xml;
+            using (var sw = new StringWriter())
+            {
+                using (var xmlWriter = XmlWriter.Create(sw))
+                {
+                    xmlWriter.WriteStartDocument();
+                    xmlWriter.WriteStartElement("qs"); // short for questions
+
+                    foreach (var section in tpTest.Sections)
+                    {
+                        for (int i = 0; i < section.Questions.Count; i++)
+                        {
+                            xmlWriter.WriteStartElement("q"); // short for question
+                            xmlWriter.WriteAttributeString("id", section.Questions[i].QuestionId.ToString());
+
+                            if (section.Questions[i].Type == QuestionType.Choice)
+                            {
+                                for (int p = 0; p < section.Questions[i].Answers.Count; p++)
+                                {
+                                    xmlWriter.WriteStartElement("a"); // short for answer
+                                    xmlWriter.WriteAttributeString("id", section.Questions[i].Answers[p].AnswerId.ToString());
+                                    xmlWriter.WriteEndElement();
+                                }
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                    }
+                    xmlWriter.WriteEndDocument();
+                }
+                xml = sw.ToString();
+            }
+            gTest.Xml = xml;
+            _testService.AddNewGTest(gTest);
+           
+            tpTest.GTestId = gTest.Id;
             return tpTest;
         }
 

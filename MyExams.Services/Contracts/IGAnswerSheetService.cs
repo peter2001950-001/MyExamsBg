@@ -15,5 +15,6 @@ namespace MyExams.Services.Contracts
         void AddGAnswerSheet(GAnswerSheet gAnswerSheet);
         void AddGWrittenQuestion(GWrittenQuestion gWrittenQuestion);
         void AddGQuestionToBeChecked(GQuestionToBeChecked gQuestionToBeChecked);
+        string BarcodeGenerate();
     }
 }

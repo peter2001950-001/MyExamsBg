@@ -11,7 +11,7 @@ namespace MyExams.TestProcessing.Contracts
 {
     public interface ITestGeneration
     {
-        FileContentResult GenerateFile(Test test, List<Class> classes);
+        FileContentResult GenerateFile(Test test, List<Class> classes, Teacher teacher);
 
     }
 }

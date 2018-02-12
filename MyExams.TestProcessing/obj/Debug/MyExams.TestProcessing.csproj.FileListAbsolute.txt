@@ -21,3 +21,9 @@ C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcess
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\MyExams.TestProcessing.dll.config
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\RazorPDF.dll
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\itextsharp.xml
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\zxing.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\zxing.presentation.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\zxing.pdb
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\zxing.xml
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\zxing.presentation.pdb
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\zxing.presentation.xml

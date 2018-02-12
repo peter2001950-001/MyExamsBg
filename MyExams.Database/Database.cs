@@ -25,8 +25,6 @@ namespace MyExams.Database
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<GTest> GTests { get; set; }
-        public DbSet<GQuestion> GQuestions { get; set; }
-        public DbSet<GAnswer>  GAnswers { get; set; }
         public DbSet<GAnswerSheet> GAnswerSheets { get; set; }
         public DbSet<GWrittenQuestion> GWrittenQuestions { get; set; }
         public DbSet<GQuestionToBeChecked> GQuestionsToBeChecked { get; set; }

@@ -273,6 +273,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -287,6 +288,8 @@
     <Content Include="Content\ClassViewCSS.css" />
     <Content Include="Content\images\868142-200.png" />
     <Content Include="Content\images\cool-background.jpg" />
+    <Content Include="Content\images\Dual Ring-1s-200px.gif" />
+    <Content Include="Content\images\Flickr-1s-200px.gif" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\testDesign.css" />
     <Content Include="favicon.ico" />

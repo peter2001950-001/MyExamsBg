@@ -303,23 +303,29 @@ namespace MyExams.Controllers
 
         public ActionResult ChooseClassesForTest(string testUniqueCode, string chosenClasses)
         {
-            var classesCodes = new JavaScriptSerializer().Deserialize<List<string>>(chosenClasses);
-            var testRef = _testService.GetTestByUniqueNumber(testUniqueCode);
-            var classRefList = new List<Class>();
-            if (testRef != null) {
-                foreach (var item in classesCodes)
+            var userId = User.Identity.GetUserId();
+            var teacher = _teacherService.GetTeacherByUserId(userId);
+            if (teacher != null)
+            {
+                var classesCodes = new JavaScriptSerializer().Deserialize<List<string>>(chosenClasses);
+                var testRef = _testService.GetTestByUniqueNumber(testUniqueCode);
+                var classRefList = new List<Class>();
+                if (testRef != null)
                 {
-                    var classRef = _classService.GetAll().Where(x => x.UniqueCode == item).FirstOrDefault();
-                    if (classRef != null)
+                    foreach (var item in classesCodes)
                     {
-                        classRefList.Add(classRef);
-                       
-                    }
+                        var classRef = _classService.GetAll().Where(x => x.UniqueCode == item).FirstOrDefault();
+                        if (classRef != null)
+                        {
+                            classRefList.Add(classRef);
 
+                        }
+
+                    }
+                    var fileName = RandomString(16);
+                    Session[fileName] = _testGeneration.GenerateFile(testRef, classRefList, teacher);
+                    return Json(new { status = "OK", fName = fileName });
                 }
-                var fileName = RandomString(16);
-                Session[fileName] = _testGeneration.GenerateFile(testRef, classRefList);
-                return Json(new { status = "OK", fName = fileName });
             }
             return Json(new { status = "OK" });
         }
@@ -394,7 +400,7 @@ namespace MyExams.Controllers
                                 }
 
                             }
-                            sectionsList.Add(new { id = section.OrderNo, text = section.SectionTitle, questions = questionsList});
+                            sectionsList.Add(new { id = section.OrderNo, text = section.SectionTitle, questions = questionsList, mixupQuestions = section.MixupQuestions});
                                 }
                     }
                     return Json(new { status = "OK", sections = sectionsList, testTitle = test.TestTitle });

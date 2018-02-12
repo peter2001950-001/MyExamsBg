@@ -48,5 +48,20 @@ namespace MyExams.Services
             _gQuestionsToBeCheckedRepository.Add(gQuestionToBeChecked);
             _gQuestionsToBeCheckedRepository.SaveChanges();
         }
+
+        public string BarcodeGenerate()
+        {
+            string result = "";
+            var random = new Random();
+            for (int i = 0; i < 16; i++)
+            {
+                result += random.Next(0, 9);
+            }
+            if(_gAnswerSheetRepository.GetAll().Any(x=>x.Barcode == result))
+            {
+                return BarcodeGenerate();
+            }
+            return result;
+        }
     }
 }

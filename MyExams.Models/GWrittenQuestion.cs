@@ -11,7 +11,8 @@ namespace MyExams.Models
     {
         [Key]
         public int Id { get; set; }
-        public GQuestion GQuestion { get; set; }
+        public GTest GTest { get; set; }
+        public int GQuestionId { get; set; }
         public bool IsChecked { get; set; }
         public int ReceivedPoints { get; set; }
         public string FileName { get; set; }

@@ -158,13 +158,13 @@ function Question(questionText, questionId, focus, type, sectionId) {
 }
 
 
-function Section(sectionText, sectionId) {
+function Section(sectionText, sectionId, mixupQuestions) {
     var self = this;
     self.sectionText = ko.observable(sectionText);
     self.sectionId = sectionId;
     self.questions = ko.observableArray();
     self.focus = true;
-    self.mixupQuestions = ko.observable(true);
+    self.mixupQuestions = ko.observable(mixupQuestions);
     self.addQuestion = function (question) {
         self.questions.push(question);
     }.bind(this);
@@ -213,6 +213,7 @@ function TestDesignViewModel() {
     self.sections = ko.observableArray();
     self.testName = ko.observable();
     self.classes = ko.observable();
+    self.showLoading = ko.observable(false);
 
     self.GetTest = function () {
         $.ajax({
@@ -229,7 +230,7 @@ function TestDesignViewModel() {
                     self.testName(data.testTitle);
                     for (var i in data.sections) {
 
-                        self.sections.push(new Section(data.sections[i].text, data.sections[i].id));
+                        self.sections.push(new Section(data.sections[i].text, data.sections[i].id, data.sections[i].mixupQuestions));
                         for (var p in data.sections[i].questions) {
 
                             self.sections()[i].addQuestion(new Question(data.sections[i].questions[p].text, data.sections[i].questions[p].id, false, data.sections[i].questions[p].type, data.sections[i].id));
@@ -289,6 +290,7 @@ function TestDesignViewModel() {
     }
 
     self.ChooseClasses = function () {
+        self.showLoading(true);
         var chosenClasses = [];
         for (var i in self.classes()) {
             if (self.classes()[i].isChecked == true) {
@@ -310,6 +312,7 @@ function TestDesignViewModel() {
                 if (data.status === "OK") {
                     window.location = getUrl + "?path=" + data.fName;
                 }
+                self.showLoading(false);
             }
         });
     }

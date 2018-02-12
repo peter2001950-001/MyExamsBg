@@ -112,14 +112,7 @@ namespace MyExams.App_Start
             .Bind<IGTestRepository>()
             .To<GTestRepository>()
             .InRequestScope();
-            kernel
-           .Bind<IGQuestionRepository>()
-           .To<GQuestionRepository>()
-           .InRequestScope();
-            kernel
-           .Bind<IGAnswerRepository>()
-           .To<GAnswerRepository>()
-           .InRequestScope();
+           
             kernel
            .Bind<IGAnswerSheetRepository>()
            .To<GAnswerSheetRepository>()

@@ -14,6 +14,7 @@ namespace MyExams.TestProcessing.TestClasses
     
     public class TPTest
     {
+        public int GTestId { get; set; }
         public int TestId { get; set; }
         public string Title { get; set; }
         public TPStudentDetails StudentDetails { get; set; }
