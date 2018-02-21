@@ -53,7 +53,7 @@ namespace MyExams.TestProcessing
                 {
                     var gTest = _testService.GetAllGTests().Where(x => x.Id == item.GTestId).First();
                     doc.NewPage();
-
+                   
                     //Adding Student Details Table 
                     PdfPTable studentTable = new PdfPTable(2)
                     {
@@ -108,9 +108,9 @@ namespace MyExams.TestProcessing
                     Random rm = new Random();
 
                     int currentYPixel = (int)doc.PageSize.Height - 70;
-                    int rowCount = 0;
+                    int rowCount = -1;
                     int firstQuestion = 0;
-                    int pageNo = 0;
+                    int pageNo = 1;
 
                     // Students Details 
                     studentTable.WriteSelectedRows(0, -1, 60, currentYPixel + 20, cb);
@@ -120,6 +120,8 @@ namespace MyExams.TestProcessing
                     //Barcode 
 
                     var barcode = _gAnswerSheetService.BarcodeGenerate();
+                    gTest.TotalAnswerSheets++;
+                    _testService.Update();
                     var barcodeWriter = new BarcodeWriter
                     {
                         Format = BarcodeFormat.CODE_128,
@@ -144,6 +146,8 @@ namespace MyExams.TestProcessing
                         {
                             foreach (var question in section.Questions)
                             {
+
+                                rowCount++;
 
                                 //QuestionNumbering
                                 Phrase questionNumLabel = new Phrase(rowCount + 1 + ".");
@@ -185,13 +189,14 @@ namespace MyExams.TestProcessing
                                     currentYPixel -= 80;
                                 }
 
-                                if (currentYPixel < 70)
+                                if (currentYPixel < 70&&section.Questions.FindIndex(x=>x.QuestionId == question.QuestionId) != section.Questions.Count-1)
                                 {
                                     doc.NewPage();
                                     currentYPixel = (int)doc.PageSize.Height - 70;
                                     studentTable.WriteSelectedRows(0, -1, 60, currentYPixel + 20, cb);
                                     currentYPixel -= 35;
 
+                                    gTest.TotalAnswerSheets++;
                                     GAnswerSheet answerSheet = new GAnswerSheet()
                                     {
                                         FirstQuestionNo = firstQuestion,
@@ -217,7 +222,6 @@ namespace MyExams.TestProcessing
                                     cb.SetColorStroke(BaseColor.BLACK);
                                     cb.SetLineWidth(1.8);
                                 }
-                                rowCount++;
                             }
                         }
                         GAnswerSheet answerSheet1 = new GAnswerSheet()

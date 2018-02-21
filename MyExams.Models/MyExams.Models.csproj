@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Answer.cs" />
     <Compile Include="Class.cs" />
+    <Compile Include="FileDirectory.cs" />
     <Compile Include="GAnswerSheet.cs" />
     <Compile Include="GQuestionToBeChecked.cs" />
     <Compile Include="GTest.cs" />
@@ -54,6 +55,8 @@
     <Compile Include="StudentClass.cs" />
     <Compile Include="Teacher.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="UploadSession.cs" />
+    <Compile Include="UploadSessionFileDirectory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

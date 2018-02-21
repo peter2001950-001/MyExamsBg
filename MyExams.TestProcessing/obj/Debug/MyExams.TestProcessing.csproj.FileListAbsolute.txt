@@ -27,3 +27,5 @@ C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcess
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\zxing.xml
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\zxing.presentation.pdb
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\zxing.presentation.xml
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\AForge.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\AForge.xml

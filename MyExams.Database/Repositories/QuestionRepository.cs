@@ -14,6 +14,11 @@ namespace MyExams.Database.Repositories
         {
         }
 
+        public int GetPoints(int id)
+        {
+             return  _dbSet.Where(x => x.Id == id).Select(x => x.Points).FirstOrDefault();
+        } 
+
         public void Update(Question question)
         {
             var item = _dbSet.Where(x => x.Id == question.Id).FirstOrDefault();

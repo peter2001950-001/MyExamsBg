@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "UploadFiles";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<div class="app flex-row align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <!--ko if: IsUploadView() == true-->
+                        <h4 class="card-title">Качване на файлове</h4>
+                        <p class="card-text">Моля, качете файловете на сканираните бланки за отговор и системата ще провери тестовете автоматично</p>
+                        <div class="progress">
+                            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%; display:none" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                        </div>
+                        <input type="file" id="uploadFiles" name="file-1[]" class="inputfile inputfile-1" data-multiple-caption="{count} files selected" multiple="">
+                        <label for="uploadFiles"><span>Изберете файлове…</span></label>
+                        <!--/ko-->
+                        <!--ko if: IsUploadView() == false-->
+                        <h4 class="card-title">Качването приключи</h4>
+                        <p>Качените файлове се обработват и ще бъдете уведомени, когато процесът приключи. </p>
+                        <div class="loader" style="width: 40%; margin:0 auto">
+                            <img class="loader-image" src="~/Content/images/Dual Ring-1s-200px.gif"  />
+                            <h2 class="loader-percentage" data-bind="text: percentage">0%</h2>
+                        </div>
+                        <!--/ko-->
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="@Url.Content("~/Scripts/app/teacher/uploadFilesViewModel.js")"></script>

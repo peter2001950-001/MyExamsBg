@@ -16,8 +16,10 @@ namespace MyExams.Models
         public string Barcode { get; set; }
         public int FirstQuestionNo { get; set; }
         public int LastQuestionNo { get; set; }
-        public string ScannedFileName { get; set; }
-        public string CheckedFileName { get; set; }
+        public bool IsUploaded { get; set; }
+        public bool IsChecked { get; set; }
+        public FileDirectory ScannedFileName { get; set; }
+        public FileDirectory CheckedFileName { get; set; }
 
     }
 }

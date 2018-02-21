@@ -43,12 +43,15 @@
     <Compile Include="ClassService.cs" />
     <Compile Include="Contracts\IAnswerService.cs" />
     <Compile Include="Contracts\IClassService.cs" />
+    <Compile Include="Contracts\IFileDirectoryService.cs" />
     <Compile Include="Contracts\IGAnswerSheetService.cs" />
     <Compile Include="Contracts\IQuestionService.cs" />
     <Compile Include="Contracts\ISectionService.cs" />
     <Compile Include="Contracts\IStudentService.cs" />
     <Compile Include="Contracts\ITeacherService.cs" />
     <Compile Include="Contracts\ITestService.cs" />
+    <Compile Include="Contracts\IUploadSessionService.cs" />
+    <Compile Include="FileDirectoryService.cs" />
     <Compile Include="GAnswerSheetService.cs" />
     <Compile Include="QuestionService.cs" />
     <Compile Include="SectionService.cs" />
@@ -56,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeacherService.cs" />
     <Compile Include="TestService.cs" />
+    <Compile Include="UploadSessionService.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

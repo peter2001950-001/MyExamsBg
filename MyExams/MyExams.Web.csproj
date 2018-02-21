@@ -51,6 +51,9 @@
     <Reference Include="Hangfire.Core, Version=1.6.17.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.Core.1.6.17\lib\net45\Hangfire.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Hangfire.Ninject, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Ninject.1.2.0\lib\net45\Hangfire.Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="Hangfire.SqlServer, Version=1.6.17.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.SqlServer.1.6.17\lib\net45\Hangfire.SqlServer.dll</HintPath>
     </Reference>
@@ -304,6 +307,7 @@
     <Content Include="Scripts\app\student\classesViewModel.js" />
     <Content Include="Scripts\app\teacher\testDesignViewModel.js" />
     <Content Include="Scripts\app\teacher\testsViewModel.js" />
+    <Content Include="Scripts\app\teacher\uploadFilesViewModel.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -378,6 +382,7 @@
     <Content Include="Views\Student\Class.cshtml" />
     <Content Include="Views\Teacher\Tests.cshtml" />
     <Content Include="Views\Teacher\TestDesign.cshtml" />
+    <Content Include="Views\Teacher\UploadFiles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

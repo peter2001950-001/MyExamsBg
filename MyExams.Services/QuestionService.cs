@@ -41,6 +41,11 @@ namespace MyExams.Services.Contracts
             return null;
         }
 
+        public int GetPoints(int id)
+        {
+            return _questionRepository.GetPoints(id);
+        }
+
         public void RemoveQuestion(Question question)
         {
             var questions = _questionRepository.GetAll().Where(x => x.Section.Id == question.Section.Id);

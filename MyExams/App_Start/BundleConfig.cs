@@ -36,8 +36,8 @@ namespace MyExams
             bundles.Add(new StyleBundle("~/Content/dashboard").Include(
                 "~/Content/material-icons.css",
                      "~/Content/Admin.css",
-                     "~/Content/jquery-ui.css"
-
+                     "~/Content/jquery-ui.css",
+                     "~/Content/Site.css"
                      ));
             bundles.Add(new StyleBundle("~/Content/main").Include(
                      "~/Content/site.css"));

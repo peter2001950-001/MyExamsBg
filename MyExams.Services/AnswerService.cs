@@ -44,7 +44,10 @@ namespace MyExams.Services
             }
             return null;
         }
-
+        public bool GetIsCorrect(int id)
+        {
+            return _answerRepository.GetIsCorrect(id);
+        }
         public void RemoveAnswer(Answer answer)
         {
             var answers = _answerRepository.GetAll().Where(x => x.Question.Id == answer.Question.Id);

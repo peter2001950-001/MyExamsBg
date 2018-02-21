@@ -1,0 +1,37 @@
+AnswerSheetRecognition 
+
+- param AnswerMatrix 
+- return BarcodeString, RowsAndAnswers
+
+TestCheckProcessing 
+
+- param Bitmap 
+- save the information from AnswerSheetRecognition
+- crop text-question answers
+- sum the points 
+
+return GTest
+
+TeacherController TestsChecking 
+
+check if all the answerSheets are uploaded 
+
+GTest 
+
+- xml ->
+<q id=15 rp = 1(receivedPoints)>
+	<a id=26 s=0(0-unchecked 1- checked 2-correct 3-correctButNotChecked)></a>
+
+</q>
+
+- receivedPoint (sum all points durion the TestCheckProcessing)
+- status (0-created, 1 - in process, 2-checked)
+
+AnswerSheet
+
+- status (0-notUploaded, 1-uploaded)
+
+QuestionsToBeChecked
+
+- check if there other field in GWrittenQuestion with this GTest id (if not GTest.status = 2)
+

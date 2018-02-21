@@ -9,6 +9,7 @@ namespace MyExams.Database.Contracts
 {
     public interface IAnswerRepository:IRepositoryBase<Answer>
     {
+        bool GetIsCorrect(int id);
         void Update(Answer answer);
     }
 }

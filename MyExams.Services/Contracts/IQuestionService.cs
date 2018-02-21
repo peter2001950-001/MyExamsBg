@@ -13,6 +13,7 @@ namespace MyExams.Services.Contracts
         IEnumerable<Question> GetAll();
         IEnumerable<Question> GetAllQuestionsBy(int testId, int sectionNo);
         void Update(Question question);
+        int GetPoints(int id);
         void RemoveQuestion(Question question);
         
     }

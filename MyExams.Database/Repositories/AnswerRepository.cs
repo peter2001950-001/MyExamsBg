@@ -13,6 +13,10 @@ namespace MyExams.Database.Repositories
         public AnswerRepository(IDatabase database) : base(database)
         {
         }
+        public bool GetIsCorrect(int id)
+        {
+            return _dbSet.Where(x => x.Id == id).Select(x => x.IsCorrect).FirstOrDefault();
+        }
         public void Update(Answer answer)
         {
             var item = _dbSet.Where(x => x.Id == answer.Id).FirstOrDefault();

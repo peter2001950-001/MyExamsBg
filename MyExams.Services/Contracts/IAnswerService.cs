@@ -13,6 +13,7 @@ namespace MyExams.Services.Contracts
         IEnumerable<Answer> GetAllBy(int testId, int sectionNo, int questionNo);
         void AddAnswer(Answer answer);
         void Update(Answer answer);
+        bool GetIsCorrect(int id);
         void RemoveAnswer(Answer answer);
     }
 }

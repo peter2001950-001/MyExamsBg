@@ -28,6 +28,9 @@ namespace MyExams.Database
         public DbSet<GAnswerSheet> GAnswerSheets { get; set; }
         public DbSet<GWrittenQuestion> GWrittenQuestions { get; set; }
         public DbSet<GQuestionToBeChecked> GQuestionsToBeChecked { get; set; }
+        public DbSet<FileDirectory> FileDirectories {get; set;}
+        public DbSet<UploadSession> UploadSessions { get; set; }
+        public DbSet<UploadSessionFileDirectory> UploadSessionsFileDirectories { get; set; }
         public void SaveChanges()
         {
             base.SaveChanges();

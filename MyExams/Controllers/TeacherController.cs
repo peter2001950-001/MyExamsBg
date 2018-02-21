@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Hangfire;
+using Microsoft.AspNet.Identity;
 using MyExams.Models;
 using MyExams.Services.Contracts;
+using MyExams.TestProcessing;
 using MyExams.TestProcessing.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -23,7 +29,12 @@ namespace MyExams.Controllers
         private readonly IQuestionService _questionService;
         private readonly IAnswerService _answerService;
         private readonly ITestGeneration _testGeneration;
-        public TeacherController(IClassService classService, IStudentService studentService, ITestService testService, ITeacherService teacherService, ISectionService sectionService, IQuestionService questionService, IAnswerService  answerService, ITestGeneration testGeneration)
+        private readonly IGAnswerSheetService _gAnswerSheetService;
+        private readonly IFileDirectoryService _fileDirectoryService;
+        private readonly IUploadSessionService _uploadSessionService;
+        private readonly ITestCheckProcess _testCheckProcess;
+
+        public TeacherController(IClassService classService, IStudentService studentService, ITestService testService, ITeacherService teacherService, ISectionService sectionService, IQuestionService questionService, IAnswerService  answerService, ITestGeneration testGeneration, IGAnswerSheetService gAnswerSheetService, ITestCheckProcess testCheckProcess, IFileDirectoryService fileDirectoryService, IUploadSessionService uploadSessionService)
         {
             _classService = classService;
             _studentService = studentService;
@@ -33,6 +44,10 @@ namespace MyExams.Controllers
             _questionService = questionService;
             _answerService = answerService;
             _testGeneration = testGeneration;
+            _gAnswerSheetService = gAnswerSheetService;
+            _fileDirectoryService = fileDirectoryService;
+            _uploadSessionService = uploadSessionService;
+            _testCheckProcess = testCheckProcess;
         }
         // GET: Teacher
         public ActionResult Index()
@@ -70,6 +85,12 @@ namespace MyExams.Controllers
             var test = _testService.GetTestByUniqueNumber(id);
             ViewBag.id = id;
             ViewBag.title = test.TestTitle;
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult UploadFiles()
+        {
             return View();
         }
         public ActionResult TestNameUpdate(string testUniqueCode, string name)
@@ -322,7 +343,7 @@ namespace MyExams.Controllers
                         }
 
                     }
-                    var fileName = RandomString(16);
+                    var fileName = RandomString(16, true);
                     Session[fileName] = _testGeneration.GenerateFile(testRef, classRefList, teacher);
                     return Json(new { status = "OK", fName = fileName });
                 }
@@ -477,10 +498,93 @@ namespace MyExams.Controllers
          
         }
 
-        private static string RandomString(int length)
+        [HttpPost]
+        public JsonResult UploadFilesProcess()
+        {
+            var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
+
+            var uploadSession = new UploadSession()
+            {
+                Teacher = teacher
+
+            };
+            _uploadSessionService.AddUploadSession(uploadSession);
+                foreach (string file in Request.Files)
+                {
+                    var fileContent = Request.Files[file];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                    // get a stream
+                    var getExtension = Path.GetExtension(fileContent.FileName);
+                    var newFileName = RandomString(16, false) + getExtension;
+                        var stream = fileContent.InputStream;
+                        var path = Path.Combine(Server.MapPath("~/App_Data"), newFileName);
+                        var serverPath = Path.Combine(Server.MapPath("~/App_Data"));
+                        fileContent.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), newFileName));
+                    var fileDirectory = new FileDirectory()
+                    {
+                        FileName = path
+                    };
+                    _fileDirectoryService.AddFileDirectory(fileDirectory);
+                    var uploadSessionFileDirectory = new UploadSessionFileDirectory()
+                    {
+                        FileDirectory = fileDirectory,
+                        UploadedFileStatus = UploadedFileStatus.NotChecked,
+                        UploadSession = uploadSession
+                    };
+                    _uploadSessionService.AddUploadSessionFileDirectory(uploadSessionFileDirectory);
+                    BackgroundJob.Enqueue(() => TestCheck(fileDirectory, serverPath));
+                    
+                    }
+                uploadSession.TotalUploaded++;
+                _testService.Update();
+                }
+
+            return Json(new { status = "OK", sessionId = uploadSession.SessionIdentifier });
+        }
+
+        public void TestCheck(FileDirectory fileDirectory, string serverFileName)
+        {
+            Bitmap bitmap = (Bitmap)Image.FromFile(fileDirectory.FileName);
+            _testCheckProcess.SetBitmap(bitmap);
+            _testCheckProcess.SetSaveFileName(serverFileName);
+            _testCheckProcess.SetBitmapFileDirectory(fileDirectory);
+            
+            var gTest = _testCheckProcess.StartChecking();
+        }
+        public JsonResult UploadSessionPull(string sessionIdentifier)
+        {
+            var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
+            var session = _uploadSessionService.GetAll().Where(x => x.SessionIdentifier == sessionIdentifier).FirstOrDefault();
+            if (session != null)
+            {
+                if (teacher != null)
+                {
+                    if(session.Teacher.Id == teacher.Id)
+                    {
+                        if (!session.IsDone)
+                        {
+                            double percentage = Math.Round((double)(session.TotalFinished / session.TotalUploaded) * 100, 0);
+                            return Json(new { status = "OK", percentage = percentage + "%"}, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            return Json(new { status = "OK", percentage = "100%"}, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                }
+                return Json(new { status = "ERR1" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { status = "ERR2" }, JsonRequestBehavior.AllowGet);
+        }
+        private static string RandomString(int length,  bool OnlyUppperCase)
         {
             var random = new Random();
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            if (OnlyUppperCase) {
+                chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            }
+          
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }

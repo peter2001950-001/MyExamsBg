@@ -15,6 +15,7 @@ namespace MyExams.App_Start
     using Services;
     using TestProcessing.Contracts;
     using TestProcessing;
+    using Hangfire;
 
     public static class NinjectWebCommon 
     {
@@ -70,7 +71,7 @@ namespace MyExams.App_Start
             kernel
                 .Bind<IDatabase>()
                 .To<Database>()
-                .InRequestScope();
+            .InRequestScope();
 
             kernel
                 .Bind<IStudentRepository>()
@@ -125,9 +126,19 @@ namespace MyExams.App_Start
            .Bind<IGQuestionsToBeCheckedRepository>()
            .To<GQuestionsToBeCheckedRepository>()
            .InRequestScope();
-
-
-
+            kernel
+          .Bind<IUploadSessionRepository>()
+          .To<UploadSessionRepository>()
+          .InRequestScope();
+            kernel
+        .Bind<IFileDirectoryRepository>()
+        .To<FileDirectoryRepository>()
+        .InRequestScope();
+            kernel
+        .Bind<IUploadSessionFileDirectoryRepository>()
+        .To<UploadSessionFileDirectoryRepository>()
+        .InRequestScope();
+            
 
             kernel
             .Bind<IClassService>()
@@ -157,11 +168,23 @@ namespace MyExams.App_Start
             .Bind<IGAnswerSheetService>()
             .To<GAnswerSheetService>()
             .InRequestScope();
+            kernel
+           .Bind<IUploadSessionService>()
+           .To<UploadSessionService>()
+           .InRequestScope();
+            kernel
+           .Bind<IFileDirectoryService>()
+           .To<FileDirectoryService>()
+           .InRequestScope();
 
 
             kernel
             .Bind<ITestGeneration>()
             .To<TestGeneration>()
+            .InRequestScope();
+            kernel
+            .Bind<ITestCheckProcess>()
+            .To<TestCheckProcess>()
             .InRequestScope();
         }
     }

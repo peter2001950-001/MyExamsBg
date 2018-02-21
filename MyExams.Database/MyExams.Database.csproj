@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Contracts\IAnswerRepository.cs" />
     <Compile Include="Contracts\IClassRepository.cs" />
+    <Compile Include="Contracts\IFileDirectoryRepository.cs" />
     <Compile Include="Contracts\IGAnswerSheetRepository.cs" />
     <Compile Include="Contracts\IGQuestionsToBeCheckedRepository.cs" />
     <Compile Include="Contracts\IGTestRepository.cs" />
@@ -62,12 +63,15 @@
     <Compile Include="Contracts\IStudentRepository.cs" />
     <Compile Include="Contracts\ITeacherRepository.cs" />
     <Compile Include="Contracts\ITestRepository.cs" />
+    <Compile Include="Contracts\IUploadSessionFileDirectoryRepository.cs" />
+    <Compile Include="Contracts\IUploadSessionRepository.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="IDatabase.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AnswerRepository.cs" />
     <Compile Include="Repositories\ClassRepository.cs" />
+    <Compile Include="Repositories\FileDirectoryRepository.cs" />
     <Compile Include="Repositories\GAnswerSheetRepository.cs" />
     <Compile Include="Repositories\GQuestionsToBeChecked.cs" />
     <Compile Include="Repositories\GTestRepository.cs" />
@@ -79,6 +83,8 @@
     <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Repositories\TeacherRepository.cs" />
     <Compile Include="Repositories\TestRepository.cs" />
+    <Compile Include="Repositories\UploadSessionFileDirectoryRepository.cs" />
+    <Compile Include="Repositories\UploadSessionRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

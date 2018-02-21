@@ -17,5 +17,8 @@ namespace MyExams.Models
         public string Xml { get; set; }
         public int MaxPoints { get; set; }
         public int ReceivedPoints { get; set; }
+        public int TotalAnswerSheets { get; set; }
+        public int ProcessedAnswerSheets { get; set; }
+        public bool IsDone { get { return TotalAnswerSheets == ProcessedAnswerSheets; } }
     }
 }

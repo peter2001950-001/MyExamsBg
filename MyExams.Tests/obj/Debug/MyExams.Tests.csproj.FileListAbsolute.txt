@@ -82,3 +82,7 @@ C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\D
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\MyExams.TestProcessing.dll.config
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\zxing.pdb
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\zxing.xml
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\AForge.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\AForge.xml
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\Hangfire.Ninject.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.Tests\bin\Debug\Hangfire.Ninject.xml

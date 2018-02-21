@@ -241,3 +241,7 @@ C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\MyExams
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\zxing.dll
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\zxing.pdb
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\zxing.xml
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\AForge.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\AForge.xml
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\Hangfire.Ninject.dll
+C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\Hangfire.Ninject.xml
