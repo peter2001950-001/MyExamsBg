@@ -81,7 +81,7 @@ function UploadViewModel() {
                             setTimeout(function () {
 
                             window.location.href = "/t/"
-                            },500)
+                            },1500)
                         }
                     };
                 }

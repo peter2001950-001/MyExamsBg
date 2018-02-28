@@ -1,6 +1,8 @@
 ﻿using AForge;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading.Tasks;
 using ZXing;
@@ -33,22 +35,31 @@ namespace MyExams.TestProcessing
         public string BarcodeRecognize()
         {
             var croppedRect = new Rectangle((int)(_bitmap.Width * 0.9), (int)(0.30 * _bitmap.Height), (int)(0.1 * _bitmap.Width), (int)(0.40 * _bitmap.Height));
-            var croppedBitmap = _bitmap.Clone(croppedRect, _bitmap.PixelFormat);
-            IBarcodeReader reader = new BarcodeReader()
+            var croppedBitmap = CropBarcode(croppedRect);
+            if (croppedBitmap != null)
             {
-                Options = new ZXing.Common.DecodingOptions()
+                IBarcodeReader reader = new BarcodeReader()
                 {
-                    PossibleFormats = new List<BarcodeFormat>()
+                    Options = new ZXing.Common.DecodingOptions()
+                    {
+                        PossibleFormats = new List<BarcodeFormat>()
                       {
                            BarcodeFormat.CODE_128
                       },
-                    TryHarder = true
-                }
-            };
+                        TryHarder = true,
 
-            var barcodeDecoded = reader.Decode(croppedBitmap);
-            croppedBitmap.Dispose();
-            return barcodeDecoded.Text;
+                    }
+                };
+
+                var barcodeDecoded = reader.Decode(croppedBitmap);
+                croppedBitmap.Save(@"C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\App_Data\barcode.jpg", ImageFormat.Jpeg);
+                croppedBitmap.Dispose();
+                if (barcodeDecoded != null)
+                {
+                    return barcodeDecoded.Text;
+                }
+            }
+            return null;
         }
         public List<List<Shape>> ProcessImage()
         {
@@ -265,6 +276,72 @@ namespace MyExams.TestProcessing
                 }
             }
             return row;
+        }
+
+        private Bitmap CropBarcode(Rectangle rectangle)
+        {
+            var isFirstLineSet = false;
+            var toBreak = false;
+            var firstHozilonalLine = new Line();
+            var lastHorizontalLine = new Line();
+            var staringPoint = new IntPoint(0, 0);
+            for (int y = rectangle.Y; y < rectangle.Bottom; y++)
+            {
+                for (int x = rectangle.X; x < rectangle.Right; x++)
+                {
+                    var pixel = _lockBitmap.GetPixel(x, y);
+
+                  
+                    if (pixel.B < 90 && pixel.G < 90 && pixel.R < 90)
+                    {
+                        if(staringPoint.X == 0 && staringPoint.Y == 0)
+                        {
+                            staringPoint.X = x;
+                            staringPoint.Y = y;
+                        }
+                    }
+                    else
+                    {
+                        if (staringPoint.X != 0 || staringPoint.Y != 0)
+                        {
+                            if (x - staringPoint.X > 50)
+                            {
+                                if (!isFirstLineSet)
+                                {
+                                    firstHozilonalLine.APoint = staringPoint;
+                                    firstHozilonalLine.BPoint = new IntPoint(x, y);
+                                    isFirstLineSet = true;
+                                    staringPoint.X = 0;
+                                    staringPoint.Y = 0;
+                                }
+                                else
+                                {
+
+                                    lastHorizontalLine.APoint = staringPoint;
+                                    lastHorizontalLine.BPoint = new IntPoint(x, y);
+                                    staringPoint.X = 0;
+                                    staringPoint.Y = 0;
+                                }
+                            }
+                        }
+
+                        if (lastHorizontalLine.APoint.Y != 0 && y - lastHorizontalLine.APoint.Y > 150)
+                        {
+                            toBreak = true;
+                            break;
+                        }
+                    }
+                }
+                if (toBreak) break;
+            }
+            if (firstHozilonalLine.APoint.X != 0 && firstHozilonalLine.APoint.Y != 0 && lastHorizontalLine.APoint.X != 0 && lastHorizontalLine.BPoint.Y != 0)
+            {
+
+                var croppedRect = new Rectangle(firstHozilonalLine.APoint.X-20, firstHozilonalLine.APoint.Y-20, firstHozilonalLine.BPoint.X - firstHozilonalLine.APoint.X+40, lastHorizontalLine.BPoint.Y - firstHozilonalLine.APoint.Y+40);
+                var croppedBitmap = _bitmap.Clone(croppedRect, _bitmap.PixelFormat);
+                return croppedBitmap;
+            }
+            return null;
         }
     }
 }
