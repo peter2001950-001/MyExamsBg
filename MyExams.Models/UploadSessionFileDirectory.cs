@@ -17,6 +17,8 @@ namespace MyExams.Models
         public UploadSession UploadSession { get; set; }
         public FileDirectory FileDirectory { get; set; }
         public UploadedFileStatus UploadedFileStatus { get; set; }
+        public string JobId { get; set; }
+        public GAnswerSheet AnswerSheet { get; set; }
     }
     public enum UploadedFileStatus
     {
@@ -35,7 +37,7 @@ namespace MyExams.Models
         /// <summary>
         /// When there is an error 
         /// </summary>
-        HaveProblem,
+        HasProblem,
         /// <summary>
         /// When the file has not been process because the barcode has not been found
         /// </summary>

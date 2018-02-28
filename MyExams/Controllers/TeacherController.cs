@@ -1,4 +1,5 @@
 ﻿using Hangfire;
+using Hangfire.Storage;
 using Microsoft.AspNet.Identity;
 using MyExams.Models;
 using MyExams.Services.Contracts;
@@ -11,6 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -33,7 +35,7 @@ namespace MyExams.Controllers
         private readonly IFileDirectoryService _fileDirectoryService;
         private readonly IUploadSessionService _uploadSessionService;
         private readonly ITestCheckProcess _testCheckProcess;
-
+        private readonly IMonitoringApi _monitoringApi;
         public TeacherController(IClassService classService, IStudentService studentService, ITestService testService, ITeacherService teacherService, ISectionService sectionService, IQuestionService questionService, IAnswerService  answerService, ITestGeneration testGeneration, IGAnswerSheetService gAnswerSheetService, ITestCheckProcess testCheckProcess, IFileDirectoryService fileDirectoryService, IUploadSessionService uploadSessionService)
         {
             _classService = classService;
@@ -48,6 +50,7 @@ namespace MyExams.Controllers
             _fileDirectoryService = fileDirectoryService;
             _uploadSessionService = uploadSessionService;
             _testCheckProcess = testCheckProcess;
+            _monitoringApi = JobStorage.Current.GetMonitoringApi();
         }
         // GET: Teacher
         public ActionResult Index()
@@ -505,7 +508,8 @@ namespace MyExams.Controllers
 
             var uploadSession = new UploadSession()
             {
-                Teacher = teacher
+                Teacher = teacher,
+                IsActive = true
 
             };
             _uploadSessionService.AddUploadSession(uploadSession);
@@ -523,7 +527,8 @@ namespace MyExams.Controllers
                         fileContent.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), newFileName));
                     var fileDirectory = new FileDirectory()
                     {
-                        FileName = path
+                        FileName = path,
+                        OriginalFileName = fileContent.FileName
                     };
                     _fileDirectoryService.AddFileDirectory(fileDirectory);
                     var uploadSessionFileDirectory = new UploadSessionFileDirectory()
@@ -533,16 +538,21 @@ namespace MyExams.Controllers
                         UploadSession = uploadSession
                     };
                     _uploadSessionService.AddUploadSessionFileDirectory(uploadSessionFileDirectory);
-                    BackgroundJob.Enqueue(() => TestCheck(fileDirectory, serverPath));
-                    
-                    }
+                   uploadSessionFileDirectory.JobId = BackgroundJob.Enqueue(() => TestCheck(fileDirectory, serverPath));
+                    _testService.Update();
+                }
                 uploadSession.TotalUploaded++;
                 _testService.Update();
+                
                 }
-
+                if(!_uploadSessionService.GetAll().Any(x=>x.IsActive == true && x.Id != uploadSession.Id))
+                 {
+                BackgroundJob.Enqueue(() => TestsUpdateResults());
+                 }
+               
             return Json(new { status = "OK", sessionId = uploadSession.SessionIdentifier });
         }
-
+        [AutomaticRetry(Attempts =0)]
         public void TestCheck(FileDirectory fileDirectory, string serverFileName)
         {
             Bitmap bitmap = (Bitmap)Image.FromFile(fileDirectory.FileName);
@@ -551,6 +561,52 @@ namespace MyExams.Controllers
             _testCheckProcess.SetBitmapFileDirectory(fileDirectory);
             
             var gTest = _testCheckProcess.StartChecking();
+        }
+        public void TestsUpdateResults()
+        {
+            while (true) {
+                var activeSessions = _uploadSessionService.GetAll().Where(x => x.IsActive == true);
+                if (activeSessions.Count() > 0)
+                {
+                    foreach (var uploadSession in activeSessions)
+                    {
+                        var uploadSessionFiles = _uploadSessionService.GetUploadSessionFileDirectoriesBy(uploadSession);
+                        int totalFinished = 0;
+                        foreach (var item in uploadSessionFiles)
+                        {
+                            var state = _monitoringApi.JobDetails(item.JobId);
+                            if (state.History.First().StateName == "Succeeded" || state.History.First().StateName == "Failed")
+                            {
+                                totalFinished++;
+                                var answerSheet = _gAnswerSheetService.GetAllGAnswerSheet().Where(x => x.Id == item.AnswerSheet.Id).FirstOrDefault();
+                                if (_gAnswerSheetService.GetAllGAnswerSheet().Where(x => x.GTest.Id == answerSheet.GTest.Id).All(x => x.AnswerSheetStatus == AnswerSheetStatus.Checked)){
+                                    var answerSheets = _gAnswerSheetService.GetAllGAnswerSheet().Where(x => x.GTest.Id == answerSheet.GTest.Id);
+                                    int points = 0;
+                                    foreach (var answerSh in answerSheets)
+                                    {
+                                        points += answerSh.ReceivedPoints;
+                                    }
+                                    var gTest = _testService.GetAllGTests().Where(x => x.Id == answerSheet.GTest.Id).First();
+                                    gTest.ReceivedPoints = points;
+                                    _testService.Update();
+                                }
+                            }
+                        }
+                        uploadSession.TotalFinished = totalFinished;
+                        if (totalFinished == uploadSession.TotalUploaded)
+                        {
+                            uploadSession.IsActive = false;
+                        }
+                        _testService.Update();
+                        
+                    }
+                    Thread.Sleep(1000);
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
         public JsonResult UploadSessionPull(string sessionIdentifier)
         {
@@ -577,6 +633,31 @@ namespace MyExams.Controllers
             }
             return Json(new { status = "ERR2" }, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult UploadSessionNotification()
+        {
+            var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
+            if (teacher != null)
+            {
+                var session = _uploadSessionService.GetAll().Where(x => x.IsNotified == false && x.Teacher.Id == teacher.Id&&x.IsDone).FirstOrDefault();
+                if (session != null)
+                {
+                    List<object> fileDirectoryResult = new List<object>();
+                    var uploadSessionFileDirectories = _uploadSessionService.GetUploadSessionFileDirectoriesBy(session);
+                    foreach (var item in uploadSessionFileDirectories)
+                    {
+                        fileDirectoryResult.Add(new { fileStatus = item.UploadedFileStatus, fileName = item.FileDirectory.OriginalFileName, id = item.FileDirectory.Id });
+                       
+                    }
+                    session.IsNotified = true;
+                    _testService.Update();
+                    return Json(new { status = "HAS", files = fileDirectoryResult }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new { status = "NO" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { status = "ERR" }, JsonRequestBehavior.AllowGet);
+                 
+        }
+
         private static string RandomString(int length,  bool OnlyUppperCase)
         {
             var random = new Random();

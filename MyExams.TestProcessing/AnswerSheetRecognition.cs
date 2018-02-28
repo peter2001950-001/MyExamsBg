@@ -52,7 +52,11 @@ namespace MyExams.TestProcessing
                 };
 
                 var barcodeDecoded = reader.Decode(croppedBitmap);
+<<<<<<< HEAD
                 croppedBitmap.Save(@"C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\App_Data\barcode.jpg", ImageFormat.Jpeg);
+=======
+               // croppedBitmap.Save(@"C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\App_Data\barcode.jpg", ImageFormat.Jpeg);
+>>>>>>> e19ce56e92064dd2c6c0e2dcc5f2838df825df84
                 croppedBitmap.Dispose();
                 if (barcodeDecoded != null)
                 {

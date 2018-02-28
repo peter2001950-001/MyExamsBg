@@ -10,7 +10,7 @@ namespace MyExams.Models
     /// <summary>
     /// All files that have been uploaded at once are a session
     /// </summary>
-   public class UploadSession
+    public class UploadSession
     {
         [Key]
         public int Id { get; set; }
@@ -31,5 +31,11 @@ namespace MyExams.Models
         /// if all files have been processed
         /// </summary>
         public bool IsDone { get { return TotalFinished == TotalUploaded; } }
-    }
+        public bool IsNotified { get; set; }
+        /// <summary>
+        /// It is true when files have been uploaded and testProcess is active
+        /// </summary>
+        public bool IsActive { get; set; }
+             }
+
 }

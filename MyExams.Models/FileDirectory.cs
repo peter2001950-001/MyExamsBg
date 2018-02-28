@@ -14,5 +14,6 @@ namespace MyExams.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string FileName { get; set; }
+        public string OriginalFileName { get; set; }
     }
 }

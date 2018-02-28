@@ -29,3 +29,30 @@ C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcess
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\zxing.presentation.xml
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\AForge.dll
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams.TestProcessing\bin\Debug\AForge.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\MyExams.TestProcessing.dll.config
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\MyExams.TestProcessing.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\MyExams.TestProcessing.pdb
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\AForge.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\itextsharp.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\MyExams.Models.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\MyExams.Services.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\RazorPDF.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\System.Web.Mvc.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\zxing.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\zxing.presentation.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\MyExams.Database.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\EntityFramework.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\MyExams.Models.pdb
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\MyExams.Services.pdb
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\AForge.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\itextsharp.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\System.Web.Mvc.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\zxing.pdb
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\zxing.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\zxing.presentation.pdb
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\zxing.presentation.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\MyExams.Database.pdb
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\bin\Debug\EntityFramework.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\obj\Debug\MyExams.TestProcessing.csprojResolveAssemblyReference.cache
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\obj\Debug\MyExams.TestProcessing.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams.TestProcessing\obj\Debug\MyExams.TestProcessing.pdb

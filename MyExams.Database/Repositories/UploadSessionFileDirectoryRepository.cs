@@ -14,7 +14,7 @@ namespace MyExams.Database.Repositories
     {
         public UploadSessionFileDirectoryRepository(IDatabase database) : base(database)
         {
-            this._dbList = _dbSet.Include(x => x.FileDirectory).Include(x => x.UploadSession);
+            this._dbList = _dbSet.Include(x => x.FileDirectory).Include(x => x.UploadSession).Include(x=>x.AnswerSheet);
         }
     }
 }
