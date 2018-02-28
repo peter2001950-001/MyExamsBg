@@ -245,3 +245,41 @@ C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\AForge.
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\AForge.xml
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\Hangfire.Ninject.dll
 C:\Users\Peter\Documents\Visual Studio 2015\Projects\MyExams\MyExams\bin\Hangfire.Ninject.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Hangfire.AspNetCore.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Hangfire.Core.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Hangfire.Ninject.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Hangfire.SqlServer.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\itextsharp.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.AspNetCore.Hosting.Abstractions.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.AspNetCore.Http.Abstractions.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.Extensions.Primitives.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\MyExams.TestProcessing.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\System.Text.Encodings.Web.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\zxing.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\AForge.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\MyExams.TestProcessing.pdb
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Hangfire.AspNetCore.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Hangfire.Core.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Hangfire.Ninject.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Hangfire.SqlServer.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\itextsharp.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.AspNetCore.Hosting.Abstractions.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.AspNetCore.Hosting.Server.Abstractions.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.AspNetCore.Http.Abstractions.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.AspNetCore.Http.Features.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.Extensions.Configuration.Abstractions.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.Extensions.FileProviders.Abstractions.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.Extensions.Logging.Abstractions.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\Microsoft.Extensions.Primitives.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\System.Text.Encodings.Web.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\zxing.pdb
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\zxing.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\AForge.xml
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\es\Hangfire.Core.resources.dll
+C:\Users\Bechev's PC\Documents\GitHub\MyExamsBg\MyExams\bin\zh\Hangfire.Core.resources.dll

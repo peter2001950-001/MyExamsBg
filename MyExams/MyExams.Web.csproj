@@ -305,6 +305,7 @@
     <Content Include="Scripts\app\teacher\classesViewModel.js" />
     <Content Include="Scripts\app\teacher\classViewModel.js" />
     <Content Include="Scripts\app\student\classesViewModel.js" />
+    <Content Include="Scripts\app\teacher\indexViewModel.js" />
     <Content Include="Scripts\app\teacher\testDesignViewModel.js" />
     <Content Include="Scripts\app\teacher\testsViewModel.js" />
     <Content Include="Scripts\app\teacher\uploadFilesViewModel.js" />
