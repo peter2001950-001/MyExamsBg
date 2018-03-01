@@ -13,6 +13,6 @@ namespace MyExams.TestProcessing.Contracts
         void SetBitmap(Bitmap bitmap);
         void SetSaveFileName(string path);
         void SetBitmapFileDirectory(FileDirectory file);
-        GTest StartChecking();
+        UploadedFileStatus StartChecking();
     }
 }

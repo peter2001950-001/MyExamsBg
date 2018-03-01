@@ -59,196 +59,206 @@ namespace MyExams.TestProcessing
         {
             BitmapFileDirectory = file;
         }
-        public GTest StartChecking()
+        public UploadedFileStatus StartChecking()
         {
             if (_bitmap == null) throw new ArgumentNullException("bitmap", "Bitmap is null. Use SetBitmap first");
             if (FileName == null) throw new ArgumentNullException("FileDirectory", "FileDirectory is null. Use SetSaveFileName first");
             var uploadSessionFileDirectory = _uploadSessionService.GetAllUploadSessionFileDirectory().Where(x => x.FileDirectory.Id == BitmapFileDirectory.Id).FirstOrDefault();
             var uploadSession = _uploadSessionService.GetAll().Where(x => x.Id == uploadSessionFileDirectory.UploadSession.Id).FirstOrDefault();
 
-            AnswerSheetRecognition sheetRecognition = new AnswerSheetRecognition(_bitmap);
-            var barcode = sheetRecognition.BarcodeRecognize();
-            if (barcode != string.Empty)
+            using (AnswerSheetRecognition sheetRecognition = new AnswerSheetRecognition(_bitmap))
             {
-                var answerSheet = _gAnswerSheetService.GetAllGAnswerSheet().Where(x => x.Barcode == barcode).FirstOrDefault();
-                if (answerSheet != null)
+                var barcode = sheetRecognition.BarcodeRecognize();
+                if (barcode != string.Empty)
                 {
-                    if (answerSheet.AnswerSheetStatus == AnswerSheetStatus.NotChecked)
+                    var answerSheet = _gAnswerSheetService.GetAllGAnswerSheet().Where(x => x.Barcode == barcode).FirstOrDefault();
+                    if (answerSheet != null)
                     {
-                        List<int> AnswerMatix = new List<int>();
-                        var gTest = _testService.GetAllGTests().Where(x => x.Id == answerSheet.GTest.Id).First();
-                        var teacher = _teacherService.GetAll().Where(x => x.Id == gTest.Teacher.Id).First();
-
-                        Pen yellowPen = new Pen(Color.Yellow, 4);
-                        Pen redPen = new Pen(Color.Red, 4);
-                        Pen greenPen = new Pen(Color.Green, 4);
-
-                        // get the AnswerMatix from the xml text
-                        XmlDocument xml = new XmlDocument();
-                        xml.LoadXml(gTest.Xml);
-                        for (int i = answerSheet.FirstQuestionNo; i <= answerSheet.LastQuestionNo; i++)
+                        if (answerSheet.AnswerSheetStatus == AnswerSheetStatus.NotChecked)
                         {
-                            var node = xml.DocumentElement.ChildNodes[i];
-                            AnswerMatix.Add((node.ChildNodes.Count) > 0 ? node.ChildNodes.Count : 1);
-                        }
-                        //recognise the answerSheet
-                        sheetRecognition.AnswersMatrix = AnswerMatix;
-                        var recognisedRowsAndShapes = sheetRecognition.ProcessImage();
-                        //get the correctAnswers from the xml string
-                        var correctAnswers = CorrectAnswers(xml, answerSheet.FirstQuestionNo, answerSheet.LastQuestionNo);
-                       // checks whether all rows and shapes are recognosed
-                        var hasError = false;
-                        if (recognisedRowsAndShapes.Count == correctAnswers.Count)
-                        {
-                            for (int i = 0; i < recognisedRowsAndShapes.Count; i++)
+                            List<int> AnswerMatix = new List<int>();
+                            var gTest = _testService.GetAllGTests().Where(x => x.Id == answerSheet.GTest.Id).First();
+                            var teacher = _teacherService.GetAll().Where(x => x.Id == gTest.Teacher.Id).First();
+
+                            Pen yellowPen = new Pen(Color.Yellow, 4);
+                            Pen redPen = new Pen(Color.Red, 4);
+                            Pen greenPen = new Pen(Color.Green, 4);
+
+                            // get the AnswerMatix from the xml text
+                            XmlDocument xml = new XmlDocument();
+                            xml.LoadXml(gTest.Xml);
+                            for (int i = answerSheet.FirstQuestionNo; i <= answerSheet.LastQuestionNo; i++)
                             {
-                                var correctAnswersCount = correctAnswers[i].CorrectAnswers.Count;
-                                if (correctAnswersCount == 0) correctAnswersCount = 1;
-                                if (recognisedRowsAndShapes[i].Count != correctAnswersCount)
-                                    hasError = true;
+                                var node = xml.DocumentElement.ChildNodes[i];
+                                AnswerMatix.Add((node.ChildNodes.Count) > 0 ? node.ChildNodes.Count : 1);
                             }
-                        }
-                        else
-                        {
-                            hasError = true;
-                        }
-
-
-                        if (hasError)
-                        {
-                            uploadSessionFileDirectory.UploadedFileStatus = UploadedFileStatus.HasProblem;
-                            _testService.Update();
-                        }
-                        else
-                        {
-                            int totalPoints = 0;
-                            bool isThereWrittenQuestion = false;
-                            for (int i = 0; i < recognisedRowsAndShapes.Count; i++) // start comparing
+                            //recognise the answerSheet
+                            sheetRecognition.AnswersMatrix = AnswerMatix;
+                            var recognisedRowsAndShapes = sheetRecognition.ProcessImage();
+                            //get the correctAnswers from the xml string
+                            var correctAnswers = CorrectAnswers(xml, answerSheet.FirstQuestionNo, answerSheet.LastQuestionNo);
+                            // checks whether all rows and shapes are recognosed
+                            var hasError = false;
+                            if (recognisedRowsAndShapes.Count == correctAnswers.Count)
                             {
-                                if (recognisedRowsAndShapes[i].Count == 1)  // these are text questions
+                                for (int i = 0; i < recognisedRowsAndShapes.Count; i++)
                                 {
-                                    var rectangle = new Rectangle(recognisedRowsAndShapes[i][0].TopLeftPoint.X, recognisedRowsAndShapes[i][0].TopLeftPoint.Y, (int)recognisedRowsAndShapes[i][0].TopLeftPoint.DistanceTo(recognisedRowsAndShapes[i][0].TopRightPoint), (int)recognisedRowsAndShapes[i][0].TopLeftPoint.DistanceTo(recognisedRowsAndShapes[i][0].BottomLeftPoint));
-                                    var croppedImage = _bitmap.Clone(rectangle, _bitmap.PixelFormat);
-                                    var imagename = RandomString(20);
-                                    var path = Path.Combine(FileName, imagename + ".jpg");
-                                    BitmapSave(croppedImage, path);
-                                    //save the piece containing the answer
-                                    var gWrittenQuestion = new GWrittenQuestion()
-                                    {
-                                        FileName = path,
-                                        GTest = gTest,
-                                        GQuestionId = i + answerSheet.FirstQuestionNo
-                                    };
-                                    _gAnswerSheetService.AddGWrittenQuestion(gWrittenQuestion);
-
-                                    _gAnswerSheetService.AddGQuestionToBeChecked(new GQuestionToBeChecked()
-                                    {
-                                        GWrittenQuestion = gWrittenQuestion,
-                                        Teacher = teacher
-                                    });
-                                    //add the location on the file in the db for future reference
-                                    DrawShape(recognisedRowsAndShapes[i][0], yellowPen);
-                                    isThereWrittenQuestion = true;
+                                    var correctAnswersCount = correctAnswers[i].CorrectAnswers.Count;
+                                    if (correctAnswersCount == 0) correctAnswersCount = 1;
+                                    if (recognisedRowsAndShapes[i].Count != correctAnswersCount)
+                                        hasError = true;
                                 }
-                                else
+                            }
+                            else
+                            {
+                                hasError = true;
+                            }
+
+
+                            if (hasError)
+                            {
+                                uploadSessionFileDirectory.UploadedFileStatus = UploadedFileStatus.HasProblem;
+                                _testService.Update();
+
+                            }
+                            else
+                            {
+                                int totalPoints = 0;
+                                bool isThereWrittenQuestion = false;
+                                for (int i = 0; i < recognisedRowsAndShapes.Count; i++) // start comparing
                                 {
-                                    var isCorrect = false; // used to store wheather the whole question is true or false
-                                    for (int p = 0; p < recognisedRowsAndShapes[i].Count; p++)
+                                    if (recognisedRowsAndShapes[i].Count == 1)  // these are text questions
                                     {
-
-                                        if (recognisedRowsAndShapes[i][p].IsChecked && correctAnswers[i].CorrectAnswers[p])
+                                        var rectangle = new Rectangle(recognisedRowsAndShapes[i][0].TopLeftPoint.X, recognisedRowsAndShapes[i][0].TopLeftPoint.Y, (int)recognisedRowsAndShapes[i][0].TopLeftPoint.DistanceTo(recognisedRowsAndShapes[i][0].TopRightPoint), (int)recognisedRowsAndShapes[i][0].TopLeftPoint.DistanceTo(recognisedRowsAndShapes[i][0].BottomLeftPoint));
+                                        var croppedImage = _bitmap.Clone(rectangle, _bitmap.PixelFormat);
+                                        var imagename = RandomString(20);
+                                        var path = Path.Combine(FileName, imagename + ".jpg");
+                                        BitmapSave(croppedImage, path);
+                                        //save the piece containing the answer
+                                        var gWrittenQuestion = new GWrittenQuestion()
                                         {
-                                            isCorrect = true;
-                                            var answerAttr = xml.CreateAttribute("s"); // short for status
-                                            answerAttr.Value = "2"; //correct code
-                                            xml.DocumentElement.ChildNodes[answerSheet.FirstQuestionNo + i].ChildNodes[p].Attributes.Append(answerAttr);
+                                            FileName = path,
+                                            GTest = gTest,
+                                            GQuestionId = i + answerSheet.FirstQuestionNo
+                                        };
+                                        _gAnswerSheetService.AddGWrittenQuestion(gWrittenQuestion);
 
-                                            DrawShape(recognisedRowsAndShapes[i][p], greenPen);
-                                        }
-                                        else if (recognisedRowsAndShapes[i][p].IsChecked && !correctAnswers[i].CorrectAnswers[p])
+                                        _gAnswerSheetService.AddGQuestionToBeChecked(new GQuestionToBeChecked()
                                         {
-                                            var answerAttr = xml.CreateAttribute("s"); // short for status
-                                            answerAttr.Value = "1"; //checked but not correct code
-                                            xml.DocumentElement.ChildNodes[answerSheet.FirstQuestionNo + i].ChildNodes[p].Attributes.Append(answerAttr);
-                                            DrawShape(recognisedRowsAndShapes[i][p], redPen);
-                                        }
-                                        else if (!recognisedRowsAndShapes[i][p].IsChecked)
-                                        {
-                                            var answerAttr = xml.CreateAttribute("s"); // short for status
-                                            answerAttr.Value = "0"; //unchecked
-                                            xml.DocumentElement.ChildNodes[answerSheet.FirstQuestionNo + i].ChildNodes[p].Attributes.Append(answerAttr);
-                                            DrawShape(recognisedRowsAndShapes[i][p], yellowPen);
-                                        }
-
-                                    }
-                                    if (isCorrect)
-                                    {
-                                        var questionAttr = xml.CreateAttribute("rp"); // short for received points
-                                        questionAttr.Value = correctAnswers[i].Points.ToString();
-                                        xml.DocumentElement.ChildNodes[answerSheet.FirstQuestionNo + i].Attributes.Append(questionAttr);
-
-                                        totalPoints += correctAnswers[i].Points;
+                                            GWrittenQuestion = gWrittenQuestion,
+                                            Teacher = teacher
+                                        });
+                                        //add the location on the file in the db for future reference
+                                        DrawShape(recognisedRowsAndShapes[i][0], yellowPen);
+                                        isThereWrittenQuestion = true;
                                     }
                                     else
                                     {
-                                        var questionAttr = xml.CreateAttribute("rp"); // short for received points
-                                        questionAttr.Value = "0";
-                                        xml.DocumentElement.ChildNodes[answerSheet.FirstQuestionNo + i].Attributes.Append(questionAttr);
+                                        var isCorrect = false; // used to store wheather the whole question is true or false
+                                        for (int p = 0; p < recognisedRowsAndShapes[i].Count; p++)
+                                        {
+
+                                            if (recognisedRowsAndShapes[i][p].IsChecked && correctAnswers[i].CorrectAnswers[p])
+                                            {
+                                                isCorrect = true;
+                                                var answerAttr = xml.CreateAttribute("s"); // short for status
+                                                answerAttr.Value = "2"; //correct code
+                                                xml.DocumentElement.ChildNodes[answerSheet.FirstQuestionNo + i].ChildNodes[p].Attributes.Append(answerAttr);
+
+                                                DrawShape(recognisedRowsAndShapes[i][p], greenPen);
+                                            }
+                                            else if (recognisedRowsAndShapes[i][p].IsChecked && !correctAnswers[i].CorrectAnswers[p])
+                                            {
+                                                var answerAttr = xml.CreateAttribute("s"); // short for status
+                                                answerAttr.Value = "1"; //checked but not correct code
+                                                xml.DocumentElement.ChildNodes[answerSheet.FirstQuestionNo + i].ChildNodes[p].Attributes.Append(answerAttr);
+                                                DrawShape(recognisedRowsAndShapes[i][p], redPen);
+                                            }
+                                            else if (!recognisedRowsAndShapes[i][p].IsChecked)
+                                            {
+                                                var answerAttr = xml.CreateAttribute("s"); // short for status
+                                                answerAttr.Value = "0"; //unchecked
+                                                xml.DocumentElement.ChildNodes[answerSheet.FirstQuestionNo + i].ChildNodes[p].Attributes.Append(answerAttr);
+                                                DrawShape(recognisedRowsAndShapes[i][p], yellowPen);
+                                            }
+
+                                        }
+                                        if (isCorrect)
+                                        {
+                                            var questionAttr = xml.CreateAttribute("rp"); // short for received points
+                                            questionAttr.Value = correctAnswers[i].Points.ToString();
+                                            xml.DocumentElement.ChildNodes[answerSheet.FirstQuestionNo + i].Attributes.Append(questionAttr);
+
+                                            totalPoints += correctAnswers[i].Points;
+                                        }
+                                        else
+                                        {
+                                            var questionAttr = xml.CreateAttribute("rp"); // short for received points
+                                            questionAttr.Value = "0";
+                                            xml.DocumentElement.ChildNodes[answerSheet.FirstQuestionNo + i].Attributes.Append(questionAttr);
+                                        }
                                     }
                                 }
-                            }
-                            // mark the answerSheet as done 
-                            using (StringWriter sw = new StringWriter())
-                            {
-                                using (XmlTextWriter xw = new XmlTextWriter(sw))
+                                // mark the answerSheet as done 
+                                using (StringWriter sw = new StringWriter())
                                 {
-                                    xml.WriteTo(xw);
-                                    gTest.Xml = sw.ToString();
+                                    using (XmlTextWriter xw = new XmlTextWriter(sw))
+                                    {
+                                        xml.WriteTo(xw);
+                                        gTest.Xml = sw.ToString();
+                                    }
                                 }
+                                var imageName = RandomString(20);
+                                var path1 = Path.Combine(FileName, imageName + ".jpg");
+                                BitmapSave(_bitmap, path1);
+                                var checkedFileDirectory = new FileDirectory()
+                                {
+                                    FileName = path1
+                                };
+                                _fileDirectoryService.AddFileDirectory(checkedFileDirectory);
+
+                                answerSheet.CheckedFileName = checkedFileDirectory;
+                                answerSheet.IsUploaded = true;
+                                answerSheet.ScannedFileName = BitmapFileDirectory;
+                                answerSheet.ReceivedPoints = totalPoints;
+                                answerSheet.AnswerSheetStatus = isThereWrittenQuestion ? AnswerSheetStatus.WaitingWrittenQuestionsConfirmation : AnswerSheetStatus.Checked;
+
+                                uploadSessionFileDirectory.AnswerSheet = answerSheet;
+                                uploadSessionFileDirectory.UploadedFileStatus = UploadedFileStatus.Checked;
+                                _testService.Update();
+
                             }
-                            var imageName = RandomString(20);
-                            var path1 = Path.Combine(FileName, imageName + ".jpg");
-                            BitmapSave(_bitmap, path1);
-                            var checkedFileDirectory = new FileDirectory()
-                            {
-                                FileName = path1
-                            };
-                            _fileDirectoryService.AddFileDirectory(checkedFileDirectory);
 
-                            answerSheet.CheckedFileName = checkedFileDirectory;
-                            answerSheet.IsUploaded = true;
-                            answerSheet.ScannedFileName = BitmapFileDirectory;
-                            answerSheet.ReceivedPoints = totalPoints;
-                            answerSheet.AnswerSheetStatus = isThereWrittenQuestion ? AnswerSheetStatus.WaitingWrittenQuestionsConfirmation : AnswerSheetStatus.Checked;
-
-                            uploadSessionFileDirectory.AnswerSheet = answerSheet;
-                            uploadSessionFileDirectory.UploadedFileStatus = UploadedFileStatus.Checked;
+                            yellowPen.Dispose();
+                            greenPen.Dispose();
+                            redPen.Dispose();
+                            if (hasError) return UploadedFileStatus.HasProblem;
+                            uploadSession.TotalFinished++;
                             _testService.Update();
-
+                            return UploadedFileStatus.Checked;
                         }
-                        yellowPen.Dispose();
-                        greenPen.Dispose();
-                        redPen.Dispose();
-                        uploadSession.TotalFinished++;
-                        _testService.Update();
-                        return gTest;
+                        else
+                        {
+                            uploadSessionFileDirectory.UploadedFileStatus = UploadedFileStatus.AlreadyChecked;
+                            _testService.Update();
+                            return UploadedFileStatus.AlreadyChecked;
+                        }
                     }
                     else
                     {
-                        uploadSessionFileDirectory.UploadedFileStatus = UploadedFileStatus.AlreadyChecked;
+                        uploadSessionFileDirectory.UploadedFileStatus = UploadedFileStatus.HasProblem;
+                        _testService.Update();
+                        return UploadedFileStatus.HasProblem;
                     }
                 }
                 else
                 {
-                    uploadSessionFileDirectory.UploadedFileStatus = UploadedFileStatus.HasProblem;
+                    uploadSessionFileDirectory.UploadedFileStatus = UploadedFileStatus.FileNotRecognised;
+                    _testService.Update();
+                    return UploadedFileStatus.FileNotRecognised;
                 }
             }
-            else
-            {
-                uploadSessionFileDirectory.UploadedFileStatus = UploadedFileStatus.FileNotRecognised;
-            }
           
-            return null;
         }
 
         private List<Question> CorrectAnswers(XmlDocument xml, int firstQ, int lastQ)

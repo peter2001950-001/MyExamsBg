@@ -560,7 +560,16 @@ namespace MyExams.Controllers
             _testCheckProcess.SetSaveFileName(serverFileName);
             _testCheckProcess.SetBitmapFileDirectory(fileDirectory);
             
-            var gTest = _testCheckProcess.StartChecking();
+            if(_testCheckProcess.StartChecking() == UploadedFileStatus.AlreadyChecked)
+            {
+                bitmap.Dispose();
+               
+            }
+        }
+
+        public void DeleteFile(string fileName)
+        {
+            System.IO.File.Delete(fileName);
         }
         public void TestsUpdateResults()
         {
@@ -578,18 +587,6 @@ namespace MyExams.Controllers
                             if (state.History.First().StateName == "Succeeded" || state.History.First().StateName == "Failed")
                             {
                                 totalFinished++;
-                                var answerSheet = _gAnswerSheetService.GetAllGAnswerSheet().Where(x => x.Id == item.AnswerSheet.Id).FirstOrDefault();
-                                if (_gAnswerSheetService.GetAllGAnswerSheet().Where(x => x.GTest.Id == answerSheet.GTest.Id).All(x => x.AnswerSheetStatus == AnswerSheetStatus.Checked)){
-                                    var answerSheets = _gAnswerSheetService.GetAllGAnswerSheet().Where(x => x.GTest.Id == answerSheet.GTest.Id);
-                                    int points = 0;
-                                    foreach (var answerSh in answerSheets)
-                                    {
-                                        points += answerSh.ReceivedPoints;
-                                    }
-                                    var gTest = _testService.GetAllGTests().Where(x => x.Id == answerSheet.GTest.Id).First();
-                                    gTest.ReceivedPoints = points;
-                                    _testService.Update();
-                                }
                             }
                         }
                         uploadSession.TotalFinished = totalFinished;
