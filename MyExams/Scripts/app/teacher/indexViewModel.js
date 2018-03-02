@@ -4,6 +4,7 @@
     self.isQuestionsToConfirm = ko.observable(false);
     self.tests = ko.observable();
     self.classes = ko.observable();
+    self.question = ko.observable();
     self.uploadSessionNotification = function () {
         $.ajax({
             type: "get",
@@ -29,6 +30,20 @@
                     self.classes(data.classes);
                     self.tests(data.tests);
                     self.isQuestionsToConfirm(data.isQuestionsToBeChecked);
+                }
+            }
+        });
+    }
+    self.getQuestion = function () {
+        $.ajax({
+            type: "get",
+            datatype: "json",
+            contenttype: "application/json",
+            url: "/t/GetWrittenQuestion",
+            success: function (data) {
+                if (data.status === "OK") {
+                    self.question(data.question);
+                    $("#questionsToBeChecked").modal("show");
                 }
             }
         });

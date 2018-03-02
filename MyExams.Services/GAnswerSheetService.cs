@@ -33,6 +33,11 @@ namespace MyExams.Services
         {
             return _gQuestionsToBeCheckedRepository.GetAll();
         }
+        public IEnumerable<GQuestionToBeChecked> GetAllGQuestionToBeCheckedBy(int teacherId)
+        {
+            return _gQuestionsToBeCheckedRepository.Where(x => x.Teacher.Id == teacherId);
+        }
+
         public void AddGAnswerSheet(GAnswerSheet gAnswerSheet)
         {
             _gAnswerSheetRepository.Add(gAnswerSheet);

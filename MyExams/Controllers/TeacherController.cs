@@ -8,6 +8,7 @@ using MyExams.TestProcessing.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -17,6 +18,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Xml;
 
 namespace MyExams.Controllers
 {
@@ -655,7 +657,42 @@ namespace MyExams.Controllers
             return Json(new { status = "ERR" }, JsonRequestBehavior.AllowGet);
                  
         }
+        public JsonResult GetWrittenQuestion()
+        {
+            var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
+            if (teacher != null)
+            {
+                var questionToBeChecked = _gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).LastOrDefault();
+                if (questionToBeChecked != null)
+                {
+                    if (questionToBeChecked.GWrittenQuestion != null)
+                    {
+                        var gTest = _testService.GetAllGTests().Where(x => x.Id == questionToBeChecked.GWrittenQuestion.GTest.Id).First();
+                        XmlDocument xml = new XmlDocument();
+                        xml.LoadXml(gTest.Xml);
+                         var questionId =  xml.DocumentElement.ChildNodes[questionToBeChecked.GWrittenQuestion.GQuestionId].Attributes["id"].Value;
+                        var question = _questionService.GetAll().Where(x => x.Id == int.Parse(questionId)).FirstOrDefault();
+                        if (question != null)
+                        {
+                            
+                            var srcImage = Image.FromFile(questionToBeChecked.GWrittenQuestion.FileName);
+                            using (var stream = new MemoryStream())
+                            {
+                                srcImage.Save(stream, ImageFormat.Jpeg);
 
+                                return Json(new { status = "OK", question = new { text = question.Text, points = question.Points, correctAnswer = question.CorrectAnswer, src = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray()), id = questionToBeChecked.Id } }, JsonRequestBehavior.AllowGet);
+                            }
+                        }
+                        return Json(new { status = "ERR1" }, JsonRequestBehavior.AllowGet);
+
+                    }
+                    return Json(new { status = "ERR2" }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new { status = "ERR3" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { status = "ERR4" }, JsonRequestBehavior.AllowGet);
+
+        }
         private static string RandomString(int length,  bool OnlyUppperCase)
         {
             var random = new Random();
