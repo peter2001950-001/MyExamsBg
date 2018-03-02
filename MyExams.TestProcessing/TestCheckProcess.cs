@@ -222,6 +222,7 @@ namespace MyExams.TestProcessing
                                 answerSheet.ScannedFileName = BitmapFileDirectory;
                                 answerSheet.ReceivedPoints = totalPoints;
                                 answerSheet.AnswerSheetStatus = isThereWrittenQuestion ? AnswerSheetStatus.WaitingWrittenQuestionsConfirmation : AnswerSheetStatus.Checked;
+                          
 
                                 uploadSessionFileDirectory.AnswerSheet = answerSheet;
                                 uploadSessionFileDirectory.UploadedFileStatus = UploadedFileStatus.Checked;

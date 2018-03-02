@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MyExams.Models;
+using System.Linq.Expressions;
 
 namespace MyExams.Services
 {
@@ -29,9 +30,49 @@ namespace MyExams.Services
         {
             return _testRepository.GetAll();
         }
+        public IEnumerable<object> GetTestObjects<TKey>(string teacherId, Expression<Func<Test, TKey>> orderBy, OrderByMethod orderByMethod)
+        {
 
+            var tests = _testRepository.Where(x => x.Teacher.UserId == teacherId).AsQueryable();
+            switch (orderByMethod)
+            {
+                case OrderByMethod.Ascending:
+                    tests = tests.OrderBy(orderBy);
+                    break;
+                case OrderByMethod.Descending:
+                    tests = tests.OrderByDescending(orderBy);
+                    break;
+            }
+               
+           
+            return TestsListToObjects(tests.ToList());
+        }
+        public IEnumerable<object> GetTestObjects(string teacherId)
+        {
+            var tests = _testRepository.Where(x => x.Teacher.UserId == teacherId).ToList();
+            return TestsListToObjects(tests);
+        }
+        private IEnumerable<object> TestsListToObjects(IEnumerable<Test> tests)
+        {
+            List<object> testsResult = new List<object>();
+            foreach (var item in tests)
+            {
+                if (item.TestTitle == ""||item.TestTitle==null)
+                {
+                    item.TestTitle = "Неозаглавен тест";
+                }
+                testsResult.Add(new { testTitle = item.TestTitle, students = item.Students, averageMark = item.AverageMark, testCode = item.UniqueNumber });
+            }
+            return testsResult;
+        }
         public Test GetTestByUniqueNumber(string uniqueNumber)
         {
+            var test = _testRepository.GetAll().Where(x => x.UniqueNumber == uniqueNumber).FirstOrDefault(); ;
+            if (test != null)
+            {
+                test.RecentUsage = DateTime.Now;
+            }
+            _testRepository.SaveChanges();
             return _testRepository.GetAll().Where(x => x.UniqueNumber == uniqueNumber).FirstOrDefault();
         }
         public IEnumerable<GTest> GetAllGTests()

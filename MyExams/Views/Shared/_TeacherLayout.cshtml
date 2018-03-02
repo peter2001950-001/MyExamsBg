@@ -9,6 +9,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet">
     @Styles.Render("~/Content/dashboard")
+
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/knockout")
@@ -22,7 +23,7 @@
         <button class="navbar-toggler mobile-sidebar-toggler d-lg-none mr-auto" type="button">☰</button>
 
         <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button">☰</button>
-        <a class="navbar-brand" href="#">MY EXAMS</a>
+        <a class="navbar-brand" href="@Url.Action("Index","Teacher")">MY EXAMS</a>
         <ul class="nav navbar-nav d-md-down-none">
             <li class="nav-item px-3">
                 <a class="btn btn-primary" href="#"><i class="material-icons md-12">file_upload</i> КАЧИ ФАЙЛОВЕ</a>
@@ -33,7 +34,7 @@
             <li class="nav-item">
                 <a class="nav-link nav-dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     
-                    <span class="d-md-down-none">@(ViewData["FullName"])</span>
+                    <span class="nav-link">@(ViewData["FullName"])</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <div class="dropdown-header text-center">
@@ -58,15 +59,15 @@
             <nav class="sidebar-nav">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index","Teacher")"><i class="icon-speedometer"></i> Начало <span class="badge badge-primary">NEW</span></a>
+                        <a class="nav-link" href="@Url.Action("Index","Teacher")"><i class="material-icons">home</i>Начало</a>
                     </li>
 
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Classes","Teacher")"><i class="icon-calculator"></i> Класове <span class="badge badge-primary">NEW</span></a>
+                        <a class="nav-link" href="@Url.Action("Classes","Teacher")"><i class="material-icons">tag_faces</i>Всички класовe</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Tests", "Teacher")"><i class="icon-pie-chart"></i> Тестове</a>
+                        <a class="nav-link" href="@Url.Action("Tests", "Teacher")"><i class="material-icons">content_copy</i>Всички тестове</a>
                     </li>
                 </ul>
             </nav>
@@ -104,7 +105,11 @@
         } else {
             $("body").addClass("sidebar-hidden");
         }
-    })
+    });
+    $(".mobile-sidebar-toggler").click(function () {
+        $("body").toggleClass("sidebar-mobile-show");
+    });
+
 </script>
 </html>
 

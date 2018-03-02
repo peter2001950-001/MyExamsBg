@@ -345,6 +345,8 @@ namespace MyExams.TestProcessing
 
         public void Dispose()
         {
+            _lockBitmap.UnlockBitmap();
+            
         }
     }
 }

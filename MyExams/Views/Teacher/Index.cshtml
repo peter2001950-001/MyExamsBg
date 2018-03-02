@@ -4,8 +4,87 @@
     Layout = "~/Views/Shared/_TeacherLayout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="card bg-success text-center" style="display:none" data-bind="visible: isQuestionsToConfirm">
+    <div class="card-body" style="padding: 3.25rem">
+        <h4 class="card-title">Имате въпроси за потвърждаване</h4>
+        <p class="card-text">Това са въпросите, които са със свободен отговор и се нуждаят от вашето внимание</p>
+        <button class="btn btn-light">Започнете сега</button>
+    </div>
+</div>
 
+<div class="container">
+    <!--ko if: classes()!=undefined-->
+    <h6 class="section-label">
+        Класове
+    </h6>
+    <!--/ko-->
+    <div class="card-deck" style="max-width: 70rem;margin: 0 auto;" data-bind="foreach: classes">
+
+        <div class="card-3 card" style="cursor:pointer" data-bind="click: $parent.gotoClassUrl">
+            <div class="social-box">
+                <div class="card-title" style="padding: 30px 0;margin: 0;background: #57a7da;color: white;" data-bind="style: {background: color}"><h4 data-bind="text: name"></h4><p data-bind="text: subject"></p></div>
+
+                <ul>
+                    <li>
+                        <strong data-bind="text: studentsCount"></strong>
+                        <span>УЧЕНИЦИ</span>
+                    </li>
+                    <li>
+                        <strong data-bind="text: averageMark"></strong>
+                        <span>Среден успех</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--ko if: tests()!=undefined-->
+    <h6 class="section-label">
+        Тестове
+    </h6>
+    <!--/ko-->
+
+    <!--ko if: tests()==undefined&&classes()==undefined-->
+    <div class="app flex-row align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-7">
+                    <div class="card text-center">
+                        <div class="card-body">
+                          <h5><strong>Няма намерени класове или тестове.</strong> </h5><p> Можете да създадете такива от разделите "Всички класове" и "Всички тестове"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ko-->
+
+    <div class="card-deck" style="max-width: 70rem;margin: 0 auto;" data-bind="foreach: tests">
+
+        <div class="card card-3" data-bind="click: $parent.gotoTestUrl" style="cursor: pointer">
+            <div class="card-body">
+                <h4 class="card-title" data-bind="text: testTitle">Контролен тест върху Рационални числа</h4>
+                <p class="card-text">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="callout callout-info">
+                                <small class="text-muted">Брой ученици</small><br>
+                                <strong class="h4" data-bind="text: students">9,123</strong>
+                            </div>
+                        </div><!--/.col-->
+                        <div class="col-lg-6">
+                            <div class="callout callout-warning">
+                                <small class="text-muted">Средна оценка</small><br>
+                                <strong class="h4" data-bind="text: averageMark">49,123</strong>
+                            </div>
+                        </div><!--/.col-->
+                    </div>
+                </p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="uploadSessionNotification" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
     <div class="modal-dialog" role="document">
@@ -19,20 +98,21 @@
             <div class="modal-body" data-bind="with: uploadSessionData">
                 <p>Вашите файлов бяха обработени и по-долу може да видите справка за всеки един от тях.</p>
                 <div data-bind="foreach: files">
-                    <p><span data-bind="text: fileName"></span> 
-                                       
-                    <!--ko if: fileStatus==1-->
-                        <i class="material-icons" style="color:green" data-toggle="popover" data-trigger="hover" title="Успешно проверен">check_circle</i>     
-                    <!--/ko--> 
+                    <p>
+                        <span data-bind="text: fileName"></span>
+
+                        <!--ko if: fileStatus==1-->
+                        <i class="material-icons" style="color:green" data-toggle="popover" data-trigger="hover" title="Успешно проверен">check_circle</i>
+                        <!--/ko-->
                         <!--ko if: fileStatus==2-->
                         <i class="material-icons" style="color:yellow" data-toggle="popover" data-trigger="hover" title="Дублиран файл">warning</i>
-                        <!--/ko-->    
+                        <!--/ko-->
                         <!--ko if: fileStatus==3-->
                         <i class="material-icons" style="color:red" data-toggle="popover" data-trigger="hover" title="Грешка при поверката" data-content="Системата не е упяла да разпознае бланката. Възможни причини са лошо качество или блед образ">error</i>
                         <!--/ko-->
                         <!--ko if: fileStatus==4-->
                         <i class="material-icons" style="color:red" data-toggle="popover" data-trigger="hover" title="Повреден баркод" data-content="Баркодът вероятно е неясен или блед и не може да бъде разпознат.">block</i>
-                        <!--/ko-->                
+                        <!--/ko-->
                     </p>
                     <div />
                 </div>

@@ -26,8 +26,6 @@ $.grayLightest = '#f8f9fa';
 * MAIN NAVIGATION
 */
 
-$(document).ready(function ($) {
-
     // Add class .active to current link
     $.navigation.find('a').each(function () {
 
@@ -103,7 +101,6 @@ $(document).ready(function ($) {
         e.preventDefault();
     });
 
-});
 
 /****
 * CARDS ACTIONS

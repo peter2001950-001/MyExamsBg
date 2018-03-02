@@ -308,6 +308,7 @@ namespace MyExams.Controllers
         public ActionResult SectionUpdate(string testUniqueCode, string name, bool mixupQuestions, int index)
         {
             var test = _testService.GetTestByUniqueNumber(testUniqueCode);
+
             if (test != null)
             {
                if(_teacherService.IsTeacherOfTest(User.Identity.GetUserId(), test.Id)) { 
@@ -332,18 +333,20 @@ namespace MyExams.Controllers
             if (teacher != null)
             {
                 var classesCodes = new JavaScriptSerializer().Deserialize<List<string>>(chosenClasses);
-                var testRef = _testService.GetTestByUniqueNumber(testUniqueCode);
+                var testRef = _testService.GetTestByUniqueNumber(testUniqueCode);;
                 var classRefList = new List<Class>();
                 if (testRef != null)
                 {
                     foreach (var item in classesCodes)
                     {
                         var classRef = _classService.GetAll().Where(x => x.UniqueCode == item).FirstOrDefault();
+                        classRef.RecentUsage = DateTime.Now;
                         if (classRef != null)
                         {
                             classRefList.Add(classRef);
 
                         }
+                        _testService.Update();
 
                     }
                     var fileName = RandomString(16, true);
@@ -369,16 +372,8 @@ namespace MyExams.Controllers
             var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
             if (teacher != null)
             {
-                var tests = _testService.GetAllTests().Where(x => x.Teacher.Id == teacher.Id);
-                List<object> testsResult = new List<object>();
-                foreach (var item in tests)
-                {
-                    if(item.TestTitle == null)
-                    {
-                        item.TestTitle = "Неозаглавен тест";
-                    }
-                    testsResult.Add(new { testTitle = item.TestTitle, students = item.Students, averageMark = item.AverageMark, testCode = item.UniqueNumber });
-                }
+                var testsResult = _testService.GetTestObjects(teacher.UserId);
+               
                 return Json(new { status = "OK", tests = testsResult }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { status = "ERR1" },  JsonRequestBehavior.AllowGet);
@@ -454,11 +449,31 @@ namespace MyExams.Controllers
              return RedirectToAction("classes");
 
         }
+
+        public JsonResult SyncIndex()
+        {
+            var userId = User.Identity.GetUserId();
+            var teacher = _teacherService.GetTeacherByUserId(userId);
+            if (teacher != null)
+            {
+                bool isQuestionsToBeChecked = false;
+
+                var classesResultObj = _classService.GetClassObjects(userId, x => x.RecentUsage, Services.OrderByMethod.Descending).Take(3);
+                var testsResultObj = _testService.GetTestObjects(userId, x => x.RecentUsage, Services.OrderByMethod.Descending).Take(3);
+                if(_gAnswerSheetService.GetAllGQuestionToBeChecked().Any(x=>x.Teacher.Id == teacher.Id))isQuestionsToBeChecked = true;
+                
+                return Json(new { status = "OK", classes = classesResultObj, tests = testsResultObj, isQuestionsToBeChecked = isQuestionsToBeChecked }, JsonRequestBehavior.AllowGet);
+
+            }
+            return Json(new { status = "ERR" }, JsonRequestBehavior.AllowGet);
+        }
         [ValidateAntiForgeryToken]
         public ActionResult CreateNewClass(NewClassViewModel model)
         {
             var userId = User.Identity.GetUserId();
             var addedClass = _classService.CreateNewClass(userId, model.Name, model.Subject);
+            addedClass.RecentUsage = DateTime.Now;
+            _testService.Update();
             if (addedClass != null)
             {
                 return Json(new { code = addedClass.UniqueCode, status = "OK" });
@@ -470,19 +485,9 @@ namespace MyExams.Controllers
         public ActionResult GetClasses()
         {
             var userId = User.Identity.GetUserId();
-            var classesIEnum = _classService.GetAll().Where(x => x.Teacher.UserId == userId);
-            CultureInfo info = new CultureInfo("bg-BG");
-            var classes = classesIEnum.OrderBy(x => x.Name, StringComparer.Create(info, false)).ToList();
-            object[] clasesInput = new object[classes.Count()];
-            for (int i = 0; i < classes.Count(); i++)
-            {
-                if(classes[i].ClassColor == null)
-                {
-                   classes[i].ClassColor =  _classService.GenerateColor(DateTime.Now.Millisecond+  i);
-                }
-                clasesInput[i] = new { name = classes[i].Name, studentsCount = classes[i].StudentsCount, averageMark = classes[i].AverageMark, code = classes[i].UniqueCode, subject = classes[i].Subject, color = classes[i].ClassColor };
-            }
-            return Json(new { classes = clasesInput, status = "OK" }, JsonRequestBehavior.AllowGet);
+            var classesObj = _classService.GetClassObjects(userId, x => x.Name, Services.OrderByMethod.Ascending);
+            
+            return Json(new { classes = classesObj, status = "OK" }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult GetStudents(string uniqueCode)
         {
@@ -566,11 +571,7 @@ namespace MyExams.Controllers
                
             }
         }
-
-        public void DeleteFile(string fileName)
-        {
-            System.IO.File.Delete(fileName);
-        }
+        
         public void TestsUpdateResults()
         {
             while (true) {

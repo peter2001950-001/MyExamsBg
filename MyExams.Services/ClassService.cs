@@ -4,6 +4,7 @@ using MyExams.Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -95,6 +96,27 @@ namespace MyExams.Services
             }
             return classes;
         }
+        public IEnumerable<object> GetClassObjects<TKey>(string teacherId, Expression<Func<Models.Class, TKey>> orderBy, OrderByMethod orderByMethod)
+        {
+            var classesIQuer = _classRepository.Where(x => x.Teacher.UserId == teacherId).AsQueryable();
+            switch (orderByMethod)
+            {
+                case OrderByMethod.Ascending:   classesIQuer = classesIQuer.OrderBy(orderBy);
+                    break;
+                case OrderByMethod.Descending:
+                    classesIQuer = classesIQuer.OrderByDescending(orderBy);
+                    break;
+            }
+                
+             
+            var classes = classesIQuer.ToList();
+            List<object> classesInput = new List<object>();
+            for (int i = 0; i < classes.Count(); i++)
+            {
+                classesInput.Add(new { name = classes[i].Name, studentsCount = classes[i].StudentsCount, averageMark = classes[i].AverageMark, code = classes[i].UniqueCode, subject = classes[i].Subject, color = classes[i].ClassColor });
+            }
+            return classesInput;
+        } 
         public Class AddStudentToClass(string userId, string classCode, int noInClass)
         {
             var classRef = _classRepository.Where(x => x.UniqueCode == classCode).FirstOrDefault();

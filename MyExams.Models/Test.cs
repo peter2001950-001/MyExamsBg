@@ -21,5 +21,6 @@ namespace MyExams.Models
         public DateTime LastUpdated { get; set; }
         public int Students { get; set; }
         public int AverageMark { get; set; }
+        public DateTime RecentUsage { get; set; }
     }
 }

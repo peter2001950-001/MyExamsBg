@@ -19,5 +19,6 @@ namespace MyExams.Models
         public double AverageMark { get; set; }
         public bool FirstMessageShowed { get; set; }
         public string ClassColor { get; set; }
+        public DateTime RecentUsage { get; set; }
     }
 }
