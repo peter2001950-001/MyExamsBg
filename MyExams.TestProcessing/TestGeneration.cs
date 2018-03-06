@@ -154,7 +154,7 @@ namespace MyExams.TestProcessing
                 MaxPoints = points,
                 Student = student,
                 Teacher = teacher,
-
+                 Class = classObj
             };
             string xml;
             using (var sw = new StringWriter())

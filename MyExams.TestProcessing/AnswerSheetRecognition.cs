@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ZXing;
@@ -47,19 +48,23 @@ namespace MyExams.TestProcessing
                            BarcodeFormat.CODE_128
                       },
                         TryHarder = true,
+                          
 
                     }
                 };
 
-                var barcodeDecoded = reader.Decode(croppedBitmap);
-                croppedBitmap.Dispose();
+                var barcodeDecoded = reader.Decode(croppedBitmap); croppedBitmap.Dispose();
                 if (barcodeDecoded != null)
                 {
+                   
                     return barcodeDecoded.Text;
                 }
+               
             }
             return null;
         }
+        
+
         public List<List<Shape>> ProcessImage()
         {
             List<Shape> result = new List<Shape>();
@@ -91,6 +96,22 @@ namespace MyExams.TestProcessing
                     if (anotherTry.Count == AnswersMatrix[i])
                     {
                         recongizedRowsAndShapes[i] = anotherTry;
+                    }else if(anotherTry.Count>1 && AnswersMatrix[i] == 1)
+                    {
+                        var topLeftX = recongizedRowsAndShapes[i].Min(x => x.TopLeftPoint.X);
+                        var topLeftY = recongizedRowsAndShapes[i].Min(x => x.TopLeftPoint.Y);
+
+                        var topRightX = recongizedRowsAndShapes[i].Max(x => x.TopRightPoint.X);
+                        var topRightY = recongizedRowsAndShapes[i].Min(x => x.TopRightPoint.Y);
+
+                        var bottomLeftX = recongizedRowsAndShapes[i].Min(x => x.BottomLeftPoint.X);
+                        var bottomLeftY = recongizedRowsAndShapes[i].Max(x => x.BottomLeftPoint.Y);
+
+                        var bottomRightX = recongizedRowsAndShapes[i].Max(x => x.BottomRightPoint.X);
+                        var bottomRightY = recongizedRowsAndShapes[i].Max(x => x.BottomRightPoint.Y);
+
+                        recongizedRowsAndShapes[i] = new List<Shape>() { new Shape(new IntPoint(topLeftX, topLeftY), new IntPoint(topRightX, topRightY), new IntPoint(bottomLeftX, bottomLeftY), new IntPoint(bottomRightX, bottomRightY)) };
+
                     }
                 }
                 RowsAndShapes.Add(IsChecked(recongizedRowsAndShapes[i]));
@@ -110,7 +131,7 @@ namespace MyExams.TestProcessing
             int counter = 1;
             if (targetShapes > 0)
             {
-                counter = 6;
+                counter = 8;
             }
             for (int p = 0 + ((targetShapes > 0) ? 1 : 0); p < counter; p++)
             {
@@ -257,7 +278,7 @@ namespace MyExams.TestProcessing
                     for (int y = newRectangle.Y + 10; y < newRectangle.Bottom - 10; y++)
                     {
                         totalPixels++;
-                        var pixel = _bitmap.GetPixel(x, y);
+                        var pixel = _lockBitmap.GetPixel(x, y);
                         if (pixel.R < 100 && pixel.G < 100 && pixel.B > 60)
                         {
                             coloredPixels++;
@@ -284,6 +305,8 @@ namespace MyExams.TestProcessing
             var firstHozilonalLine = new Line();
             var lastHorizontalLine = new Line();
             var staringPoint = new IntPoint(0, 0);
+            var finishPoint = new IntPoint(0, 0);
+            var consequentWhitePixels = 0;
             for (int y = rectangle.Y; y < rectangle.Bottom; y++)
             {
                 for (int x = rectangle.X; x < rectangle.Right; x++)
@@ -291,53 +314,66 @@ namespace MyExams.TestProcessing
                     var pixel = _lockBitmap.GetPixel(x, y);
 
                   
-                    if (pixel.B < 90 && pixel.G < 90 && pixel.R < 90)
+                    if ((pixel.B < 90 && pixel.G < 90 && pixel.R < 90))
                     {
                         if(staringPoint.X == 0 && staringPoint.Y == 0)
                         {
                             staringPoint.X = x;
                             staringPoint.Y = y;
                         }
+                        finishPoint.X = x;
+                        finishPoint.Y = y;
                     }
                     else
                     {
                         if (staringPoint.X != 0 || staringPoint.Y != 0)
                         {
-                            if (x - staringPoint.X > 50)
+                            consequentWhitePixels++;
+                            if (consequentWhitePixels > 6)
                             {
-                                if (!isFirstLineSet)
-                                {
-                                    firstHozilonalLine.APoint = staringPoint;
-                                    firstHozilonalLine.BPoint = new IntPoint(x, y);
-                                    isFirstLineSet = true;
-                                    staringPoint.X = 0;
-                                    staringPoint.Y = 0;
-                                }
-                                else
-                                {
-
-                                    lastHorizontalLine.APoint = staringPoint;
-                                    lastHorizontalLine.BPoint = new IntPoint(x, y);
-                                    staringPoint.X = 0;
-                                    staringPoint.Y = 0;
-                                }
+                                consequentWhitePixels = 0;
+                                break;
                             }
+                           
                         }
 
-                        if (lastHorizontalLine.APoint.Y != 0 && y - lastHorizontalLine.APoint.Y > 150)
-                        {
-                            toBreak = true;
-                            break;
-                        }
+                        //if (lastHorizontalLine.APoint.Y != 0 && y - lastHorizontalLine.APoint.Y > 250)
+                        //{
+                        //    toBreak = true;
+                        //    break;
+                        //}
                     }
                 }
+                if (finishPoint.X - staringPoint.X > 40)
+                {
+                    if (!isFirstLineSet)
+                    {
+                        firstHozilonalLine.APoint = staringPoint;
+                        firstHozilonalLine.BPoint = finishPoint;
+                        isFirstLineSet = true;
+
+                    }
+                    else
+                    {
+
+                        lastHorizontalLine.APoint = staringPoint;
+                        lastHorizontalLine.BPoint = finishPoint;
+                       
+                    }
+                       
+                }
+                staringPoint.X = 0;
+                        staringPoint.Y = 0;
+                        finishPoint.X = 0;
+                        finishPoint.Y = 0;
                 if (toBreak) break;
             }
             if (firstHozilonalLine.APoint.X != 0 && firstHozilonalLine.APoint.Y != 0 && lastHorizontalLine.APoint.X != 0 && lastHorizontalLine.BPoint.Y != 0)
             {
 
-                var croppedRect = new Rectangle(firstHozilonalLine.APoint.X-20, firstHozilonalLine.APoint.Y-20, firstHozilonalLine.BPoint.X - firstHozilonalLine.APoint.X+20, lastHorizontalLine.BPoint.Y - firstHozilonalLine.APoint.Y+20);
+                var croppedRect = new Rectangle(firstHozilonalLine.APoint.X-20, firstHozilonalLine.APoint.Y-20, firstHozilonalLine.BPoint.X - firstHozilonalLine.APoint.X+20, lastHorizontalLine.BPoint.Y - firstHozilonalLine.APoint.Y+40);
                 var croppedBitmap = _bitmap.Clone(croppedRect, _bitmap.PixelFormat);
+                //croppedBitmap.Save(@"D:\Downloads\drive-download-20180303T105812Z-001\barcode.jpg", ImageFormat.Jpeg);
                 return croppedBitmap;
             }
             return null;

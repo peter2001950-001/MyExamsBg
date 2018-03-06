@@ -65,6 +65,7 @@
     <Compile Include="Contracts\ITestCheckProcess.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="PdfBuilder.cs" />
+    <Compile Include="RandomString.cs" />
     <Compile Include="Shape.cs" />
     <Compile Include="TestCheckProcess.cs" />
     <Compile Include="TestGeneration.cs" />

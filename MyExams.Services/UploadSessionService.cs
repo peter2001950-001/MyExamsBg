@@ -38,7 +38,7 @@ namespace MyExams.Services
         }
         public IEnumerable<UploadSessionFileDirectory> GetUploadSessionFileDirectoriesBy(UploadSession uploadSession)
         {
-            return _uploadSessionFileDirectoryRepository.Where(x => x.UploadSession.Id == uploadSession.Id);
+           return _uploadSessionFileDirectoryRepository.Include(x => x.AnswerSheet).Where(x => x.UploadSession.Id == uploadSession.Id);
         }
         public void AddUploadSession(UploadSession uploadSession)
         {

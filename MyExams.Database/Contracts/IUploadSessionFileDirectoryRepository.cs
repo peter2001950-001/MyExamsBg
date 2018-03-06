@@ -10,4 +10,5 @@ namespace MyExams.Database.Contracts
     public interface IUploadSessionFileDirectoryRepository:IRepositoryBase<UploadSessionFileDirectory>
     {
     }
+    
 }

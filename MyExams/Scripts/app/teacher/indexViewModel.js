@@ -5,6 +5,8 @@
     self.tests = ko.observable();
     self.classes = ko.observable();
     self.question = ko.observable();
+    self.currentNo = ko.observable(1);
+    self.count = ko.observable();
     self.uploadSessionNotification = function () {
         $.ajax({
             type: "get",
@@ -30,6 +32,7 @@
                     self.classes(data.classes);
                     self.tests(data.tests);
                     self.isQuestionsToConfirm(data.isQuestionsToBeChecked);
+                    self.count(data.count);
                 }
             }
         });
@@ -44,6 +47,28 @@
                 if (data.status === "OK") {
                     self.question(data.question);
                     $("#questionsToBeChecked").modal("show");
+                } else if (data.status == "ERR3") {
+
+                    $("#questionsToBeChecked").modal("hide");
+                    self.syncIndex();
+                }
+            }
+        });
+    }
+    self.givePoints = function (points, parent) {
+        $.ajax({
+            type: "post",
+            datatype: "json",
+            contenttype: "application/json",
+            url: "/t/GivePoints",
+            data: {
+                questionId: self.question().id,
+                points: points
+            },
+            success: function (data) {
+                if (data.status === "OK") {
+                    self.getQuestion();
+                    self.currentNo(self.currentNo() + 1);
                 }
             }
         });

@@ -14,14 +14,17 @@ namespace MyExams.Services
     {
         private readonly ITestRepository _testRepository;
         private readonly IGTestRepository _gTestRepository;
-        public TestService(ITestRepository testRepository, IGTestRepository  gTestRepository)
+        private readonly IGAnswerSheetRepository _gAnswerSheetRepository;
+        public TestService(ITestRepository testRepository, IGTestRepository  gTestRepository, IGAnswerSheetRepository gAnswerSheetRepository)
         {
             _testRepository = testRepository;
             _gTestRepository = gTestRepository;
+            _gAnswerSheetRepository = gAnswerSheetRepository;
         }
 
         public void AddNewTest(Test item)
         {
+            item.RecentUsage = DateTime.Now;
             _testRepository.Add(item);
             _testRepository.SaveChanges();
         }
@@ -29,6 +32,14 @@ namespace MyExams.Services
         public IEnumerable<Test> GetAllTests()
         {
             return _testRepository.GetAll();
+        }
+        public GTest GetGTestBy(GAnswerSheet answerSheet)
+        {
+           return _gAnswerSheetRepository.Include(x => x.GTest).Where(x => x.Id == answerSheet.Id).Select(x=>x.GTest).FirstOrDefault();
+        }
+        public IEnumerable<GTest> GetGTestBy(int classId)
+        {
+            return _gTestRepository.IncludeAll().Where(x=>x.Class?.Id == classId && x.IsDone).ToList();
         }
         public IEnumerable<object> GetTestObjects<TKey>(string teacherId, Expression<Func<Test, TKey>> orderBy, OrderByMethod orderByMethod)
         {

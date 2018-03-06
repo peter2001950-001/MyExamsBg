@@ -80,8 +80,8 @@ function UploadViewModel() {
                             localStorage.removeItem("sessionId");
                             setTimeout(function () {
 
-                            window.location.href = "/t/"
-                            },1500)
+                                window.location.href = "/t/"
+                            }, 3000);
                         }
                     };
                 }

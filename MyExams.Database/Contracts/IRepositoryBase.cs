@@ -13,6 +13,7 @@ namespace MyExams.Database.Contracts
         void Remove(T item);
         IEnumerable<T> GetAll();
         IEnumerable<T> Where(Expression<Func<T, bool>> where);
+        IEnumerable<T> Include<TKey>(Expression<Func<T, TKey>> expression);
         void SaveChanges();
 
     }

@@ -69,7 +69,7 @@ namespace MyExams.TestProcessing
             using (AnswerSheetRecognition sheetRecognition = new AnswerSheetRecognition(_bitmap))
             {
                 var barcode = sheetRecognition.BarcodeRecognize();
-                if (barcode != string.Empty)
+                if (barcode!=null)
                 {
                     var answerSheet = _gAnswerSheetService.GetAllGAnswerSheet().Where(x => x.Barcode == barcode).FirstOrDefault();
                     if (answerSheet != null)
@@ -79,11 +79,12 @@ namespace MyExams.TestProcessing
                             List<int> AnswerMatix = new List<int>();
                             var gTest = _testService.GetAllGTests().Where(x => x.Id == answerSheet.GTest.Id).First();
                             var teacher = _teacherService.GetAll().Where(x => x.Id == gTest.Teacher.Id).First();
-
+                            var randomString = RandomString.Instance;
+                            
                             Pen yellowPen = new Pen(Color.Yellow, 4);
                             Pen redPen = new Pen(Color.Red, 4);
                             Pen greenPen = new Pen(Color.Green, 4);
-
+                            
                             // get the AnswerMatix from the xml text
                             XmlDocument xml = new XmlDocument();
                             xml.LoadXml(gTest.Xml);
@@ -106,7 +107,9 @@ namespace MyExams.TestProcessing
                                     var correctAnswersCount = correctAnswers[i].CorrectAnswers.Count;
                                     if (correctAnswersCount == 0) correctAnswersCount = 1;
                                     if (recognisedRowsAndShapes[i].Count != correctAnswersCount)
+                                    {
                                         hasError = true;
+                                    }
                                 }
                             }
                             else
@@ -131,9 +134,8 @@ namespace MyExams.TestProcessing
                                     {
                                         var rectangle = new Rectangle(recognisedRowsAndShapes[i][0].TopLeftPoint.X, recognisedRowsAndShapes[i][0].TopLeftPoint.Y, (int)recognisedRowsAndShapes[i][0].TopLeftPoint.DistanceTo(recognisedRowsAndShapes[i][0].TopRightPoint), (int)recognisedRowsAndShapes[i][0].TopLeftPoint.DistanceTo(recognisedRowsAndShapes[i][0].BottomLeftPoint));
                                         var croppedImage = _bitmap.Clone(rectangle, _bitmap.PixelFormat);
-                                        var imagename = RandomString(20);
-                                        var path = Path.Combine(FileName, imagename + ".jpg");
-                                        BitmapSave(croppedImage, path);
+                                            var imagename = randomString.GetString(20);
+                                          var  path = Path.Combine(FileName, imagename + ".jpg");
                                         //save the piece containing the answer
                                         var gWrittenQuestion = new GWrittenQuestion()
                                         {
@@ -142,7 +144,7 @@ namespace MyExams.TestProcessing
                                             GQuestionId = i + answerSheet.FirstQuestionNo
                                         };
                                         _gAnswerSheetService.AddGWrittenQuestion(gWrittenQuestion);
-
+                                         BitmapSave(croppedImage, path);
                                         _gAnswerSheetService.AddGQuestionToBeChecked(new GQuestionToBeChecked()
                                         {
                                             GWrittenQuestion = gWrittenQuestion,
@@ -199,16 +201,18 @@ namespace MyExams.TestProcessing
                                         }
                                     }
                                 }
+                                
+                                var newXml = string.Empty;
                                 // mark the answerSheet as done 
                                 using (StringWriter sw = new StringWriter())
                                 {
                                     using (XmlTextWriter xw = new XmlTextWriter(sw))
                                     {
                                         xml.WriteTo(xw);
-                                        gTest.Xml = sw.ToString();
+                                       newXml = sw.ToString();
                                     }
                                 }
-                                var imageName = RandomString(20);
+                                var imageName = randomString.GetString(20);
                                 var path1 = Path.Combine(FileName, imageName + ".jpg");
                                 BitmapSave(_bitmap, path1);
                                 var checkedFileDirectory = new FileDirectory()
@@ -220,9 +224,8 @@ namespace MyExams.TestProcessing
                                 answerSheet.CheckedFileName = checkedFileDirectory;
                                 answerSheet.IsUploaded = true;
                                 answerSheet.ScannedFileName = BitmapFileDirectory;
-                                answerSheet.ReceivedPoints = totalPoints;
                                 answerSheet.AnswerSheetStatus = isThereWrittenQuestion ? AnswerSheetStatus.WaitingWrittenQuestionsConfirmation : AnswerSheetStatus.Checked;
-                          
+                                answerSheet.Xml = newXml;
 
                                 uploadSessionFileDirectory.AnswerSheet = answerSheet;
                                 uploadSessionFileDirectory.UploadedFileStatus = UploadedFileStatus.Checked;
@@ -241,6 +244,7 @@ namespace MyExams.TestProcessing
                         else
                         {
                             uploadSessionFileDirectory.UploadedFileStatus = UploadedFileStatus.AlreadyChecked;
+                            uploadSessionFileDirectory.AnswerSheet = answerSheet;
                             _testService.Update();
                             return UploadedFileStatus.AlreadyChecked;
                         }
@@ -338,14 +342,6 @@ namespace MyExams.TestProcessing
         {
             public int Id { get; set; }
             public int MyProperty { get; set; }
-        }
-        private static string RandomString(int length)
-        {
-            var random = new Random();
-            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         private void BitmapSave(Bitmap bitmap, string path)

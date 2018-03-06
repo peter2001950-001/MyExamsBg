@@ -78,7 +78,7 @@
                 <th>Име</th>
                 <th>Фамилия</th>
                 <!-- ko foreach: tests -->
-                <th data-bind="text: name"></th>
+                <th data-bind="text: title"></th>
                 <!-- /ko -->
             </tr>
         </thead>
@@ -88,7 +88,9 @@
                 <td data-bind="text: firstName"></td>
                 <td data-bind="text: lastName"></td>
                 <!-- ko foreach: marks -->
-                <td data-bind="text: mark"></td>
+                <td data-bind="foreach: $data">
+                    <button class="btn badge badge-primary"style="font-size:13px"><span data-bind="text: percentage"></span>% (<span data-bind="text: mark"></span>)</button>
+                </td>
                 <!-- /ko -->
             </tr>
         </tbody>

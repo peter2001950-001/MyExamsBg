@@ -16,6 +16,8 @@ namespace MyExams.Services.Contracts
         IEnumerable<object> GetTestObjects(string teacherId);
         Test GetTestByUniqueNumber(string uniqueNumber);
         IEnumerable<GTest> GetAllGTests();
+        GTest GetGTestBy(GAnswerSheet answerSheet);
+        IEnumerable<GTest> GetGTestBy(int classId);
         void AddNewGTest(GTest item);
         void Update();
     }

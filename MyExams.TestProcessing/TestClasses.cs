@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace MyExams.TestProcessing.TestClasses
 {
     
-    public class TPTest
+    class TPTest
     {
         public int GTestId { get; set; }
         public int TestId { get; set; }
@@ -23,21 +23,21 @@ namespace MyExams.TestProcessing.TestClasses
 
     }
 
-    public class TPStudentDetails
+    class TPStudentDetails
     {
         public int StudentId { get; set; }
         public string FullName { get; set; }
         public int NoInClass { get; set; }
         public string ClassName { get; set; }
     }
-    public class TPSection
+    class TPSection
     {
         public int SectionId { get; set; }
         public string Title { get; set; }
         public List<TPQuestion> Questions { get; set; }
     }
 
-    public class TPQuestion
+    class TPQuestion
     {
         public int QuestionId { get; set; }
         public QuestionType Type { get; set; }
@@ -47,7 +47,7 @@ namespace MyExams.TestProcessing.TestClasses
         public List<TPAnswers> Answers { get; set; }
     }
 
-    public class TPAnswers
+    class TPAnswers
     {
         public int AnswerId { get; set; }
         public string Text { get; set; }

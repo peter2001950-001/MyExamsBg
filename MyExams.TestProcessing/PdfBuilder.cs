@@ -14,7 +14,7 @@ using ZXing;
 
 namespace MyExams.TestProcessing
 {
-    public class PdfBuilder
+    class PdfBuilder
     {
         private Font f12;
         private Font f12Bold;
@@ -128,14 +128,13 @@ namespace MyExams.TestProcessing
                         Options = new ZXing.Common.EncodingOptions
                         {
                             Height = 20,
-                            Width = 60,
+                            Width = 150,
                             Margin = 1,
                             PureBarcode = true
                         }
                     };
                     var barcodeBitmap = barcodeWriter.Write(barcode);
-                    using (var barcodeMemoryStream = new MemoryStream())
-                    {
+                    var barcodeMemoryStream = new MemoryStream();
                         barcodeBitmap.Save(barcodeMemoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);
                         barcodeMemoryStream.Seek(0, SeekOrigin.Begin);
                         iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(barcodeMemoryStream);
@@ -211,6 +210,7 @@ namespace MyExams.TestProcessing
                                     firstQuestion = rowCount + 1;
 
                                     // Add barcode to the next page
+                                    barcodeMemoryStream = new MemoryStream(barcodeMemoryStream.Capacity);
                                     barcode = _gAnswerSheetService.BarcodeGenerate();
                                     barcodeBitmap = barcodeWriter.Write(barcode);
                                     barcodeBitmap.Save(barcodeMemoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -234,8 +234,8 @@ namespace MyExams.TestProcessing
 
                         };
                         _gAnswerSheetService.AddGAnswerSheet(answerSheet1);
-                        
-                    }
+
+                    barcodeMemoryStream.Dispose();
                     barcodeBitmap.Dispose();
                    
                 }

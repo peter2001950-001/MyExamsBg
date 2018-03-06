@@ -16,5 +16,9 @@ namespace MyExams.Database.Repositories
         {
             this._dbList = _dbSet.Include(x => x.FileDirectory).Include(x => x.UploadSession).Include(x=>x.AnswerSheet);
         }
+        public override IEnumerable<UploadSessionFileDirectory> Include<TKey>(System.Linq.Expressions.Expression<Func<UploadSessionFileDirectory, TKey>> expression)
+        {
+            return _dbSet.Include(x=>x.FileDirectory).Include(expression);
+        }
     }
 }

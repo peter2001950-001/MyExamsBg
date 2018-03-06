@@ -36,7 +36,9 @@ namespace MyExams.Services
                     Subject = subject,
                     Teacher = teacher,
                     UniqueCode = code,
-                    ClassColor = colorGenerated
+                    ClassColor = colorGenerated,
+                     RecentUsage = DateTime.Now
+                   
                 };
                 _classRepository.Add(classToAdd);
                 _classRepository.SaveChanges();

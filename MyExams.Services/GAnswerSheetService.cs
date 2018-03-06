@@ -25,9 +25,17 @@ namespace MyExams.Services
         {
             return _gAnswerSheetRepository.GetAll();
         }
+        public IEnumerable<GAnswerSheet> GetGAnswerSheetsBy(int GTestId)
+        {
+          return  _gAnswerSheetRepository.Include(x => x.GTest).Where(x => x.GTest.Id == GTestId);
+        }
         public IEnumerable<GWrittenQuestion> GetAllGWrittenQuestions()
         {
             return _gWrittenQuestionRepository.GetAll();
+        }
+        public IEnumerable<GWrittenQuestion> GetGWrittenQuestionsBy(int GTestId)
+        {
+            return _gWrittenQuestionRepository.Include(x => x.GTest).Where(x => x.GTest.Id == GTestId);
         }
         public IEnumerable<GQuestionToBeChecked> GetAllGQuestionToBeChecked()
         {
@@ -51,6 +59,11 @@ namespace MyExams.Services
         public void AddGQuestionToBeChecked(GQuestionToBeChecked gQuestionToBeChecked)
         {
             _gQuestionsToBeCheckedRepository.Add(gQuestionToBeChecked);
+            _gQuestionsToBeCheckedRepository.SaveChanges();
+        }
+        public void RemoveGQuestionToBeChecked(GQuestionToBeChecked gQuestionToBeChecked)
+        {
+            _gQuestionsToBeCheckedRepository.Remove(gQuestionToBeChecked);
             _gQuestionsToBeCheckedRepository.SaveChanges();
         }
 

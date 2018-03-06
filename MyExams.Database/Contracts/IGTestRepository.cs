@@ -9,5 +9,6 @@ namespace MyExams.Database.Contracts
 {
    public interface IGTestRepository:IRepositoryBase<GTest>
     {
+        IEnumerable<GTest> IncludeAll();
     }
 }

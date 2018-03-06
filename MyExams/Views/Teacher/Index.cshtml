@@ -8,7 +8,7 @@
     <div class="card-body" style="padding: 3.25rem">
         <h4 class="card-title">Имате въпроси за потвърждаване</h4>
         <p class="card-text">Това са въпросите, които са със свободен отговор и се нуждаят от вашето внимание</p>
-        <button class="btn btn-light" data-bind="click: $root.getQuestion()">Започнете сега</button>
+        <button class="btn btn-light" data-bind="click: getQuestion">Започнете сега</button>
     </div>
 </div>
 
@@ -85,25 +85,27 @@
         </div>
     </div>
 </div>
-<div class="modal modal-big fade " id="questionsToBeChecked" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal modal-big fade" id="questionsToBeChecked" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
     <div class="modal-dialog" role="document">
         <div class="modal-content" data-bind="with: question">
             <div class="modal-header">
-                <h5 class="modal-title" data-bind="text: text">Тестовете са проверени</h5>
+                <h5 class="modal-title">Въпрос <span data-bind="text: $root.currentNo"></span> от <span data-bind="text: $root.count"></span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <img class="w-100" data-bind="attr: {src: src}"/>
+                <p>Въпрос: <span data-bind="text: text"></span></p>
                 <p>Верен отговор: <strong data-bind="text: correctAnswer"></strong></p>
+                <img class="w-100" data-bind="attr: {src: src}"/>
+                
             </div>
             <div class="modal-footer">
                 <div class="row w-100">
                     <div class="col-sm-8">Изберете брой точки:</div>
                     <ul class="row col-sm-4" data-bind="foreach: new Array(points+1)" style="list-style:none">
-                        <li class="col-sm-3"><button class="btn btn-primary w-100" data-bind='text: $index()'></button></li>
+                        <li class="col-sm-3"><button class="btn btn-primary w-100" data-bind='text: $index(), click: $root.givePoints.bind($data, $index())'></button></li>
                     </ul>
                 </div>
             </div>

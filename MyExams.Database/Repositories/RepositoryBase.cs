@@ -38,6 +38,10 @@ namespace MyExams.Database.Repositories
         {
             return _dbList.Where(where);
         }
+        public virtual IEnumerable<T> Include<TKey>(Expression<Func<T, TKey>> expression)
+        {
+            return _dbSet.Include<T, TKey>(expression).ToList();
+        }
        
         public virtual void SaveChanges()
         {
