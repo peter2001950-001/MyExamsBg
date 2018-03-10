@@ -52,19 +52,13 @@
                             @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Телефон" })
                             @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
                         </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-addon">
-                                <i class="icon-lock"></i>
-                            </span>
-                            @Html.TextBoxFor(m => m.DateOfBirth, new { @class = "form-control", @placeholder = "Дата на раждане [ДД/ММ/ГГГГ]", @id = "datepicker" })
-                            @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "text-danger", })
-                        </div>
+                        
                         <div class="input-group mb-3">
                             <span class="input-group-addon">
                                 <i class="icon-lock"></i>
                             </span>
                             @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Имейл" })
-                            @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "text-danger", })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger", })
                         </div>
 
 
@@ -89,9 +83,9 @@
                     <div class="card-footer p-4">
                         <div class="row">
                             <div class="col-12" style="text-align: center">
-                                <button class="btn btn-light" type="button">
+                                <a class="btn btn-light"  href ="@Url.Action("Login", "Account")" type="button">
                                   Вече имате акаунт?
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>

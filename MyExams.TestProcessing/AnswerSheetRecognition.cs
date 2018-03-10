@@ -35,8 +35,9 @@ namespace MyExams.TestProcessing
 
         public string BarcodeRecognize()
         {
+            var tries = 0;
             var croppedRect = new Rectangle((int)(_bitmap.Width * 0.9), (int)(0.30 * _bitmap.Height), (int)(0.1 * _bitmap.Width), (int)(0.40 * _bitmap.Height));
-            var croppedBitmap = CropBarcode(croppedRect);
+            var croppedBitmap = CropBarcode(croppedRect, 0);
             if (croppedBitmap != null)
             {
                 IBarcodeReader reader = new BarcodeReader()
@@ -52,13 +53,24 @@ namespace MyExams.TestProcessing
 
                     }
                 };
-
-                var barcodeDecoded = reader.Decode(croppedBitmap); croppedBitmap.Dispose();
-                if (barcodeDecoded != null)
+                do
                 {
-                   
-                    return barcodeDecoded.Text;
-                }
+                    if (croppedBitmap != null)
+                    {
+                        var barcodeDecoded = reader.Decode(croppedBitmap);
+                        if (barcodeDecoded != null)
+                        {
+                            croppedBitmap.Dispose();
+                            return barcodeDecoded.Text;
+                        }
+                        tries++;
+                        croppedBitmap = CropBarcode(croppedRect, tries);
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                } while (tries<3);
                
             }
             return null;
@@ -286,7 +298,7 @@ namespace MyExams.TestProcessing
                     }
                 }
                 double result = (coloredPixels / totalPixels) * 100;
-                if (result > 2 && result < 15)
+                if (result > 2 && result < 20)
                 {
                     item.IsChecked = true;
                 }
@@ -298,7 +310,7 @@ namespace MyExams.TestProcessing
             return row;
         }
 
-        private Bitmap CropBarcode(Rectangle rectangle)
+        private Bitmap CropBarcode(Rectangle rectangle, int tryCount)
         {
             var isFirstLineSet = false;
             var toBreak = false;
@@ -370,11 +382,13 @@ namespace MyExams.TestProcessing
             }
             if (firstHozilonalLine.APoint.X != 0 && firstHozilonalLine.APoint.Y != 0 && lastHorizontalLine.APoint.X != 0 && lastHorizontalLine.BPoint.Y != 0)
             {
-
-                var croppedRect = new Rectangle(firstHozilonalLine.APoint.X-20, firstHozilonalLine.APoint.Y-20, firstHozilonalLine.BPoint.X - firstHozilonalLine.APoint.X+20, lastHorizontalLine.BPoint.Y - firstHozilonalLine.APoint.Y+40);
-                var croppedBitmap = _bitmap.Clone(croppedRect, _bitmap.PixelFormat);
-                //croppedBitmap.Save(@"D:\Downloads\drive-download-20180303T105812Z-001\barcode.jpg", ImageFormat.Jpeg);
-                return croppedBitmap;
+                if (firstHozilonalLine.BPoint.X - firstHozilonalLine.APoint.X + 20 + 10 * tryCount < _bitmap.Width)
+                {
+                    var croppedRect = new Rectangle(firstHozilonalLine.APoint.X - 40 - 10 * tryCount, firstHozilonalLine.APoint.Y - 40 - 10 * tryCount, firstHozilonalLine.BPoint.X - firstHozilonalLine.APoint.X + 20 + 10 * tryCount, lastHorizontalLine.BPoint.Y - firstHozilonalLine.APoint.Y + 40 + tryCount);
+                    var croppedBitmap = _bitmap.Clone(croppedRect, _bitmap.PixelFormat);
+                   // croppedBitmap.Save(@"D:\Downloads\drive-download-20180303T105812Z-001\barcode.jpg", ImageFormat.Jpeg);
+                    return croppedBitmap;
+                }
             }
             return null;
         }

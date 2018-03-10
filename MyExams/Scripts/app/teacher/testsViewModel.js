@@ -28,3 +28,11 @@ ko.applyBindings(myVm);
 $(document).ready(function () {
     myVm.GetTests();
 })
+
+var createTestRedirection = function (data) {
+    if (data.status == "OK") {
+        window.location.href = "/t/testDesign?id=" + data.id;
+    } else {
+        alert("Възникна грешка при създавянето на нов клас!")
+    }
+}

@@ -92,6 +92,7 @@
             @RenderSection("scripts", required: false)
 
 <script>
+    $('[data-toggle="popover"]').popover();
     $(".nav-dropdown-toggle").click(function () {
         if ($(this).next().hasClass("show")) {
             $(this).next().removeClass("show");

@@ -1,45 +1,173 @@
 ﻿<!DOCTYPE html>
-<html>
+<html style="overflow-x: hidden">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/main")
+    @Styles.Render("~/Content/home")
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <header id="navigation" class="navbar-inverse navbar-fixed-top animated-header">
         <div class="container">
             <div class="navbar-header">
+                <!-- responsive nav button -->
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <!-- /responsive nav button -->
+                <!-- logo -->
+                <h1 class="navbar-brand">
+                    <a href="#body"><img width="100" src="~/Content/images/logo-2.png" /></a>
+                </h1>
+                <!-- /logo -->
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+
+            <!-- main nav -->
+            <nav class="collapse navbar-collapse navbar-right" role="navigation">
+                <ul id="nav" class="nav navbar-nav">
+                    <li><a href="#slider">Начало</a></li>
+                    <li><a href="#service">За приложението</a></li>
+                    <li><a href="#contact">Контакти</a></li>
+                    <li><a href="@Url.Action("Login", "Account")" class="external">Вход</a></li>
+                    <li><a href="@Url.Action("RegisterTeacher", "Account")" class="external">Регистрация</a></li>
                 </ul>
-                @Html.Partial("_LoginPartial")
+            </nav>
+            <!-- /main nav -->
+
+        </div>
+    </header>
+    <main class="site-content">
+    <section id="home-slider">
+        <div id="slider" class="sl-slider-wrapper">
+
+            <div class="sl-slider">
+
+                <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-25" data-slice2-rotation="-25" data-slice1-scale="2" data-slice2-scale="2">
+
+                    <div class="bg-img bg-img-1"></div>
+
+                    <div class="slide-caption">
+                        <div class="caption-content">
+                            <h2 class="animated fadeInDown">създаване и проверка на тестове</h2>
+                            <span class="animated fadeInDown" style="text-transform: lowercase">Уеб приложението, което спестява време и усилия</span>
+                            <a href="@Url.Action("RegisterTeacher", "Account")" target="_blank" class="btn btn-blue btn-effect">Регистрирай се</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div><!-- /sl-slider -->
+
+
+        </div><!-- /slider-wrapper -->
+    </section>
+      
+    <section id="service">
+        <div class="container">
+            <div class="row">
+
+                <div class="sec-title text-center">
+                    <h2 class="wow animated bounceInLeft">Предимства</h2>
+                    <p class="wow animated bounceInRight">Важни възможност, които приложението дава</p>
+                </div>
+
+                <div class="col-md-3 col-sm-6 col-xs-12 text-center wow animated zoomIn">
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fa fa-home fa-3x"></i>
+                        </div>
+                        <h3>Автоматизация</h3>
+                        <p>Проектът позволява автоматично генериране и проверка на тестове с минимална човешка намеса</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6 col-xs-12 text-center wow animated zoomIn" data-wow-delay="0.3s">
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fa fa-tasks fa-3x"></i>
+                        </div>
+                        <h3>Съхранение</h3>
+                        <p>Всички тестове, класове и оценки се съхраняват на сигурно място без риск от изтриване</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6 col-xs-12 text-center wow animated zoomIn" data-wow-delay="0.6s">
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fa fa-clock-o fa-3x"></i>
+                        </div>
+                        <h3>Пестене на време</h3>
+                        <p>Трудното и досадното проверяване е вече в историята, защото MY EXAMS прави всичко това вместо вас</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6 col-xs-12 text-center wow animated zoomIn" data-wow-delay="0.9s">
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fa fa-heart fa-3x"></i>
+                        </div>
+
+                        <h3>Намаляне на преписването</h3>
+                        <p>Възможността за преписване сред учениците е сведена до минимум, тъй като всеки ученик получава тест с различна подредба на въпроси и отговори</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+        <section id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 wow animated fadeInLeft">
+                <div class="recent-works">
+                    <h3>Кратко описание</h3>
+                    <div id="works">
+                        <div class="work-item">
+                            <p>MY EXAMS е интернет приложение, което има за цел да улесни работата на всеки преподавател в създаването и проверката на тестове, като в същото време допринася за намаляването на преписването, тъй като създадените версии за всеки ученик са различни - тоест разбъркват се въпросите и отговорите на случаен принцип. Заедно с това се генерира и бланка за отговор, която е в абсолютно съответствие с въпросите. След като ученикът отбележи своите отговори, учителят може да сканира документа и системата автоматично ще го провери. Уеб приложението има и роля на място за съхранение и огранизация на всички изпитни варианти, оценки, класове и ученици. </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+</section>
+    @RenderBody()
+        
+        </main>
+    <footer id="footer">
+        <div id="contact">
+    <div class="container">
+        <div class="row">
+
+            <div class="sec-title text-center wow animated fadeInDown animated" style="visibility: visible; animation-name: fadeInDown;">
+                <h2 style="color: white">Контакти</h2>
+
+                <div class="col-md-12 wow animated fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                    <address class="contact-details">
+
+                        <p><i class="fa fa-pencil"></i>Петър Бечев<span>МГ "Акад. Кирил Попов"</span><br>
+                        <p><i class="fa fa-phone"></i>Phone: 089 63 14 939</p>
+                        <p><i class="fa fa-envelope"></i>bechev2@gmail.com</p>
+                    </address>
+                </div>
+            </div>
+
+        </div>
     </div>
+
+</div>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/home")
     @RenderSection("scripts", required: false)
 </body>
 </html>

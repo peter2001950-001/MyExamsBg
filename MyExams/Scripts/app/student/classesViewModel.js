@@ -28,7 +28,7 @@ ko.applyBindings(vm);
 $(document).ready(function () {
     vm.pull();
 })
-var joinTestRedirection = function (data) {
+var joinClassRedirection = function (data) {
     if (data.status == "OK") {
         window.location.href = "/s/class?id=" + data.code;
     } else {

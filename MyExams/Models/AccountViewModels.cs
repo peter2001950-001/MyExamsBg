@@ -77,10 +77,6 @@ namespace MyExams.Models
         public string PhoneNumber { get; set; }
 
         [Required]
-        [Display(Name = "Дата на раждане")]
-        public string DateOfBirth { get; set; }
-
-        [Required]
         [EmailAddress]
         [Display(Name = "Имейл")]
         public string Email { get; set; }
@@ -110,10 +106,6 @@ namespace MyExams.Models
         [Display(Name = "Мобилен телефон")]
         public string PhoneNumber { get; set; }
         
-        [Required]
-        [Display(Name ="Дата на раждане")]
-        public string DateOfBirth { get; set; }
-
         [Required]
         [EmailAddress]
         [Display(Name = "Имейл")]

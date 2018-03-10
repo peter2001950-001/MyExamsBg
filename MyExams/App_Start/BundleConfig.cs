@@ -30,6 +30,10 @@ namespace MyExams
                       "~/Scripts/respond.js"));
             bundles.Add(new ScriptBundle("~/bundles/dashboard").Include(
                       "~/Scripts/dashboard.js", "~/Scripts/admin.js"));
+            bundles.Add(new ScriptBundle("~/bundles/home").Include(
+                   "~/Scripts/jquery.ba-cond.min.js", "~/Scripts/jquery.easing.min.js", "~/Scripts/jquery.easing.min.js", "~/Scripts/jquery.fancybox.pack.js",
+                   "~/Scripts/jquery.parallax-1.1.3.js", "~/Scripts/jquery.singlePageNav.min.js", "~/Scripts/jquery.slitslider.js", "~/Scripts/main.js",
+                   "~/Scripts/owl.carousel.min.js", "~/Scripts/wow.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css"));
@@ -38,6 +42,17 @@ namespace MyExams
                      "~/Content/Admin.css",
                      "~/Content/jquery-ui.css",
                      "~/Content/Site.css"
+                     ));
+            bundles.Add(new StyleBundle("~/Content/home").Include(
+                "~/Content/animate.css",
+                     "~/Content/font-awesome.min.css",
+                     "~/Content/jquery.fancybox.css",
+                     "~/Content/lightview.css",
+                     "~/Content/jquery.fs.boxer.min.css",
+                     "~/Content/main.css",
+                     "~/Content/slit-slider.css",
+                     "~/Content/superslides.css",
+                      "~/Content/material-icons.css"
                      ));
             bundles.Add(new StyleBundle("~/Content/main").Include(
                      "~/Content/site.css"));

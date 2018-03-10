@@ -161,7 +161,7 @@ namespace MyExams.Controllers
         {
             DateTime dateOfBirth = DateTime.MinValue;
 
-            if (ModelState.IsValid&&DateTime.TryParse(model.DateOfBirth, out dateOfBirth))
+            if (ModelState.IsValid)
             {
                
 
@@ -172,7 +172,6 @@ namespace MyExams.Controllers
                     _teacherService.AddTeacher(new Teacher()
                     {
                         UserId = user.Id,
-                        DateOfBirth = dateOfBirth,
                          FirstName = model.FirstName,
                           LastName = model.LastName
                     });
@@ -204,7 +203,7 @@ namespace MyExams.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    _studentService.AddStudent(new Student() { UserId = user.Id, DateOfBirth = DateTime.Parse(model.DateOfBirth), FirstName = model.FirstName, LastName=model.LastName});
+                    _studentService.AddStudent(new Student() { UserId = user.Id, FirstName = model.FirstName, LastName=model.LastName});
                     UserManager.AddToRole(user.Id, "Student");
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 

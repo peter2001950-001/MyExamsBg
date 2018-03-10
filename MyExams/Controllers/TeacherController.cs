@@ -660,7 +660,7 @@ namespace MyExams.Controllers
         {
             var answerSheets = _gAnswerSheetService.GetGAnswerSheetsBy(GtestId).ToList();
             if (answerSheets != null) {
-                if (answerSheets.All(x => x.AnswerSheetStatus == AnswerSheetStatus.Checked)) {
+                if (answerSheets.All(x => x.AnswerSheetStatus == AnswerSheetStatus.Checked && x.Xml != null)) {
                     var gTest = _testService.GetAllGTests().FirstOrDefault(x => x.Id == GtestId);
                     if (gTest != null)
                     {
@@ -670,7 +670,6 @@ namespace MyExams.Controllers
                         var totalQuestions = answerSheets.Max(x => x.LastQuestionNo);
                         var orderedAnswerSheets = answerSheets.OrderBy(x => x.FirstQuestionNo).ToList();
                         int asCounter = 0;
-                        int prevASQuestionCount = 0;
                         XmlDocument currentDoc = new XmlDocument();
                         currentDoc.LoadXml(orderedAnswerSheets[0].Xml);
                         for (int i = 0; i <=totalQuestions; i++)
@@ -738,7 +737,7 @@ namespace MyExams.Controllers
             var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
             if (teacher != null)
             {
-                var session = _uploadSessionService.GetAll().Where(x => x.IsNotified == false && x.Teacher.Id == teacher.Id&&x.IsDone).FirstOrDefault();
+                var session = _uploadSessionService.GetAll().Where(x => x.IsNotified == false && x.Teacher?.Id == teacher.Id&&x.IsDone).FirstOrDefault();
                 if (session != null)
                 {
                     List<object> fileDirectoryResult = new List<object>();
