@@ -41,7 +41,7 @@ namespace MyExams.Controllers
 
         public int GTestId { get; private set; }
 
-        public TeacherController(IClassService classService, IStudentService studentService, ITestService testService, ITeacherService teacherService, ISectionService sectionService, IQuestionService questionService, IAnswerService  answerService, ITestGeneration testGeneration, IGAnswerSheetService gAnswerSheetService, ITestCheckProcess testCheckProcess, IFileDirectoryService fileDirectoryService, IUploadSessionService uploadSessionService)
+        public TeacherController(IClassService classService, IStudentService studentService, ITestService testService, ITeacherService teacherService, ISectionService sectionService, IQuestionService questionService, IAnswerService answerService, ITestGeneration testGeneration, IGAnswerSheetService gAnswerSheetService, ITestCheckProcess testCheckProcess, IFileDirectoryService fileDirectoryService, IUploadSessionService uploadSessionService)
         {
             _classService = classService;
             _studentService = studentService;
@@ -60,7 +60,7 @@ namespace MyExams.Controllers
         // GET: Teacher
         public ActionResult Index()
         {
-           
+
             return View();
 
         }
@@ -85,15 +85,19 @@ namespace MyExams.Controllers
             };
             _testService.AddNewTest(test);
 
-            return Json(new {status = "OK", id=test.UniqueNumber });
+            return Json(new { status = "OK", id = test.UniqueNumber });
         }
-       
+
         public ActionResult TestDesign(string id)
         {
             var test = _testService.GetTestByUniqueNumber(id);
-            ViewBag.id = id;
-            ViewBag.title = test.TestTitle;
-            return View();
+            if (_teacherService.IsTeacherOfTest(User.Identity.GetUserId(), test.Id))
+            {
+                ViewBag.id = id;
+                ViewBag.title = test.TestTitle;
+                return View();
+            }
+            return RedirectToAction("tests");
         }
 
         [HttpGet]
@@ -117,7 +121,7 @@ namespace MyExams.Controllers
             }
             return Json(new { status = "ERR2" });
         }
-        public ActionResult ElementUpdate(string type, string action, int index, string testUniqueCode,int sectionId=0, int questionId=0,  int questionType = 0)
+        public ActionResult ElementUpdate(string type, string action, int index, string testUniqueCode, int sectionId = 0, int questionId = 0, int questionType = 0)
         {
             var test = _testService.GetTestByUniqueNumber(testUniqueCode);
             if (test != null)
@@ -310,24 +314,31 @@ namespace MyExams.Controllers
             }
         }
 
-        public ActionResult SectionUpdate(string testUniqueCode, string name, bool mixupQuestions, int index)
+        public ActionResult SectionUpdate(string testUniqueCode, string name, bool mixupQuestions, int index, int questionsToShow)
         {
             var test = _testService.GetTestByUniqueNumber(testUniqueCode);
 
             if (test != null)
             {
-               if(_teacherService.IsTeacherOfTest(User.Identity.GetUserId(), test.Id)) { 
-                        var section = _sectionService.GetAllSectionsByTestId(test.Id).Where(x => x.OrderNo == index).FirstOrDefault();
-                        if (section != null)
+                if (_teacherService.IsTeacherOfTest(User.Identity.GetUserId(), test.Id))
+                {
+                    var section = _sectionService.GetAllSectionsByTestId(test.Id).Where(x => x.OrderNo == index).FirstOrDefault();
+                    if (section != null)
+                    {
+                        var questions = _questionService.GetAllQuestionsBy(test.Id, section.OrderNo);
+                        if (questionsToShow <= questions.Count())
                         {
                             section.SectionTitle = name;
                             section.MixupQuestions = mixupQuestions;
+                            section.QuestionsToShow = questionsToShow;
                             _sectionService.Update();
                             return Json(new { status = "OK" });
                         }
+                        return Json(new { status = "ERR3" });
                     }
-                    return Json(new { status = "ERR1" });
                 }
+                return Json(new { status = "ERR1" });
+            }
             return Json(new { status = "ERR2" });
         }
 
@@ -338,7 +349,7 @@ namespace MyExams.Controllers
             if (teacher != null)
             {
                 var classesCodes = new JavaScriptSerializer().Deserialize<List<string>>(chosenClasses);
-                var testRef = _testService.GetTestByUniqueNumber(testUniqueCode);;
+                var testRef = _testService.GetTestByUniqueNumber(testUniqueCode); ;
                 var classRefList = new List<Class>();
                 if (testRef != null)
                 {
@@ -378,80 +389,89 @@ namespace MyExams.Controllers
             if (teacher != null)
             {
                 var testsResult = _testService.GetTestObjects(teacher.UserId);
-               
+
                 return Json(new { status = "OK", tests = testsResult }, JsonRequestBehavior.AllowGet);
             }
-            return Json(new { status = "ERR1" },  JsonRequestBehavior.AllowGet);
+            return Json(new { status = "ERR1" }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult GetTest(string testUniqueCode)
         {
             var test = _testService.GetTestByUniqueNumber(testUniqueCode);
             var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
-            if (test !=null && teacher.Id == test.Teacher.Id)
+            if (test != null)
             {
-                var testObj = _testService.GetTestByUniqueNumber(testUniqueCode);
-                if (testObj != null)
+
+                if (_teacherService.IsTeacherOfTest(User.Identity.GetUserId(), test.Id))
                 {
-                    var sections = _sectionService.GetAllSectionsByTestId(testObj.Id);
-                    List<object> sectionsList = new List<object>();
-                    
-                    foreach (var section in sections)
+
+                    var testObj = _testService.GetTestByUniqueNumber(testUniqueCode);
+                    if (testObj != null)
                     {
-                        if (section.Active) {
-                            var questionsList = new List<object>();
+                        var sections = _sectionService.GetAllSectionsByTestId(testObj.Id);
+                        List<object> sectionsList = new List<object>();
 
-                            var questions = _questionService.GetAllQuestionsBy(test.Id, section.OrderNo);
-                            foreach (var question in questions)
+                        foreach (var section in sections)
+                        {
+                            if (section.Active)
                             {
-                                if (question.Active) {
-                                    var optionsList = new List<object>();
-                                    if (question.QuestionType == QuestionType.Choice)
+                                var questionsList = new List<object>();
+
+                                var questions = _questionService.GetAllQuestionsBy(test.Id, section.OrderNo);
+                                foreach (var question in questions)
+                                {
+                                    if (question.Active)
                                     {
-                                        var options = _answerService.GetAllBy(test.Id, section.OrderNo, question.OrderNo);
-                                        foreach (var option in options)
+                                        var optionsList = new List<object>();
+                                        if (question.QuestionType == QuestionType.Choice)
                                         {
-                                            if (option.Active)
+                                            var options = _answerService.GetAllBy(test.Id, section.OrderNo, question.OrderNo);
+                                            foreach (var option in options)
                                             {
-                                                optionsList.Add(new { id = option.OrderNo, text = option.Text, isCorrect = option.IsCorrect });
+                                                if (option.Active)
+                                                {
+                                                    optionsList.Add(new { id = option.OrderNo, text = option.Text, isCorrect = option.IsCorrect });
+                                                }
+
                                             }
-
+                                            questionsList.Add(new { id = question.OrderNo, text = question.Text, points = question.Points, type = (int)question.QuestionType, mixupOptions = question.MixupAnswers, options = optionsList });
                                         }
-                                        questionsList.Add(new { id = question.OrderNo, text = question.Text, points = question.Points, type = (int)question.QuestionType, mixupOptions = question.MixupAnswers, options = optionsList });
-                                    } else if (question.QuestionType == QuestionType.Text)
-                                    {
-                                        questionsList.Add(new { id = question.OrderNo, text = question.Text, points = question.Points, type = (int)question.QuestionType, answerSize = (int)question.QuestionAnswerSize, correctAnswer = question.CorrectAnswer });
+                                        else if (question.QuestionType == QuestionType.Text)
+                                        {
+                                            questionsList.Add(new { id = question.OrderNo, text = question.Text, points = question.Points, type = (int)question.QuestionType, answerSize = (int)question.QuestionAnswerSize, correctAnswer = question.CorrectAnswer });
+                                        }
                                     }
-                                }
 
-                            }
-                            sectionsList.Add(new { id = section.OrderNo, text = section.SectionTitle, questions = questionsList, mixupQuestions = section.MixupQuestions});
                                 }
+                                sectionsList.Add(new { id = section.OrderNo, text = section.SectionTitle, questionsToShow = section.QuestionsToShow, questions = questionsList, mixupQuestions = section.MixupQuestions });
+                            }
+                        }
+                        return Json(new { status = "OK", sections = sectionsList, testTitle = test.TestTitle });
                     }
-                    return Json(new { status = "OK", sections = sectionsList, testTitle = test.TestTitle });
+                    return Json(new { status = "ERR1" });
                 }
-                return Json(new { status = "ERR1" });
+                return Json(new { status = "ERR2" });
             }
-            return Json(new { status = "ERR2" });
+            return Json(new { status = "ERR3" });
         }
         public ActionResult Class(string id)
         {
             var userId = User.Identity.GetUserId();
             if (_classService.IsTeacherOfClass(userId, id))
-                    {
-                        var foundClass = _classService.GetAll().Where(x => x.UniqueCode == id).FirstOrDefault();
-                        var viewModel = new DisplayClassTeacherViewModel()
-                        {
-                            ClassName = foundClass.Name,
-                            Subject = foundClass.Subject,
-                            AverageMark = foundClass.AverageMark,
-                            FirstMessageShowed = foundClass.FirstMessageShowed,
-                            StudentsCount = foundClass.StudentsCount,
-                            UniqueCode = foundClass.UniqueCode,
-                            ClassColor = foundClass.ClassColor
-                        };
-                        return View(viewModel);
-                    }
-             return RedirectToAction("classes");
+            {
+                var foundClass = _classService.GetAll().Where(x => x.UniqueCode == id).FirstOrDefault();
+                var viewModel = new DisplayClassTeacherViewModel()
+                {
+                    ClassName = foundClass.Name,
+                    Subject = foundClass.Subject,
+                    AverageMark = foundClass.AverageMark,
+                    FirstMessageShowed = foundClass.FirstMessageShowed,
+                    StudentsCount = foundClass.StudentsCount,
+                    UniqueCode = foundClass.UniqueCode,
+                    ClassColor = foundClass.ClassColor
+                };
+                return View(viewModel);
+            }
+            return RedirectToAction("classes");
 
         }
 
@@ -470,7 +490,7 @@ namespace MyExams.Controllers
                     isQuestionsToBeChecked = true;
                     count = _gAnswerSheetService.GetAllGQuestionToBeChecked().Count(x => x.Teacher.Id == teacher.Id);
                 }
-                
+
                 return Json(new { status = "OK", classes = classesResultObj, tests = testsResultObj, isQuestionsToBeChecked = isQuestionsToBeChecked, count = count }, JsonRequestBehavior.AllowGet);
 
             }
@@ -495,49 +515,77 @@ namespace MyExams.Controllers
         {
             var userId = User.Identity.GetUserId();
             var classesObj = _classService.GetClassObjects(userId, x => x.Name, Services.OrderByMethod.Ascending);
-            
+
             return Json(new { classes = classesObj, status = "OK" }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult GetStudents(string uniqueCode)
         {
-             var userId = User.Identity.GetUserId();
+            var userId = User.Identity.GetUserId();
             if (_classService.IsTeacherOfClass(userId, uniqueCode))
             {
-                var students = _classService.GetClassStudents(uniqueCode).OrderBy(x=>x.NoInClass).ToList();
+                var students = _classService.GetClassStudents(uniqueCode).OrderBy(x => x.NoInClass).ToList();
                 var classObj = _classService.GetAll().First(x => x.UniqueCode == uniqueCode);
                 object[] studentsOutput = new object[students.Count];
                 var allGtests = _testService.GetGTestBy(classObj.Id).ToList();
                 var tests = new List<Test>();
                 foreach (var item in allGtests)
                 {
-                    if(!tests.Any(x=>x.Id == item.Test.Id)){
+                    if (!tests.Any(x => x.Id == item.Test.Id))
+                    {
                         tests.Add(item.Test);
                     }
                 }
                 for (int i = 0; i < students.Count; i++)
                 {
                     var marks = new List<object>();
-                  
-                   
+
+
                     foreach (var test in tests)
                     {
                         var studentTries = allGtests.Where(x => x.Test.Id == test.Id && x.Student.Id == students[i].Student.Id).ToList();
-                        if(studentTries.Count == 0)
+                        if (studentTries.Count == 0)
                         {
-                            marks.Add(new {  });
+                            marks.Add(new { });
                         }
                         else
                         {
-                            marks.Add(studentTries.Select(x => new { rp = x.ReceivedPoints, tp = x.MaxPoints,percentage = Math.Round(((double)x.ReceivedPoints*100)/(double)x.MaxPoints,2),mark = Math.Round(((double)x.ReceivedPoints * 6) / (double)x.MaxPoints, 2)<2? 2.00: Math.Round(((double)x.ReceivedPoints * 6) / (double)x.MaxPoints, 2), id = x.Id }));
+                            marks.Add(studentTries.Select(x => new { rp = x.ReceivedPoints, tp = x.MaxPoints, percentage = Math.Round(((double)x.ReceivedPoints * 100) / (double)x.MaxPoints, 2), mark = Math.Round(((double)x.ReceivedPoints * 6) / (double)x.MaxPoints, 2) < 2 ? 2.00 : Math.Round(((double)x.ReceivedPoints * 6) / (double)x.MaxPoints, 2), id = x.Id }));
                         }
                     }
-                    studentsOutput[i] = new { firstName = students[i].Student.FirstName, lastName=students[i].Student.LastName, noInClass = students[i].NoInClass, marks = marks  };
-                  
-                }  var testTitles = tests.Select(x => new { title = x.TestTitle });
+                    studentsOutput[i] = new { firstName = students[i].Student.FirstName, lastName = students[i].Student.LastName, noInClass = students[i].NoInClass, marks = marks };
+
+                }
+                var testTitles = tests.Select(x => new { title = x.TestTitle });
                 return Json(new { students = studentsOutput, tests = testTitles, status = "OK" }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { status = "ERR" }, JsonRequestBehavior.AllowGet);
-         
+
+        }
+        [ValidateAntiForgeryToken]
+        public JsonResult AddStudent(string firstName, string lastName, string no, string classCode)
+        {
+            if (_classService.IsTeacherOfClass(User.Identity.GetUserId(), classCode))
+            {
+                var classObj = _classService.GetAll().Where(x => x.UniqueCode == classCode).First();
+                int numberInClass = 0;
+                if (int.TryParse(no, out numberInClass))
+                {
+                    if (!_classService.GetClassStudents(classCode).Any(x => x.NoInClass == numberInClass))
+                    {
+                        Student student = new Student()
+                        {
+                            FirstName = firstName,
+                            LastName = lastName
+                        };
+                        _studentService.AddStudent(student);
+                        _classService.AddStudentToClass(student, classCode, numberInClass);
+                        return Json(new { status = "OK" });
+                    }
+                    return Json(new { status = "ERR1" });
+                }
+                return Json(new { status = "ERR2" });
+            }
+            return Json(new { status = "ERR3" });
         }
 
         [HttpPost]
@@ -552,18 +600,18 @@ namespace MyExams.Controllers
 
             };
             _uploadSessionService.AddUploadSession(uploadSession);
-                foreach (string file in Request.Files)
+            foreach (string file in Request.Files)
+            {
+                var fileContent = Request.Files[file];
+                if (fileContent != null && fileContent.ContentLength > 0)
                 {
-                    var fileContent = Request.Files[file];
-                    if (fileContent != null && fileContent.ContentLength > 0)
-                    {
                     // get a stream
                     var getExtension = Path.GetExtension(fileContent.FileName);
                     var newFileName = RandomString(16, false) + getExtension;
-                        var stream = fileContent.InputStream;
-                        var path = Path.Combine(Server.MapPath("~/App_Data"), newFileName);
-                        var serverPath = Path.Combine(Server.MapPath("~/App_Data"));
-                        fileContent.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), newFileName));
+                    var stream = fileContent.InputStream;
+                    var path = Path.Combine(Server.MapPath("~/App_Data"), newFileName);
+                    var serverPath = Path.Combine(Server.MapPath("~/App_Data"));
+                    fileContent.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), newFileName));
                     var fileDirectory = new FileDirectory()
                     {
                         FileName = path,
@@ -577,38 +625,39 @@ namespace MyExams.Controllers
                         UploadSession = uploadSession
                     };
                     _uploadSessionService.AddUploadSessionFileDirectory(uploadSessionFileDirectory);
-                   uploadSessionFileDirectory.JobId = BackgroundJob.Enqueue(() => TestCheck(fileDirectory, serverPath));
+                    uploadSessionFileDirectory.JobId = BackgroundJob.Enqueue(() => TestCheck(fileDirectory, serverPath));
                     _testService.Update();
                 }
                 uploadSession.TotalUploaded++;
                 _testService.Update();
-                
-                }
-                if(!_uploadSessionService.GetAll().Any(x=>x.IsActive == true && x.Id != uploadSession.Id))
-                 {
+
+            }
+            if (!_uploadSessionService.GetAll().Any(x => x.IsActive == true && x.Id != uploadSession.Id))
+            {
                 BackgroundJob.Enqueue(() => UploadSessionsTracer());
-                 }
-               
+            }
+
             return Json(new { status = "OK", sessionId = uploadSession.SessionIdentifier });
         }
-        [AutomaticRetry(Attempts =0)]
+        [AutomaticRetry(Attempts = 0)]
         public void TestCheck(FileDirectory fileDirectory, string serverFileName)
         {
             Bitmap bitmap = (Bitmap)Image.FromFile(fileDirectory.FileName);
             _testCheckProcess.SetBitmap(bitmap);
             _testCheckProcess.SetSaveFileName(serverFileName);
             _testCheckProcess.SetBitmapFileDirectory(fileDirectory);
-            
-            if(_testCheckProcess.StartChecking() == UploadedFileStatus.AlreadyChecked)
+
+            if (_testCheckProcess.StartChecking() == UploadedFileStatus.AlreadyChecked)
             {
                 bitmap.Dispose();
-               
+
             }
         }
-        
+
         public void UploadSessionsTracer()
         {
-            while (true) {
+            while (true)
+            {
                 var activeSessions = _uploadSessionService.GetAll().Where(x => x.IsActive == true);
                 if (activeSessions.Count() > 0)
                 {
@@ -646,7 +695,7 @@ namespace MyExams.Controllers
                             }
                         }
                         _testService.Update();
-                        
+
                     }
                     Thread.Sleep(1000);
                 }
@@ -659,8 +708,10 @@ namespace MyExams.Controllers
         public void TestResultUpdate(int GtestId)
         {
             var answerSheets = _gAnswerSheetService.GetGAnswerSheetsBy(GtestId).ToList();
-            if (answerSheets != null) {
-                if (answerSheets.All(x => x.AnswerSheetStatus == AnswerSheetStatus.Checked && x.Xml != null)) {
+            if (answerSheets != null)
+            {
+                if (answerSheets.All(x => x.AnswerSheetStatus == AnswerSheetStatus.Checked && x.Xml != null))
+                {
                     var gTest = _testService.GetAllGTests().FirstOrDefault(x => x.Id == GtestId);
                     if (gTest != null)
                     {
@@ -672,7 +723,7 @@ namespace MyExams.Controllers
                         int asCounter = 0;
                         XmlDocument currentDoc = new XmlDocument();
                         currentDoc.LoadXml(orderedAnswerSheets[0].Xml);
-                        for (int i = 0; i <=totalQuestions; i++)
+                        for (int i = 0; i <= totalQuestions; i++)
                         {
                             if (i <= orderedAnswerSheets[asCounter].LastQuestionNo)
                             {
@@ -715,16 +766,16 @@ namespace MyExams.Controllers
             {
                 if (teacher != null)
                 {
-                    if(session.Teacher.Id == teacher.Id)
+                    if (session.Teacher.Id == teacher.Id)
                     {
                         if (!session.IsDone)
                         {
                             double percentage = Math.Round((double)(session.TotalFinished / session.TotalUploaded) * 100, 0);
-                            return Json(new { status = "OK", percentage = percentage + "%"}, JsonRequestBehavior.AllowGet);
+                            return Json(new { status = "OK", percentage = percentage + "%" }, JsonRequestBehavior.AllowGet);
                         }
                         else
                         {
-                            return Json(new { status = "OK", percentage = "100%"}, JsonRequestBehavior.AllowGet);
+                            return Json(new { status = "OK", percentage = "100%" }, JsonRequestBehavior.AllowGet);
                         }
                     }
                 }
@@ -737,7 +788,7 @@ namespace MyExams.Controllers
             var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
             if (teacher != null)
             {
-                var session = _uploadSessionService.GetAll().Where(x => x.IsNotified == false && x.Teacher?.Id == teacher.Id&&x.IsDone).FirstOrDefault();
+                var session = _uploadSessionService.GetAll().Where(x => x.IsNotified == false && x.Teacher?.Id == teacher.Id && x.IsDone).FirstOrDefault();
                 if (session != null)
                 {
                     List<object> fileDirectoryResult = new List<object>();
@@ -745,7 +796,7 @@ namespace MyExams.Controllers
                     foreach (var item in uploadSessionFileDirectories)
                     {
                         fileDirectoryResult.Add(new { fileStatus = item.UploadedFileStatus, fileName = item.FileDirectory.OriginalFileName, id = item.FileDirectory.Id });
-                       
+
                     }
                     session.IsNotified = true;
                     _testService.Update();
@@ -754,7 +805,7 @@ namespace MyExams.Controllers
                 return Json(new { status = "NO" }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { status = "ERR" }, JsonRequestBehavior.AllowGet);
-                 
+
         }
         public JsonResult GetWrittenQuestion()
         {
@@ -766,21 +817,37 @@ namespace MyExams.Controllers
                 {
                     if (questionToBeChecked.GWrittenQuestion != null)
                     {
+
                         var gTest = _testService.GetAllGTests().Where(x => x.Id == questionToBeChecked.GWrittenQuestion.GTest.Id).First();
                         XmlDocument xml = new XmlDocument();
                         xml.LoadXml(gTest.Xml);
-                     
-                         var questionId =  xml.DocumentElement.ChildNodes[questionToBeChecked.GWrittenQuestion.GQuestionId].Attributes["id"].Value;
+
+                        var questionId = xml.DocumentElement.ChildNodes[questionToBeChecked.GWrittenQuestion.GQuestionId].Attributes["id"].Value;
                         var question = _questionService.GetAll().Where(x => x.Id == int.Parse(questionId)).FirstOrDefault();
+
+
                         if (question != null)
                         {
-                            
-                            var srcImage = Image.FromFile(questionToBeChecked.GWrittenQuestion.FileName);
-                            using (var stream = new MemoryStream())
+                            if (questionToBeChecked.GWrittenQuestion.QuestionType == QuestionType.Text)
                             {
-                                srcImage.Save(stream, ImageFormat.Jpeg);
+                                var srcImage = Image.FromFile(questionToBeChecked.GWrittenQuestion.FileName);
+                                using (var stream = new MemoryStream())
+                                {
+                                    srcImage.Save(stream, ImageFormat.Jpeg);
 
-                                return Json(new { status = "OK", question = new { text = question.Text, points = question.Points, correctAnswer = question.CorrectAnswer, src = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray()), id = questionToBeChecked.Id } }, JsonRequestBehavior.AllowGet);
+                                    return Json(new { status = "OK", question = new { type = 1, text = question.Text, options = question.Points, correctAnswer = question.CorrectAnswer, src = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray()), id = questionToBeChecked.Id } }, JsonRequestBehavior.AllowGet);
+                                }
+                            }
+                            else
+                            {
+                                var answersCount = _answerService.GetAll().Where(x => x.Question?.Id == question.Id).Count();
+                                var srcImage = Image.FromFile(questionToBeChecked.GWrittenQuestion.FileName);
+                                using (var stream = new MemoryStream())
+                                {
+                                    srcImage.Save(stream, ImageFormat.Jpeg);
+
+                                    return Json(new { status = "OK", question = new { type = 0, text = question.Text, options = answersCount, src = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray()), id = questionToBeChecked.Id } }, JsonRequestBehavior.AllowGet);
+                                }
                             }
                         }
                         return Json(new { status = "ERR1" }, JsonRequestBehavior.AllowGet);
@@ -793,59 +860,105 @@ namespace MyExams.Controllers
             return Json(new { status = "ERR4" }, JsonRequestBehavior.AllowGet);
 
         }
-        public JsonResult GivePoints(int questionId, int points)
+        public JsonResult GivePoints(int questionId, int option)
         {
             var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
             if (teacher != null)
             {
-                if(_gAnswerSheetService.GetAllGQuestionToBeChecked().Any(x=>x.Teacher.Id == teacher.Id && x.Id == questionId))
+                if (_gAnswerSheetService.GetAllGQuestionToBeChecked().Any(x => x.Teacher.Id == teacher.Id && x.Id == questionId))
                 {
-                    var question = _gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).First(x=>x.Id == questionId);
+                    var question = _gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).First(x => x.Id == questionId);
                     var answerSheets = _gAnswerSheetService.GetGAnswerSheetsBy(question.GWrittenQuestion.GTest.Id);
                     var answerSheetNeeded = answerSheets.Where(x => x.FirstQuestionNo <= question.GWrittenQuestion.GQuestionId && x.LastQuestionNo >= question.GWrittenQuestion.GQuestionId).FirstOrDefault();
                     if (answerSheetNeeded != null)
                     {
                         XmlDocument xml = new XmlDocument();
                         xml.LoadXml(answerSheetNeeded.Xml);
-                        var answerAttr = xml.CreateAttribute("rp");
-                        answerAttr.Value = points.ToString();
-                        xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].Attributes.Append(answerAttr);
-                        using (StringWriter sw = new StringWriter())
+                        if (question.GWrittenQuestion.QuestionType == QuestionType.Text)
                         {
-                            using (XmlTextWriter xw = new XmlTextWriter(sw))
+                            var answerAttr = xml.CreateAttribute("rp");
+                            answerAttr.Value = option.ToString();
+                            xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].Attributes.Append(answerAttr);
+                           
+                        }
+                        else
+                        {
+                            // option 0 - none of them, 1 - A, 2 - B ......
+                            var questionStringId = xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].Attributes["id"].Value;
+                            var questionObj = _questionService.GetAll().Where(x => x.Id == int.Parse(questionStringId)).First();
+                            var answers = _answerService.GetAll().Where(x => x.Question?.Id == questionObj.Id).OrderBy(x => x.OrderNo).ToList();
+
+                            bool isCorrect = false;
+                            for (int i = 0; i < xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes.Count; i++)
                             {
-                                xml.WriteTo(xw);
-                                answerSheetNeeded.Xml = sw.ToString();
+                                if (answers[i].IsCorrect && i == option - 1)
+                                {
+                                    isCorrect = true;
+                                    var answerAttr = xml.CreateAttribute("s"); // short for status
+                                    answerAttr.Value = "2"; //correct code
+                                    xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes[i].Attributes.Append(answerAttr);
+                                }
+                                else if (!answers[i].IsCorrect && i == option - 1)
+                                {
+                                    var answerAttr = xml.CreateAttribute("s"); // short for status
+                                    answerAttr.Value = "1"; //checked but not correct code
+                                    xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes[i].Attributes.Append(answerAttr);
+                                }
+                                else if (i != option - 1)
+                                {
+                                    var answerAttr = xml.CreateAttribute("s"); // short for status
+                                    answerAttr.Value = "0"; //unchecked
+                                    xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes[i].Attributes.Append(answerAttr);
+                                }
+
                             }
+                            if (isCorrect)
+                            {
+                                var answerAttr = xml.CreateAttribute("rp");
+                                answerAttr.Value = questionObj.Points.ToString();
+                                xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].Attributes.Append(answerAttr);
+
+                            }
+                            using (StringWriter sw = new StringWriter())
+                            {
+                                using (XmlTextWriter xw = new XmlTextWriter(sw))
+                                {
+                                    xml.WriteTo(xw);
+                                    answerSheetNeeded.Xml = sw.ToString();
+                                }
+                            }
+                            question.GWrittenQuestion.IsChecked = true;
+                            _testService.Update();
+
                         }
-                        question.GWrittenQuestion.IsChecked = true;
-                        _testService.Update();
-                    }
-                    if(_gAnswerSheetService.GetGWrittenQuestionsBy(question.GWrittenQuestion.GTest.Id).Count(x=>x.IsChecked==false)==0)
-                    {
-                       
-                        foreach (var item in answerSheets)
+                        if (_gAnswerSheetService.GetGWrittenQuestionsBy(question.GWrittenQuestion.GTest.Id).Count(x => x.IsChecked == false) == 0)
                         {
-                            item.AnswerSheetStatus = AnswerSheetStatus.Checked;
+
+                            foreach (var item in answerSheets)
+                            {
+                                item.AnswerSheetStatus = AnswerSheetStatus.Checked;
+                            }
+                            _testService.Update();
+                            BackgroundJob.Enqueue(() => TestResultUpdate(question.GWrittenQuestion.GTest.Id));
                         }
-                        _testService.Update();
-                        BackgroundJob.Enqueue(() => TestResultUpdate(question.GWrittenQuestion.GTest.Id));
+                        _gAnswerSheetService.RemoveGQuestionToBeChecked(question);
+                        return Json(new { status = "OK" });
                     }
-                    _gAnswerSheetService.RemoveGQuestionToBeChecked(question);
-                    return Json(new { status = "OK" });
+                    return Json(new { status = "ERR1" });
                 }
-                return Json(new { status = "ERR1" });
+                return Json(new { status = "ERR2" });
             }
-            return Json(new { status = "ERR2" });
+            return Json(new { status = "ERR3" });
         }
-        private static string RandomString(int length,  bool OnlyUppperCase)
+        private static string RandomString(int length, bool OnlyUppperCase)
         {
             var random = new Random();
             string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            if (OnlyUppperCase) {
+            if (OnlyUppperCase)
+            {
                 chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             }
-          
+
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }

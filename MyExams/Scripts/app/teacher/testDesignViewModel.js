@@ -23,8 +23,7 @@ function QuestionOption(optionText, optionNum, id, questionId, sectionId) {
                 self.checkedClass("option-checked");
                 self.isChecked(true);
             } else {
-            console.log(self.id + " check_circle");
-                self.checkLabel("done");
+                 self.checkLabel("done");
                 self.checkedClass("");
                 self.isChecked(false);
             }
@@ -158,15 +157,22 @@ function Question(questionText, questionId, focus, type, sectionId) {
 }
 
 
-function Section(sectionText, sectionId, mixupQuestions) {
+function Section(sectionText, sectionId, mixupQuestions, questionsToShow, isQuestionsToShowSet) {
     var self = this;
+    self.isQuestionsToShowSet = isQuestionsToShowSet;
     self.sectionText = ko.observable(sectionText);
     self.sectionId = sectionId;
     self.questions = ko.observableArray();
     self.focus = true;
     self.mixupQuestions = ko.observable(mixupQuestions);
+    self.questionsToShow = ko.observable(questionsToShow);
+    self.isAlert = ko.observable(false);
+    self.alert = ko.observableArray();
     self.addQuestion = function (question) {
         self.questions.push(question);
+        if (subscribeActivate) {
+            if (!isQuestionsToShowSet) self.questionsToShow(self.questionsToShow() + 1);
+        }
     }.bind(this);
     self.questions.subscribe(function (item) {
         if (subscribeActivate) {
@@ -201,7 +207,13 @@ function Section(sectionText, sectionId, mixupQuestions) {
         if (subscribeActivate) {
             testDesignViewModel.onSectionUpdate(self.sectionId);
         }
-    })
+        });
+    self.questionsToShow.subscribe(function (item) {
+        if (subscribeActivate) {
+            self.isQuestionsToShowSet = true;
+            testDesignViewModel.onSectionUpdate(self.sectionId);
+        }
+    });
 }
 
 function TestDesignViewModel() {
@@ -229,8 +241,14 @@ function TestDesignViewModel() {
                     var questionSizeOptions = ["Кратък", "Среден", "Дълъг"];
                     self.testName(data.testTitle);
                     for (var i in data.sections) {
-
-                        self.sections.push(new Section(data.sections[i].text, data.sections[i].id, data.sections[i].mixupQuestions));
+                        var questionsToShow = data.sections[i].questionsToShow;
+                        var areSet = true;
+                        if (data.sections[i].questionsToShow == 0) {
+                            questionsToShow = Object.keys(data.sections[i].questions).length;
+                            console.log(Object.keys(data.sections[i].questions).length);
+                            areSet = false;
+                        }
+                        self.sections.push(new Section(data.sections[i].text, data.sections[i].id, data.sections[i].mixupQuestions, questionsToShow, areSet));
                         for (var p in data.sections[i].questions) {
 
                             self.sections()[i].addQuestion(new Question(data.sections[i].questions[p].text, data.sections[i].questions[p].id, false, data.sections[i].questions[p].type, data.sections[i].id));
@@ -238,12 +256,12 @@ function TestDesignViewModel() {
 
                                 for (var q in data.sections[i].questions[p].options) {
 
-                                    console.log(new QuestionOption(data.sections[i].questions[p].options[q].text, bgAlphabet[data.sections[i].questions[p].options[q].id], data.sections[i].questions[p].options[q].id, data.sections[i].questions[p].id, data.sections[i].id));
+                                    
                                     self.sections()[i].questions()[p].addOption(data.sections[i].questions[p].options[q].text, bgAlphabet[data.sections[i].questions[p].options[q].id]);
 
                                     if (data.sections[i].questions[p].options[q].isCorrect == true) {
 
-                                        console.log("correct");
+                                        
                                         self.sections()[i].questions()[p].options()[q].isChecked(true);
                                         self.sections()[i].questions()[p].options()[q].checkLabel("check_circle");
                                         self.sections()[i].questions()[p].options()[q].checkedClass("option-checked");
@@ -295,7 +313,8 @@ function TestDesignViewModel() {
         for (var i in self.classes()) {
             if (self.classes()[i].isChecked == true) {
                 chosenClasses.push(self.classes()[i].code);
-                console.log(self.classes()[i].code);
+
+
             }
         }
 
@@ -331,13 +350,13 @@ function TestDesignViewModel() {
             questionObj.selectedAnswerSize = question.selectedAnswerSize();
 
         }
-        console.log(parseInt(question.points()));
+       
         if(parseInt(question.points())){
             questionObj.points = parseInt(question.points());
         } else {
             question.points("");
         }
-        console.log(JSON.stringify({ testCode: testUniqueCode, sectionId: sectionId, question: questionObj }));
+        
         $.ajax({
             type: "post",
             datatype: "json",
@@ -358,23 +377,36 @@ function TestDesignViewModel() {
         });
     }
     self.onSectionUpdate = function (sectionId) {
-        $.ajax({
-            type: "post",
-            datatype: "json",
-            contenttype: "application/json",
-            url: "/t/sectionupdate",
-            data: {
+        if (parseInt(self.sections()[sectionId].questionsToShow()) == NaN) {
+            self.sections()[sectionId].isAlert(true);
+            self.sections()[sectionId].alert("В полето 'Брой въпроси' се въвежда число!");
+        } else {
+            if (parseInt(self.sections()[sectionId].questionsToShow()) > self.sections()[sectionId].questions().length) {
+                self.sections()[sectionId].isAlert(true);
+                self.sections()[sectionId].alert("В полето 'Брой въпроси' стойността трябва да е не по-голяма от " + self.sections()[sectionId].questions().length);
+            } else {
+                self.sections()[sectionId].isAlert(false);
+            }
+            var questionsToShow = self.sections()[sectionId].isQuestionsToShowSet ? parseInt(self.sections()[sectionId].questionsToShow()) : 0;
+            $.ajax({
+                type: "post",
+                datatype: "json",
+                contenttype: "application/json",
+                url: "/t/sectionupdate",
+                data: {
                     testUniqueCode: testUniqueCode,
                     index: sectionId,
                     name: self.sections()[sectionId].sectionText(),
-                    mixupQuestions: self.sections()[sectionId].mixupQuestions()
-            },
-            success: function (data) {
-                if (data.status === "OK") {
-                    console.log(data);
+                    mixupQuestions: self.sections()[sectionId].mixupQuestions(),
+                    questionsToShow: questionsToShow
+                },
+                success: function (data) {
+                    if (data.status === "OK") {
+                        console.log(data);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
   
     self.testName.subscribe(function (item) {
@@ -423,10 +455,10 @@ function TestDesignViewModel() {
     self.AddQuestion = function (item)
     {
         self.addBtnVisiblity(false);
-        console.log(item);
+        
     }
     self.AddChoiceQuestion = function (item) {
-        console.log(item);
+      
         var question = new Question("", self.sections()[item.sectionId].questions().length, true, 0, item.sectionId);
         self.sections()[item.sectionId].addQuestion(question);
         self.addBtnVisiblity(true);
@@ -439,11 +471,15 @@ function TestDesignViewModel() {
     }
     self.AddSection = function () {
         self.sections.push(new Section("", self.sections().length));
-        console.log(new Section("", self.sections().length));
+      
     }
     self.AddAnswer = function (item, parentId) {
-        console.log(getLetter(item, parentId));
-        self.sections()[parentId].questions()[item.questionId].addOption("", getLetter(item, parentId));
+
+        if (self.sections()[parentId].questions()[item.questionId].options().length < 8) {
+            self.sections()[parentId].questions()[item.questionId].addOption("", getLetter(item, parentId));
+        } else {
+            alert("Вие достигнахте максималния брой отговори за този въпрос!");
+        }
         stopDelete = true;
     }
     self.CheckOption = function (item, parentId, section) {
@@ -455,16 +491,15 @@ function TestDesignViewModel() {
     }
    
     self.DeleteOption = function (item, parentId, section) {
-        console.log(stopDelete);
+        
         if (! self.sections()[section.sectionId].questions()[parentId].options()[item.id].firstTime)
         {
-            console.log(item);
              self.sections()[section.sectionId].questions()[parentId].options.remove( self.sections()[section.sectionId].questions()[parentId].options()[item.id]);
             for (var i = item.id; i <  self.sections()[section.sectionId].questions()[parentId].options().length; i++) {
                 
                  self.sections()[section.sectionId].questions()[parentId].options()[i].id -= 1;
                  self.sections()[section.sectionId].questions()[parentId].options()[i].optionNum(bgAlphabet[ self.sections()[section.sectionId].questions()[parentId].options()[i].id]);
-                console.log( self.sections()[section.sectionId].questions()[parentId].options()[i]);
+               
             }
         } else {
              self.sections()[section.sectionId].questions()[parentId].options()[item.id].firstTime = false;

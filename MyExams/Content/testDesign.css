@@ -1,7 +1,13 @@
 ﻿#questions {
-    width: 70%;
+    width: 98%;
     margin: 0 auto;
     margin-top: 20px;
+}
+
+@media (min-width: 992px) {
+    #questions {
+        width: 70%;
+    }
 }
 .input-group .input-group-lg {
     margin: 15px 0;

@@ -14,29 +14,33 @@ namespace MyExams.TestProcessing
     {
         private Bitmap _bitmap;
         private UnsafeBitmap _lockBitmap;
-        private List<List<Shape>> RowsAndShapes { get;  set; }
+        private List<Row> RowsAndShapes { get;  set; }
         public List<Line> AngleLines { get; private set; }
         public List<int> AnswersMatrix { private get; set; }
         private int minLineHeight;
         private int maxWidth;
         private int minWidth;
+        private readonly double widthPixel;
+        private readonly double heightPixel;
 
         public AnswerSheetRecognition(Bitmap bitmap)
         {
             _bitmap = bitmap;
-            RowsAndShapes = new List<List<Shape>>();
+            RowsAndShapes = new List<Row>();
             AngleLines = new List<Line>();
             _lockBitmap = new UnsafeBitmap(_bitmap);
             _lockBitmap.LockBitmap();
             minLineHeight = (int)(_bitmap.Height * 0.017);
             maxWidth = (int)(_bitmap.Width * 0.04884);
             minWidth = (int)(_bitmap.Width * 0.024007);
+            widthPixel = 0.0004032*_bitmap.Width;
+            heightPixel = 0.00028514 * _bitmap.Height;
         }
 
         public string BarcodeRecognize()
         {
             var tries = 0;
-            var croppedRect = new Rectangle((int)(_bitmap.Width * 0.9), (int)(0.30 * _bitmap.Height), (int)(0.1 * _bitmap.Width), (int)(0.40 * _bitmap.Height));
+            var croppedRect = new Rectangle((int)(_bitmap.Width * 0.9), (int)(0.20 * _bitmap.Height), (int)(0.1 * _bitmap.Width), (int)(0.60 * _bitmap.Height));
             var croppedBitmap = CropBarcode(croppedRect, 0);
             if (croppedBitmap != null)
             {
@@ -77,7 +81,7 @@ namespace MyExams.TestProcessing
         }
         
 
-        public List<List<Shape>> ProcessImage()
+        public List<Row> ProcessImage()
         {
             List<Shape> result = new List<Shape>();
             IntPoint verticalLinePoint = new IntPoint(0, 0);
@@ -87,7 +91,7 @@ namespace MyExams.TestProcessing
             result = result.OrderBy(x => x.TopLeftPoint.Y).ToList();
 
 
-            List<List<Shape>> recongizedRowsAndShapes = new List<List<Shape>>();
+            List<Row> recongizedRowsAndShapes = new List<Row>();
             while (result.Count > 0)
             {
                 var point = result[0].TopLeftPoint;
@@ -97,36 +101,25 @@ namespace MyExams.TestProcessing
                 {
                     result.Remove(item);
                 }
-                recongizedRowsAndShapes.Add(row);
+                recongizedRowsAndShapes.Add(new Row() {  Shapes = row, Uncertan =false, RowShape = GetWholeShape(row)});
             }
             for (int i = 0; i < recongizedRowsAndShapes.Count; i++)
             {
-                if (recongizedRowsAndShapes[i].Count != AnswersMatrix[i])
+                if (recongizedRowsAndShapes[i].Shapes.Count != AnswersMatrix[i])
                 {
-                    int startingX = (i > 0) ? recongizedRowsAndShapes[i - 1][0].TopLeftPoint.X - 10 : 100;
-                    var anotherTry = GetShapes(startingX, recongizedRowsAndShapes[i][0].TopLeftPoint.Y - 15, _bitmap.Width - 100, recongizedRowsAndShapes[i][0].BottomLeftPoint.Y + 15, AnswersMatrix[i]);
+                    int startingX = (i > 0) ? recongizedRowsAndShapes[i - 1].Shapes[0].TopLeftPoint.X - 10 : 100;
+                    var anotherTry = GetShapes(startingX, recongizedRowsAndShapes[i].Shapes[0].TopLeftPoint.Y - 15, _bitmap.Width - 100, recongizedRowsAndShapes[i].Shapes[0].BottomLeftPoint.Y + 15, AnswersMatrix[i]);
                     if (anotherTry.Count == AnswersMatrix[i])
                     {
-                        recongizedRowsAndShapes[i] = anotherTry;
+                        recongizedRowsAndShapes[i].Shapes = anotherTry;
                     }else if(anotherTry.Count>1 && AnswersMatrix[i] == 1)
                     {
-                        var topLeftX = recongizedRowsAndShapes[i].Min(x => x.TopLeftPoint.X);
-                        var topLeftY = recongizedRowsAndShapes[i].Min(x => x.TopLeftPoint.Y);
-
-                        var topRightX = recongizedRowsAndShapes[i].Max(x => x.TopRightPoint.X);
-                        var topRightY = recongizedRowsAndShapes[i].Min(x => x.TopRightPoint.Y);
-
-                        var bottomLeftX = recongizedRowsAndShapes[i].Min(x => x.BottomLeftPoint.X);
-                        var bottomLeftY = recongizedRowsAndShapes[i].Max(x => x.BottomLeftPoint.Y);
-
-                        var bottomRightX = recongizedRowsAndShapes[i].Max(x => x.BottomRightPoint.X);
-                        var bottomRightY = recongizedRowsAndShapes[i].Max(x => x.BottomRightPoint.Y);
-
-                        recongizedRowsAndShapes[i] = new List<Shape>() { new Shape(new IntPoint(topLeftX, topLeftY), new IntPoint(topRightX, topRightY), new IntPoint(bottomLeftX, bottomLeftY), new IntPoint(bottomRightX, bottomRightY)) };
+                       
+                        recongizedRowsAndShapes[i].Shapes = new List<Shape>() { GetWholeShape(recongizedRowsAndShapes[i].Shapes)};
 
                     }
                 }
-                RowsAndShapes.Add(IsChecked(recongizedRowsAndShapes[i]));
+                RowsAndShapes = IsChecked(recongizedRowsAndShapes);
             }
             return recongizedRowsAndShapes;
 
@@ -167,7 +160,7 @@ namespace MyExams.TestProcessing
                         else
                         {
                             consequentWhitePixel++;
-                            if ((verticalLinePoint.X > 0 || verticalLinePoint.Y > 0) && consequentWhitePixel > 10 + p)
+                            if ((verticalLinePoint.X > 0 || verticalLinePoint.Y > 0) && consequentWhitePixel > (int)(heightPixel * 10) + (int)(heightPixel * p))
                             {
 
                                 var line = new Line()
@@ -199,7 +192,7 @@ namespace MyExams.TestProcessing
                                         }
 
                                         var similarLine = lines.Where(listItem => listItem.APoint.Y - line.APoint.Y > listItem.Height * -1 && listItem.APoint.Y - line.APoint.Y < listItem.Height)
-                                            .Where(listItem => listItem.APoint.X - line.APoint.X > -20 && listItem.APoint.X - line.APoint.X < 20).FirstOrDefault();
+                                            .Where(listItem => listItem.APoint.X - line.APoint.X > -1*(int)(widthPixel*20) && listItem.APoint.X - line.APoint.X < (int)(widthPixel * 20)).FirstOrDefault();
                                         if (similarLine != null)
                                         {
                                             if (similarLine.Height <= line.Height)
@@ -255,7 +248,7 @@ namespace MyExams.TestProcessing
                     {
                         if (item.APoint.DistanceTo(nearbyItem.APoint) > minWidth)
                         {
-                            result.Add(new Shape(item.APoint, nearbyItem.APoint, item.BPoint, nearbyItem.BPoint));
+                            result.Add(new Shape(item.APoint, nearbyItem.APoint, item.BPoint- (int)(heightPixel * 10), nearbyItem.BPoint- (int)(heightPixel * 10)));
                             lines.Remove(nearbyItem);
                             lines.Remove(item);
                         }
@@ -276,12 +269,16 @@ namespace MyExams.TestProcessing
             return result;
         }
 
-        private List<Shape> IsChecked(List<Shape> row)
+        private List<Row> IsChecked(List<Row> rows)
         {
-            foreach (var item in row)
+            List<List<double>> percentages = new List<List<double>>(); 
+            foreach (var row in rows)
             {
-
-                Rectangle newRectangle = new Rectangle(item.TopLeftPoint.X, item.TopLeftPoint.Y, (int)item.TopLeftPoint.DistanceTo(item.TopRightPoint), (int)item.TopLeftPoint.DistanceTo(item.BottomLeftPoint));
+                List<double> rowPercentages = new List<double>();
+                foreach (var item in row.Shapes)
+                {
+                   
+                 Rectangle newRectangle = new Rectangle(item.TopLeftPoint.X, item.TopLeftPoint.Y, (int)item.TopLeftPoint.DistanceTo(item.TopRightPoint), (int)item.TopLeftPoint.DistanceTo(item.BottomLeftPoint));
 
                 double totalPixels = 0;
                 double coloredPixels = 0;
@@ -291,23 +288,32 @@ namespace MyExams.TestProcessing
                     {
                         totalPixels++;
                         var pixel = _lockBitmap.GetPixel(x, y);
-                        if (pixel.R < 100 && pixel.G < 100 && pixel.B > 60)
+                        if (pixel.R < 120 && pixel.G < 120 && pixel.B > 60&&2*pixel.B>pixel.G+pixel.R)
                         {
                             coloredPixels++;
                         }
                     }
                 }
                 double result = (coloredPixels / totalPixels) * 100;
-                if (result > 2 && result < 20)
-                {
-                    item.IsChecked = true;
-                }
-                else
-                {
-                    item.IsChecked = false;
-                }
+                    rowPercentages.Add(result);
+               
             }
-            return row;
+                var maxValue = rowPercentages.Max();
+                if (maxValue > 2 && maxValue < 20)
+                {
+                    if(rowPercentages.Any(x => x + 1 > maxValue && x!=maxValue))
+                    {
+                        row.Uncertan = true;
+                    }
+                    else
+                    {
+                        var index = rowPercentages.IndexOf(maxValue);
+                        row.Shapes[index].IsChecked = true;
+                    }
+                }
+               
+            }
+            return rows;
         }
 
         private Bitmap CropBarcode(Rectangle rectangle, int tryCount)
@@ -356,7 +362,7 @@ namespace MyExams.TestProcessing
                         //}
                     }
                 }
-                if (finishPoint.X - staringPoint.X > 40)
+                if (finishPoint.X - staringPoint.X > widthPixel*40)
                 {
                     if (!isFirstLineSet)
                     {
@@ -382,15 +388,31 @@ namespace MyExams.TestProcessing
             }
             if (firstHozilonalLine.APoint.X != 0 && firstHozilonalLine.APoint.Y != 0 && lastHorizontalLine.APoint.X != 0 && lastHorizontalLine.BPoint.Y != 0)
             {
-                if (firstHozilonalLine.BPoint.X - firstHozilonalLine.APoint.X + 20 + 10 * tryCount < _bitmap.Width)
+                if (firstHozilonalLine.BPoint.X - firstHozilonalLine.APoint.X + (int)(widthPixel*20) + (int)(widthPixel * 10) * tryCount < _bitmap.Width)
                 {
-                    var croppedRect = new Rectangle(firstHozilonalLine.APoint.X - 40 - 10 * tryCount, firstHozilonalLine.APoint.Y - 40 - 10 * tryCount, firstHozilonalLine.BPoint.X - firstHozilonalLine.APoint.X + 20 + 10 * tryCount, lastHorizontalLine.BPoint.Y - firstHozilonalLine.APoint.Y + 40 + tryCount);
+                    var croppedRect = new Rectangle(firstHozilonalLine.APoint.X - (int)(widthPixel * 40) - (int)(widthPixel * 10) * tryCount, firstHozilonalLine.APoint.Y - 40 - 10 * tryCount, firstHozilonalLine.BPoint.X - firstHozilonalLine.APoint.X + (int)(widthPixel * 20) + (int)(widthPixel * 10) * tryCount, lastHorizontalLine.BPoint.Y - firstHozilonalLine.APoint.Y + 40 + 20*tryCount);
                     var croppedBitmap = _bitmap.Clone(croppedRect, _bitmap.PixelFormat);
-                   // croppedBitmap.Save(@"D:\Downloads\drive-download-20180303T105812Z-001\barcode.jpg", ImageFormat.Jpeg);
+                   croppedBitmap.Save(@"D:\Downloads\drive-download-20180303T105812Z-001\barcode.jpg", ImageFormat.Jpeg);
                     return croppedBitmap;
                 }
             }
             return null;
+        }
+        private Shape GetWholeShape(List<Shape> shapes)
+        {
+            var topLeftX = shapes.Min(x => x.TopLeftPoint.X);
+            var topLeftY = shapes.Min(x => x.TopLeftPoint.Y);
+
+            var topRightX = shapes.Max(x => x.TopRightPoint.X);
+            var topRightY = shapes.Min(x => x.TopRightPoint.Y);
+
+            var bottomLeftX = shapes.Min(x => x.BottomLeftPoint.X);
+            var bottomLeftY = shapes.Max(x => x.BottomLeftPoint.Y);
+
+            var bottomRightX = shapes.Max(x => x.BottomRightPoint.X);
+            var bottomRightY = shapes.Max(x => x.BottomRightPoint.Y);
+
+            return new Shape(new IntPoint(topLeftX, topLeftY), new IntPoint(topRightX, topRightY), new IntPoint(bottomLeftX, bottomLeftY), new IntPoint(bottomRightX, bottomRightY));
         }
 
         public void Dispose()
@@ -398,5 +420,11 @@ namespace MyExams.TestProcessing
             _lockBitmap.UnlockBitmap();
             
         }
+    }
+    public class Row
+    {
+        public Shape RowShape { get; set; }
+        public List<Shape> Shapes { get; set; }
+        public bool Uncertan { get; set; }
     }
 }

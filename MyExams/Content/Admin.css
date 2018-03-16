@@ -4290,6 +4290,7 @@ a.bg-dark:focus, a.bg-dark:hover {
 .w-75 {
   width: 75% !important; }
 
+
 .w-100 {
   width: 100% !important; }
 
@@ -5031,6 +5032,18 @@ a.bg-dark:focus, a.bg-dark:hover {
     margin-bottom: auto !important; } }
 
 @media (min-width: 992px) {
+    .w-lg-25 {
+        width: 25% !important;
+    }
+
+    .w-lg-50 {
+        width: 50% !important;
+    }
+
+    .w-lg-75 {
+        width: 75% !important;
+    }
+
   .m-lg-0 {
     margin: 0 !important; }
   .mt-lg-0 {

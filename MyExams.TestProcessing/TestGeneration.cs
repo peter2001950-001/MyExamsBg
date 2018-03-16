@@ -88,7 +88,14 @@ namespace MyExams.TestProcessing
                 var questionGenOrder = new int[questions.Count];
                 if (section.MixupQuestions)
                 {
-                    questionGenOrder = GenerateNonRepeatingNumbers(0, questions.Count() - 1);
+                    if (section.QuestionsToShow != 0)
+                    {
+                        questionGenOrder = GenerateNonRepeatingNumbers(0, questions.Count() - 1, section.QuestionsToShow);
+                    }
+                    else
+                    {
+                        questionGenOrder = GenerateNonRepeatingNumbers(0, questions.Count() - 1, questions.Count());
+                    }
                 }
                 else
                 {
@@ -115,7 +122,7 @@ namespace MyExams.TestProcessing
                         var answersGenOrder = new int[answers.Count];
                         if (questions[num].MixupAnswers)
                         {
-                            answersGenOrder = GenerateNonRepeatingNumbers(0, answers.Count - 1);
+                            answersGenOrder = GenerateNonRepeatingNumbers(0, answers.Count - 1, answers.Count());
                         }
                         else
                         {
@@ -194,25 +201,25 @@ namespace MyExams.TestProcessing
             return tpTest;
         }
 
-        private static int[] GenerateNonRepeatingNumbers(int minValue, int maxValue)
+        private static int[] GenerateNonRepeatingNumbers(int minValue, int maxValue, int count)
         {
             var random = new Random();
-            int[] result = new int[maxValue - minValue + 1];
+            List<int> result = new List<int>();
             var list = new List<int>();
             var counter = 0;
             for (int i = minValue; i < maxValue + 1; i++)
             {
                 list.Add(i);
             }
-            while (list.Count > 0)
+            while (list.Count > maxValue-minValue+1-count)
             {
 
                 var index = random.Next(0, list.Count);
-                result[counter] = list[index];
+                result.Add(list[index]);
                 list.Remove(list[index]);
                 counter++;
             }
-            return result;
+            return result.ToArray();
         }
     }
 }

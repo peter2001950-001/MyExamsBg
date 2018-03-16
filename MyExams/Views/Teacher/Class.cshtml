@@ -71,6 +71,11 @@
 </div>
 
 <div id="marks" style="display:none; background:white;">
+        <div class="row justify-content-end mr-lg-2">
+            <div class="col-lg-3">
+                <button class="btn btn-success max-w-lg-200 float-right" data-toggle="modal" data-target="#addStudent">+ Добавяне на ученик</button>
+            </div>
+        </div>
     <table class="table table-striped">
         <thead >
             <tr>
@@ -97,6 +102,48 @@
     </table>
 </div>
 
+<div class="modal fade" id="addStudent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Добавяне на ученик</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <div class="modal-body">
+
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <input class="form-control" placeholder="Номер в класа" type="text" value="" data-bind="value: $root.studentNo">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <input class="form-control" placeholder="Име" type="text" value="" data-bind="value: $root.studentFirstName">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <input class="form-control" placeholder="Фамилия" type="text" value="" data-bind="value: $root.studentLastName">
+                    </div>
+                </div>
+                <div class="alert alert-danger" role="alert" data-bind="visible: $root.ifAlert, text: $root.alertText">
+                    This is a danger alert—check it out!
+                </div>
+            </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
+                        <button type="submit" class="btn btn-primary" data-bind="click: $root.NewStudent">Създай</button>
+                    </div>
+
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
 
 
 <script> 

@@ -13,10 +13,10 @@
 
 <ul class="nav nav-pills nav-fill" style="background: white">
     <li class="nav-item">
-        <a id="lastExams-link" class="nav-link" href="#" data-bind="click: GetTest" style="color: rgb(236, 128, 65); background: white;">Въпроси</a>
+        <a id="lastExams-link" class="nav-link active" href="#" data-bind="click: GetTest" style="color: rgb(255, 255, 255);background: rgb(85, 168, 217);">Въпроси</a>
     </li>
     <li class="nav-item">
-        <a id="marks-link" class="nav-link active" href="#" data-bind="click: GetResults" style="color: rgb(255, 255, 255); background: rgb(236, 128, 65);">Справки</a>
+        <a id="marks-link" class="nav-link " href="#" data-bind="click: GetResults" style="color: rgb(85, 168, 217); background: rgb(255, 255, 255);">Справки</a>
     </li>
 
 
@@ -58,18 +58,33 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-outline-success addOption" style="font-size: 11px;margin: 0 24px;" data-bind="click: $root.AddAnswer($data, $parent.sectionId)"><i class="material-icons md-12">add</i>&nbsp; Добави отговор</button>
-                    <div style="float: right;margin-right: 30px;">
-                        <label style="margin-right: 5px;">Разбъркай отговорите</label>
-                        <label class="switch switch-default switch-pill switch-primary">
-                            <input type="checkbox" class="switch-input" data-bind="checked: mixupOptions">
-                            <span class="switch-label"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-
-                        <input type="text" class="form-control points-input" placeholder="Точки" data-bind="value: points" />
-                        <label style="float:right;margin-top: 2px;margin-left: 15px;">Точки:</label>
+                    <div class="row">
+                        <div class="btn-group col-md-4" style="max-height: 45px;" data-bind="visible: !$root.addBtnVisibility">
+                            <button type="button" class="btn btn-outline-success addOption" style="font-size: 11px;margin: 0 24px;" data-bind="click: $root.AddAnswer($data, $parent.sectionId)"><i class="material-icons md-12">add</i>&nbsp; Добави отговор</button>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-8" style="margin-top: 4px;">
+                                    <div class="float-lg-right text-center">
+                                        <label>Разбъркай отговорите</label>
+                                        <label class="switch switch-default switch-pill switch-primary">
+                                            <input type="checkbox" class="switch-input" data-bind="checked: mixupOptions">
+                                            <span class="switch-label"></span>
+                                            <span class="switch-handle"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <label class="col-6 text-right">Точки:</label>
+                                        <input type="text" class="col-3 form-control" style="height: 26px;margin-top: 4px;max-width:50px" placeholder="Точки" data-bind="value: points" />
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                   
                     <!-- /ko -->
                     <!--ko if: type() == 1-->
                     <div class="form-group">
@@ -100,21 +115,35 @@
                     <!--/ko-->
                 </div>
             </div>
-            <button class="btn btn-success" data-bind="click: $root.AddQuestion, visible: $root.addBtnVisibility"><i class="material-icons md-12">add</i>&nbsp; Добави въпрос</button>
-            <div class="btn-group" data-bind="visible: !$root.addBtnVisibility">
-                <button class="btn btn-default" data-bind="click: $root.AddChoiceQuestion"><i class="material-icons">adjust</i> Избор</button>
-                <button class="btn btn-default" data-bind="click: $root.AddTextQuestion"><i class="material-icons">format_color_text</i> Текст</button>
+            <div class="row">
+                <div class="btn-group col-md-4" data-bind="visible: !$root.addBtnVisibility">
+                    <button class="btn btn-default" data-bind="click: $root.AddChoiceQuestion"><i class="material-icons">adjust</i> Избор</button>
+                    <button class="btn btn-default" data-bind="click: $root.AddTextQuestion"><i class="material-icons">format_color_text</i> Текст</button>
+                </div>
+                <div class="col-md-8" >
+                    <div class="row">
+                        <div class="col-md-8"style="margin-top: 4px;">
+                            <div class="float-lg-right text-center">
+                                <label class="" style="margin-right: 5px;">Разбъркай въпросите</label>
+                                <label class="switch switch-default switch-pill switch-success">
+                                    <input type="checkbox" class="switch-input" data-bind="checked: mixupQuestions">
+                                    <span class="switch-label"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                            </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <label class="col-6 col-md-8 text-right">Брой въпроси</label>
+                                <input class="col-3 form-control" style="height: 26px;margin-top: 4px;max-width:110px" data-bind="value: questionsToShow" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div style="float: right;margin-right: 30px;">
-                <label style="margin-right: 5px;">Разбъркай въпросите</label>
-                <label class="switch switch-default switch-pill switch-success">
-                    <input type="checkbox" class="switch-input" data-bind="checked: mixupQuestions">
-                    <span class="switch-label"></span>
-                    <span class="switch-handle"></span>
-                </label>
-
+            <div class="alert alert-warning" role="alert" data-bind="visible: isAlert, text: alert">
+                This is a warning alert—check it out!
             </div>
-
         </div>
 
     </div>

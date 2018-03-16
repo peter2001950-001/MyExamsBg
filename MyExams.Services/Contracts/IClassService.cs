@@ -14,7 +14,7 @@ namespace MyExams.Services.Contracts
         IEnumerable<StudentClass> GetClassStudents(string uniqueClassCode);
         IEnumerable<Class> GetStudentClasses(string studentUserId);
         IEnumerable<object> GetClassObjects<TKey>(string teacherId, Expression<Func<Models.Class, TKey>> orderBy, OrderByMethod orderByMethod);
-        Class AddStudentToClass(string userId, string classCode, int noInClass);
+        Class AddStudentToClass(Student student, string classCode, int noInClass);
         string GenerateColor(int seed=0);
         bool IsTeacherOfClass(string teacherUserId, string uniqueClassCode);
         bool IsStudentOfClass(string studentUserId, string uniqueClassCode);

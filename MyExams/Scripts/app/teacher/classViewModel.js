@@ -4,8 +4,11 @@ function ClassViewModel() {
     self.lastExams = ko.observable();
     self.tests = ko.observable();
     self.students = ko.observable();
-
-
+    self.studentNo = ko.observable();
+    self.studentFirstName = ko.observable();
+    self.studentLastName = ko.observable();
+    self.ifAlert = ko.observable(false);
+    self.alertText = ko.observable();
     self.GetStudents = function () {
        applyDesign("marks");
         $.ajax({
@@ -41,6 +44,41 @@ function ClassViewModel() {
                 }
             }
        });
+    }
+
+    self.NewStudent = function () {
+        var form = $('#__AjaxAntiForgeryForm');
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+        $.ajax({
+            type: "POST",
+            url: "/t/AddStudent",
+            data: {
+                __RequestVerificationToken: token,
+                no: self.studentNo(),
+                firstName: self.studentFirstName(),
+                lastName: self.studentLastName(),
+                classCode: classCode
+            },
+            success: function (data) {
+                switch (data.status) {
+                    case "OK":
+                        $("#addStudent").modal("hide");
+                        self.GetStudents();
+                        break;
+                    case "ERR1":
+                        self.alertText("За зададения номер има вече съществуващ ученик");
+                        self.ifAlert(true);
+                    case "ERR2":
+                        self.alertText("Въведеният номер не е число");
+                        self.ifAlert(true);
+                        break;
+                    case "ERR3":
+                        location.reload();
+                        break;
+                    default:
+                }
+            }
+        });
     }
 }
 var vm = new ClassViewModel();

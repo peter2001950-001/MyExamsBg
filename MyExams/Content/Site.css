@@ -78,3 +78,8 @@
 .section-label {
     margin: 13px 2%;padding: 6px 0;border-bottom-color: #398bbcb8;border-bottom-width: 1.2px;border-bottom-style: solid; color: #398bbc;
 }
+@media (min-width: 992px) {
+    .max-w-lg-200{
+        max-width:200px !important;
+    }
+}

@@ -17,5 +17,6 @@ namespace MyExams.Models
         public bool Active { get; set; }
         public bool IsInUse { get; set; }
         public bool MixupQuestions { get; set; }
+        public int QuestionsToShow { get; set; }
     }
 }

@@ -28,9 +28,9 @@ ko.applyBindings(vm);
 $(document).ready(function () {
     vm.pull();
 })
-var joinClassRedirection = function (data) {
+var JoinClassRedirection = function (data) {
     if (data.status == "OK") {
-        window.location.href = "/s/class?id=" + data.code;
+        window.location.href = "/s/class?id=" + data.classCode;
     } else {
         alert("Възникна грешка при създавянето на нов клас!")
     }

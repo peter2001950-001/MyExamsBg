@@ -14,10 +14,12 @@ namespace MyExams.Controllers
     {
         private readonly IClassService _classService;
         private readonly ITeacherService _teacherService;
-        public StudentController(IClassService classService, ITeacherService teacherService)
+        private readonly IStudentService _studentService;
+        public StudentController(IClassService classService, ITeacherService teacherService, IStudentService studentService)
         {
             _classService = classService;
             _teacherService = teacherService;
+            _studentService = studentService;
         }
         // GET: Student
         public ActionResult Index()
@@ -41,7 +43,8 @@ namespace MyExams.Controllers
             int noInClass = 0;
             if(int.TryParse(model.noInClass, out noInClass))
             {
-                var classRef = _classService.AddStudentToClass(User.Identity.GetUserId(), model.ClassCode, noInClass);
+                var student = _studentService.GetStudentByUserId(User.Identity.GetUserId());
+                var classRef = _classService.AddStudentToClass(student, model.ClassCode, noInClass);
                if (classRef!=null)
                 {
                     return Json(new { status = "OK", classCode = classRef.UniqueCode });

@@ -119,18 +119,16 @@ namespace MyExams.Services
             }
             return classesInput;
         } 
-        public Class AddStudentToClass(string userId, string classCode, int noInClass)
+        public Class AddStudentToClass(Student student, string classCode, int noInClass)
         {
             var classRef = _classRepository.Where(x => x.UniqueCode == classCode).FirstOrDefault();
-            var studentRef = _studentRepository.Where(x => x.UserId == userId).FirstOrDefault();
-            var isAlreadyExist = _studentClassRepository.GetAll().Any(x => x.Class
-            .UniqueCode == classCode && x.Student.UserId == userId);
-            if (classRef != null && studentRef != null && !isAlreadyExist)
+            var isAlreadyExist = _studentClassRepository.GetAll().Any(x => x.Class.UniqueCode == classCode && x.Student.Id == student.Id);
+            if (classRef != null && student != null && !isAlreadyExist)
             {
                 _studentClassRepository.Add(new StudentClass()
                 {
                     Class = classRef,
-                    Student = studentRef,
+                    Student = student,
                     NoInClass = noInClass
 
                 });

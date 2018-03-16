@@ -1,5 +1,6 @@
 ﻿function indexViewModel(){
     var self = this;
+    var alfabet = "АБВГДЕЖЗИЙКЛМ";
     self.uploadSessionData = ko.observable();
     self.isQuestionsToConfirm = ko.observable(false);
     self.tests = ko.observable();
@@ -29,8 +30,12 @@
             url: "/t/syncIndex",
             success: function (data) {
                 if (data.status === "OK") {
-                    self.classes(data.classes);
-                    self.tests(data.tests);
+                    if (data.classes.length != 0) {
+                        self.classes(data.classes);
+                    }
+                    if (data.tests.length != 0) {
+                        self.tests(data.tests);
+                    }
                     self.isQuestionsToConfirm(data.isQuestionsToBeChecked);
                     self.count(data.count);
                 }
@@ -45,7 +50,26 @@
             url: "/t/GetWrittenQuestion",
             success: function (data) {
                 if (data.status === "OK") {
+                    if (data.question.type == "0") {
+                        data.question.choiceText = "Изберете отговор:";
+                        data.question.optionsArray = [];
+                        for (var i = 0; i <= data.question.options; i++) {
+                            if (i == 0) {
+                                data.question.optionsArray.push("ДР.");
+                            } else {
+                                data.question.optionsArray.push(alfabet[i - 1]);
+                                data.question.correctAnswer = "";
+                            }
+                        }
+                    } else {
+                        data.question.choiceText = "Изберете брой точки:";
+                        for (var i = 0; i <= data.question.options; i++) {
+                            
+                            data.question.optionsArray.push(i);
+                        }
+                    }
                     self.question(data.question);
+
                     $("#questionsToBeChecked").modal("show");
                 } else if (data.status == "ERR3") {
 
@@ -63,7 +87,7 @@
             url: "/t/GivePoints",
             data: {
                 questionId: self.question().id,
-                points: points
+                option: points
             },
             success: function (data) {
                 if (data.status === "OK") {

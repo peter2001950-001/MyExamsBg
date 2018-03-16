@@ -16,6 +16,7 @@ namespace MyExams.Models
         public bool IsChecked { get; set; }
         public int ReceivedPoints { get; set; }
         public string FileName { get; set; }
+        public QuestionType QuestionType { get; set; }
 
     }
 }
