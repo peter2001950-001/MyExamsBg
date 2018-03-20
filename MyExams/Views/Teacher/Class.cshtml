@@ -94,7 +94,7 @@
                 <td data-bind="text: lastName"></td>
                 <!-- ko foreach: marks -->
                 <td data-bind="foreach: $data">
-                    <button class="btn badge badge-primary"style="font-size:13px"><span data-bind="text: percentage"></span>% (<span data-bind="text: mark"></span>)</button>
+                    <button class="btn badge badge-primary"style="font-size:13px" data-bind="click: $root.gotoUrl"><span data-bind="text: percentage"></span>% (<span data-bind="text: mark"></span>)</button>
                 </td>
                 <!-- /ko -->
             </tr>

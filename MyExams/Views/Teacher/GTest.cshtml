@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "GTest";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+@section AddToHead{
+    <link href="@Url.Content("~/Content/testDesign.css")" rel="stylesheet" type="text/css" />
+}
+
+<div class="container" data-bind="with: test">
+    <div class="gt-section bg-white">
+        <h1 class="text-center" data-bind="text: title"></h1>
+        <div class="row gt-student-detail mt-4 mb-4">
+                <div class="col-9"><h3>Име: <span data-bind="text: studentName"></span></h3></div>
+                <div class="col-3"><h3>№<span data-bind="text: noInClass"></span></h3></div>
+        </div>
+            <div data-bind="foreach: sections">
+                <div data-bind="text: text"></div>
+                <div data-bind="foreach: questions">
+                    <div class="gt-question m-3">
+                        <h4 class="gt-q-text mt-3" data-bind="text: text"></h4>
+
+                        <!--ko if: type==0-->
+                        <div class="mt-2 mb-2">
+                            <div class="row pr-4 pl-4" data-bind="foreach: answers">
+                                <div class="col-md-3"><h5 class="gt-a-text" data-bind="text: text, style: {color: color}"></h5></div>
+                            </div>
+                        </div>
+                        <!--/ko-->
+                        <!--ko if: type==1-->
+                        <h5>Отговорът на ученика: </h5>
+                        <img class="w-100" data-bind="attr: {src: image}" />
+                        <h5>Верен отговор: <strong data-bind="text: correctAnswer"></strong></h5>
+                        <!--/ko-->
+                        <div class="gt-points" data-bind="style: {background: pointsColor}"><span data-bind="text: points"></span> т.</div>
+                    </div>
+            </div>
+        </div>
+        <div>
+            <h4>Брой точки: <span data-bind="text: receivedPoints"></span>/<span data-bind="text: totalPoints"></span></h4>
+            <h4><span data-bind="text: percentage"></span>% - <span data-bind="text: mark"></span></h4>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/app/teacher/gTestViewModel.js")" type="text/javascript"></script>
+<script>var gTestId = @ViewBag.id</script>

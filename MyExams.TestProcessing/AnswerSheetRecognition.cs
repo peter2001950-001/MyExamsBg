@@ -298,10 +298,8 @@ namespace MyExams.TestProcessing
                     rowPercentages.Add(result);
                
             }
-                var maxValue = rowPercentages.Max();
-                if (maxValue > 2 && maxValue < 20)
-                {
-                    if(rowPercentages.Any(x => x + 1 > maxValue && x!=maxValue))
+                var maxValue = rowPercentages.Where(x=>x>2&&x<20).Max();
+                    if(rowPercentages.Where(x => x > 2 && x < 20).Any(x => x + 5 > maxValue && x!=maxValue))
                     {
                         row.Uncertan = true;
                     }
@@ -310,7 +308,6 @@ namespace MyExams.TestProcessing
                         var index = rowPercentages.IndexOf(maxValue);
                         row.Shapes[index].IsChecked = true;
                     }
-                }
                
             }
             return rows;
@@ -392,7 +389,7 @@ namespace MyExams.TestProcessing
                 {
                     var croppedRect = new Rectangle(firstHozilonalLine.APoint.X - (int)(widthPixel * 40) - (int)(widthPixel * 10) * tryCount, firstHozilonalLine.APoint.Y - 40 - 10 * tryCount, firstHozilonalLine.BPoint.X - firstHozilonalLine.APoint.X + (int)(widthPixel * 20) + (int)(widthPixel * 10) * tryCount, lastHorizontalLine.BPoint.Y - firstHozilonalLine.APoint.Y + 40 + 20*tryCount);
                     var croppedBitmap = _bitmap.Clone(croppedRect, _bitmap.PixelFormat);
-                   croppedBitmap.Save(@"D:\Downloads\drive-download-20180303T105812Z-001\barcode.jpg", ImageFormat.Jpeg);
+                //   croppedBitmap.Save(@"D:\Downloads\drive-download-20180303T105812Z-001\barcode.jpg", ImageFormat.Jpeg);
                     return croppedBitmap;
                 }
             }

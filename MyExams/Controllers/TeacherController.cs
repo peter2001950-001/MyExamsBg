@@ -3,22 +3,18 @@ using Hangfire.Storage;
 using Microsoft.AspNet.Identity;
 using MyExams.Models;
 using MyExams.Services.Contracts;
-using MyExams.TestProcessing;
 using MyExams.TestProcessing.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace MyExams.Controllers
 {
@@ -94,7 +90,7 @@ namespace MyExams.Controllers
             if (_teacherService.IsTeacherOfTest(User.Identity.GetUserId(), test.Id))
             {
                 ViewBag.id = id;
-                ViewBag.title = test.TestTitle;
+                ViewBag.Title = test.TestTitle;
                 return View();
             }
             return RedirectToAction("tests");
@@ -103,7 +99,140 @@ namespace MyExams.Controllers
         [HttpGet]
         public ActionResult UploadFiles()
         {
+            ViewBag.Title = "Качване на файлове";
             return View();
+        }
+        public ActionResult GTest(int id)
+        {
+            ViewBag.id = id;
+            var gTest = _testService.GetAllGTestIncludeAll().Where(x => x.Id == id).FirstOrDefault();
+            if (gTest != null)
+            {
+                ViewBag.Title = gTest.Test.TestTitle;
+                return View();
+            }
+            return RedirectToAction("Index");
+        }
+        public JsonResult GetGTest(int id)
+        {
+            var userId = User.Identity.GetUserId();
+            if (_teacherService.IsTeacherOfGTest(userId, id))
+            {
+                var gTest = _testService.GetAllGTestIncludeAll().Where(x => x.Id == id).FirstOrDefault();
+                if (gTest != null)
+                {
+                    XmlDocument doc = new XmlDocument();
+                    doc.LoadXml(gTest.Xml);
+                    List<int> questionIds = new List<int>();
+                    
+                    List<Section> sections = new List<Section>();
+                    Dictionary<int, XmlNode> idNodes = new Dictionary<int, XmlNode>();
+                    foreach (XmlNode node in doc.DocumentElement.ChildNodes)
+                    {
+                        var questionId = int.Parse(node.Attributes["id"].Value);
+                        questionIds.Add(questionId);
+                        var question = _questionService.GetById(questionId);
+                        idNodes.Add(questionId, node);
+                      
+                       
+                    }
+                    List<Question> questionList = _questionService.GetAllByIds(questionIds).ToList();
+                    foreach (var item in questionList)
+                    {
+                        if (!sections.Any(x => x.Id == item.Section.Id))
+                        {
+                            sections.Add(item.Section);
+                        }
+                    }
+                    List<Answer> answersList = _answerService.GetAllByQuestionIds(questionIds).ToList();
+                    List<object> sectionObjects = new List<object>();
+                    foreach (var section in sections)
+                    {
+                        List<object> questionObjects = new List<object>();
+                        var questionsOfSection = questionList.Where(x => x.Section.Id == section.Id);
+                        foreach (var questionId in questionIds)
+                        {
+                            var item = questionsOfSection.Where(x => x.Id == questionId).First();
+                            XmlNode node;
+                            idNodes.TryGetValue(questionId, out node);
+                            if (node != null)
+                            {
+                                if (node.ChildNodes.Count > 0)
+                                {
+                                    List<object> answerObjects = new List<object>();
+                                    foreach (XmlNode answerNode in node.ChildNodes)
+                                    {
+                                        var answer = answersList.FirstOrDefault(x => x.Id == int.Parse(answerNode.Attributes["id"].Value));
+                                        if (answerNode.Attributes["s"].Value == "0" && answer.IsCorrect)
+                                        {
+                                            answerObjects.Add(new { text = answer.Text, color = "#4dbd74" }); // green color - the answer is correct but not marked
+                                        }
+                                        else if (answerNode.Attributes["s"].Value == "1")
+                                        {
+                                            answerObjects.Add(new { text = answer.Text, color = "#f43f3f" }); // red color - the answer is not correct but marked
+                                        }
+                                        else if (answerNode.Attributes["s"].Value == "2")
+                                        {
+                                            answerObjects.Add(new { text = answer.Text, color = "#4dbd74" });
+                                        }else if(answerNode.Attributes["s"].Value == "0")
+                                        {
+                                            answerObjects.Add(new { text = answer.Text, color = "#000000" });
+                                        }
+                                    }
+                                    var points = int.Parse(node.Attributes["rp"].Value);
+                                    var color = "";
+                                    if (points > 0)
+                                    {
+                                        color = "#4dbd74";
+                                    }
+                                    else
+                                    {
+                                        color = "#f43f3f";
+                                    }
+                                    questionObjects.Add(new { text = item.Text, answers = answerObjects, points = points, pointsColor = color, type = 0 });
+
+                                }
+                                else
+                                {
+                                    XElement elements = XElement.Parse(gTest.Xml);
+                                    int result = elements.Descendants("q").Select(((element, index) => new { Item = element, Index = index }))
+                                    .Where(x => x.Item.Attribute("id").Value == item.Id.ToString())
+                                    .Select(x => x.Index)
+                                    .First();
+
+                                    var writtenQuestion = _gAnswerSheetService.GetGWrittenQuestionsBy(gTest.Id).Where(x => x.GQuestionId == result).FirstOrDefault();
+                                    if (writtenQuestion != null)
+                                    {
+                                        var srcImage = Image.FromFile(writtenQuestion.FileName);
+                                        using (var stream = new MemoryStream())
+                                        {
+                                            srcImage.Save(stream, ImageFormat.Jpeg);
+                                            var points = int.Parse(node.Attributes["rp"].Value);
+                                            var color = "";
+                                            if (points > 0)
+                                            {
+                                                color = "#4dbd74";
+                                            }
+                                            else
+                                            {
+                                                color = "#f43f3f";
+                                            }
+
+                                            questionObjects.Add(new { text = item.Text, correctAnswer = item.CorrectAnswer, points = points, image = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray()), pointsColor = color, type = 1 });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                            sectionObjects.Add(new { text = section.SectionTitle, questions = questionObjects });
+                    }
+                    var studentClass = _classService.GetAllClassStudents().Where(x => x.Student?.Id == gTest.Student.Id && x.Class?.Id == gTest.Class.Id).FirstOrDefault();
+
+                    return Json(new { test = new { title = gTest.Test.TestTitle, studentName = gTest.Student.FirstName + " " + gTest.Student.LastName, noInClass = studentClass.NoInClass, sections = sectionObjects, receivedPoints = gTest.ReceivedPoints, totalPoints = gTest.MaxPoints, percentage = Math.Round(((double)gTest.ReceivedPoints * 100) / (double)gTest.MaxPoints, 2), mark = Math.Round(((double)gTest.ReceivedPoints * 6) / (double)gTest.MaxPoints, 2) }, status = "OK" }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new { status = "ERR1" });
+            }
+            return Json(new { status = "ERR2" });
         }
         public ActionResult TestNameUpdate(string testUniqueCode, string name)
         {
@@ -879,7 +1008,7 @@ namespace MyExams.Controllers
                             var answerAttr = xml.CreateAttribute("rp");
                             answerAttr.Value = option.ToString();
                             xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].Attributes.Append(answerAttr);
-                           
+
                         }
                         else
                         {
@@ -916,6 +1045,13 @@ namespace MyExams.Controllers
                             {
                                 var answerAttr = xml.CreateAttribute("rp");
                                 answerAttr.Value = questionObj.Points.ToString();
+                                xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].Attributes.Append(answerAttr);
+
+                            }
+                            else
+                            {
+                                var answerAttr = xml.CreateAttribute("rp");
+                                answerAttr.Value = "0";
                                 xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].Attributes.Append(answerAttr);
 
                             }

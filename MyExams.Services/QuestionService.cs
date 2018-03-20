@@ -40,6 +40,15 @@ namespace MyExams.Services.Contracts
             }
             return null;
         }
+        public Question GetById(int id)
+        {
+            var question = _questionRepository.Include(x => x.Section).FirstOrDefault(x=>x.Id==id);
+            return question;
+        }
+        public IEnumerable<Question> GetAllByIds(List<int> ids)
+        {
+            return _questionRepository.Include(x=>x.Section).Where(x => ids.Contains(x.Id));
+        }
 
         public int GetPoints(int id)
         {

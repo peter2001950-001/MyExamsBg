@@ -13,6 +13,7 @@ namespace MyExams.Services.Contracts
         Class CreateNewClass(string userId, string name, string subject);
         IEnumerable<StudentClass> GetClassStudents(string uniqueClassCode);
         IEnumerable<Class> GetStudentClasses(string studentUserId);
+        IEnumerable<StudentClass> GetAllClassStudents();
         IEnumerable<object> GetClassObjects<TKey>(string teacherId, Expression<Func<Models.Class, TKey>> orderBy, OrderByMethod orderByMethod);
         Class AddStudentToClass(Student student, string classCode, int noInClass);
         string GenerateColor(int seed=0);

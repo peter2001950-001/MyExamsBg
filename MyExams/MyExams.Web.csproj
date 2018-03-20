@@ -291,6 +291,7 @@
     <Content Include="Content\Admin.css" />
     <Content Include="Content\ClassViewCSS.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\GTest.css" />
     <Content Include="Content\images\868142-200.png" />
     <Content Include="Content\images\cool-background.jpg" />
     <Content Include="Content\images\Dual Ring-1s-200px.gif" />
@@ -321,6 +322,7 @@
     <Content Include="Scripts\app\teacher\classesViewModel.js" />
     <Content Include="Scripts\app\teacher\classViewModel.js" />
     <Content Include="Scripts\app\student\classesViewModel.js" />
+    <Content Include="Scripts\app\teacher\gTestViewModel.js" />
     <Content Include="Scripts\app\teacher\indexViewModel.js" />
     <Content Include="Scripts\app\teacher\testDesignViewModel.js" />
     <Content Include="Scripts\app\teacher\testsViewModel.js" />
@@ -409,6 +411,7 @@
     <Content Include="Views\Teacher\Tests.cshtml" />
     <Content Include="Views\Teacher\TestDesign.cshtml" />
     <Content Include="Views\Teacher\UploadFiles.cshtml" />
+    <Content Include="Views\Teacher\GTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

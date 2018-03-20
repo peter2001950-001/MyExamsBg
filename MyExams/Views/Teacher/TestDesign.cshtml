@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "TestDesign";
     Layout = "~/Views/Shared/_TeacherLayout.cshtml";
 }
@@ -37,6 +36,7 @@
         <div class="section">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Наименование на секцията" data-bind="value: sectionText, hasFocus: focus" />
+                <input type="text" class="form-control" placeholder="Текст към съответната секция..." data-bind="value: sectionText, hasFocus: focus" />
             </div>
             <div data-bind="foreach: questions">
                 <div class="question">

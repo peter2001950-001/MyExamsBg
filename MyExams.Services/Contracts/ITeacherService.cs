@@ -13,5 +13,6 @@ namespace MyExams.Services.Contracts
         Teacher GetTeacherByUserId(string userId);
         void AddTeacher(Teacher item);
         bool IsTeacherOfTest(string userId, int testId);
+        bool IsTeacherOfGTest(string userId, int gTestId);
     }
 }

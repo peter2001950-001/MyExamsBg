@@ -29,6 +29,10 @@ namespace MyExams.Services
         {
             return _answerRepository.GetAll();
         }
+        public IEnumerable<Answer> GetAllByQuestionIds(List<int> ids)
+        {
+            return _answerRepository.Where(x => ids.Contains(x.Question.Id));
+        }
         public void Update(Answer answer)
         {
             _answerRepository.Update(answer);

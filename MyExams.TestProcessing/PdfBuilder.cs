@@ -81,8 +81,10 @@ namespace MyExams.TestProcessing
                     int numberingQuestions = 1;
                     foreach (var section in item.Sections)
                     {
+                        doc.Add(new Paragraph(section.Title));
                         foreach (var question in section.Questions)
                         {
+                            
                             if (question.Type == Models.QuestionType.Choice)
                             {
                                 var table = DisplayQuestion(numberingQuestions + ". " + question.Title, question.Answers.Select(x => x.Text).ToArray());

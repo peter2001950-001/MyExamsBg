@@ -12,6 +12,7 @@ namespace MyExams.Services.Contracts
     {
         void AddNewTest(Test item);
         IEnumerable<Test> GetAllTests();
+        IEnumerable<GTest> GetAllGTestIncludeAll();
         IEnumerable<object> GetTestObjects<TKey>(string teacherId, Expression<Func<Test, TKey>> orderBy, OrderByMethod orderByMethod);
         IEnumerable<object> GetTestObjects(string teacherId);
         Test GetTestByUniqueNumber(string uniqueNumber);

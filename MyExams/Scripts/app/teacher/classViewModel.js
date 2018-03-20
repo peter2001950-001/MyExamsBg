@@ -80,6 +80,9 @@ function ClassViewModel() {
             }
         });
     }
+    self.gotoUrl = function (item) {
+        window.location.href = "/t/gTest?id=" + item.id;
+    }
 }
 var vm = new ClassViewModel();
 ko.applyBindings(vm);

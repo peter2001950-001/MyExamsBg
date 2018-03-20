@@ -15,6 +15,9 @@ namespace MyExams.Services.Contracts
         void Update(Question question);
         int GetPoints(int id);
         void RemoveQuestion(Question question);
-        
+        Question GetById(int id);
+        IEnumerable<Question> GetAllByIds(List<int> ids);
+
+
     }
 }

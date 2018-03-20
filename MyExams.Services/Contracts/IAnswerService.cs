@@ -10,6 +10,7 @@ namespace MyExams.Services.Contracts
     public interface IAnswerService
     {
         IEnumerable<Answer> GetAll();
+        IEnumerable<Answer> GetAllByQuestionIds(List<int> ids);
         IEnumerable<Answer> GetAllBy(int testId, int sectionNo, int questionNo);
         void AddAnswer(Answer answer);
         void Update(Answer answer);

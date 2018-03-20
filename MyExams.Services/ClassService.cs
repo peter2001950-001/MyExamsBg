@@ -86,6 +86,10 @@ namespace MyExams.Services
             var students = _studentClassRepository.GetAll().Where(x => x.Class.UniqueCode == uniqueClassCode).ToList();
             return students;
         }
+        public IEnumerable<StudentClass> GetAllClassStudents()
+        {
+            return _studentClassRepository.GetAll();
+        }
 
         public IEnumerable<Class> GetStudentClasses(string studentUserId)
         {

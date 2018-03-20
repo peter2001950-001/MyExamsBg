@@ -103,3 +103,42 @@ button.btn.addOption{
                 font-size: 20px; 
                 width: auto; 
             }
+
+.gt-student-detail {
+ 
+    border-bottom-color: black;
+    border-bottom: 1px solid black;
+}
+    .gt-student-detail h3 {
+        font-weight: normal;
+        font-size: 16px !important;
+        margin-bottom:0 !important;
+    }
+.gt-q-text {
+    font-weight: 500;
+    font-size: 19px;
+}
+.gt-a-text {
+    font-size: 14px;
+    font-weight: normal;
+}
+.gt-question{
+
+}
+.gt-section {
+    padding: 8%;
+    background-color: white;
+    margin: 30px 0;
+    box-shadow: 0px 0px 13px 0px rgba(173,173,173,1);
+}
+.gt-points{
+    padding: 7px;
+    color: white;
+    width:50px; 
+    text-align: center;
+    margin-right:0;
+    margin-left: auto;
+}
+.gt-points span{
+    font-size: 14px;
+}

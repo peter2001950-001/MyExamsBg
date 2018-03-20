@@ -90,6 +90,10 @@ namespace MyExams.Services
         {
             return _gTestRepository.GetAll();
         } 
+        public IEnumerable<GTest> GetAllGTestIncludeAll()
+        {
+            return _gTestRepository.IncludeAll();
+        }
         public void AddNewGTest(GTest item)
         {
             _gTestRepository.Add(item);
