@@ -1,0 +1,1073 @@
+    ======  ======
+    Time:13.4.2018 г. 10:46:46
+    Title: Initiate log
+    Message: 
+    Time:13.4.2018 г. 10:46:46
+    Title: Initiate InternalManager
+    Message: Trying to Validate License
+    Time:13.4.2018 г. 10:46:46
+    Title: Requesting EVT
+    Message: EVTP
+    Time:13.4.2018 г. 10:46:46
+    Title: Requesting Validation
+    Message: ILMValidate
+    Time:13.4.2018 г. 10:46:46
+    Title: LICENSER
+    Message: TRL MODE
+    Time:13.4.2018 г. 10:46:46
+    Title: LICENSER
+    Message: DS LEFT-263
+    Time:13.4.2018 г. 10:46:46
+    Title: LICENSER
+    Message: DT MARK PASSED-263.00:00:00
+    Time:13.4.2018 г. 10:46:46
+    Title: ILMValidate action
+    Message: LIC
+    Time:13.4.2018 г. 10:46:52
+    Title: Access to the path 'C:\ProgramData\Telerik\Hash.lic' is denied.
+    Message:    at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at Telerik.Licensing.Licenser.ReadHashPass()
+    Time:13.4.2018 г. 10:46:52
+    Title: LICENSER - TGO
+    Message: Start
+    Time:13.4.2018 г. 10:47:00
+    Title: LICENSER - TGO
+    Message: Object reference not set to an instance of an object.
+    Entering constructor for: Telerik.CommonPackage.Telerik_CommonPackagePackage
+    Entering Initialize() of: Telerik.CommonPackage.Telerik_CommonPackagePackage
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:53:  - TokenCache: Deserialized 0 items to token cache.
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:53:  - AuthenticationContext: ADAL .NET with assembly version '2.16.0.0', file version '2.16.20422.1202' and informational version '7329346b1c69910ce7abd66c3f8a918c307827a1' is running...
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:53: 663416d6-661b-4bdf-b5dd-c685b64a83de - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:53: 663416d6-661b-4bdf-b5dd-c685b64a83de - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:53: 663416d6-661b-4bdf-b5dd-c685b64a83de - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:53: 663416d6-661b-4bdf-b5dd-c685b64a83de - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 9:48:53: 663416d6-661b-4bdf-b5dd-c685b64a83de - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:56: 96c20814-3751-44e5-bdd9-487b54e68381 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:56: 96c20814-3751-44e5-bdd9-487b54e68381 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:56: 96c20814-3751-44e5-bdd9-487b54e68381 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:56: 96c20814-3751-44e5-bdd9-487b54e68381 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 9:48:56: 96c20814-3751-44e5-bdd9-487b54e68381 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:57: 336f7dbe-36a0-4886-ac24-da03918a76fe - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:57: 336f7dbe-36a0-4886-ac24-da03918a76fe - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:57: 336f7dbe-36a0-4886-ac24-da03918a76fe - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 9:48:57: 336f7dbe-36a0-4886-ac24-da03918a76fe - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 9:48:57: 336f7dbe-36a0-4886-ac24-da03918a76fe - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 13.4.2018 г. 9:49:00: 4bad9650-dadc-485d-969f-035c3a4f818d - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 9:49:00: 4bad9650-dadc-485d-969f-035c3a4f818d - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 9:49:00: 4bad9650-dadc-485d-969f-035c3a4f818d - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 9:49:00: 4bad9650-dadc-485d-969f-035c3a4f818d - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 9:49:00: 4bad9650-dadc-485d-969f-035c3a4f818d - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 9:49:01: 20daeb6c-8ac9-4796-828e-1a5a9cd95cab - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 9:49:01: 20daeb6c-8ac9-4796-828e-1a5a9cd95cab - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 9:49:01: 20daeb6c-8ac9-4796-828e-1a5a9cd95cab - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 9:49:01: 20daeb6c-8ac9-4796-828e-1a5a9cd95cab - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 9:49:01: 20daeb6c-8ac9-4796-828e-1a5a9cd95cab - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 9:49:02: 780b937e-c196-4c17-b51e-95f73538c92d - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 9:49:02: 780b937e-c196-4c17-b51e-95f73538c92d - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 9:49:02: 780b937e-c196-4c17-b51e-95f73538c92d - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 9:49:02: 780b937e-c196-4c17-b51e-95f73538c92d - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 9:49:02: 780b937e-c196-4c17-b51e-95f73538c92d - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:42: 48294a6f-f141-4105-aec0-07f3797c97e9 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:42: 48294a6f-f141-4105-aec0-07f3797c97e9 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:42: 48294a6f-f141-4105-aec0-07f3797c97e9 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:42: 48294a6f-f141-4105-aec0-07f3797c97e9 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 10:48:42: 48294a6f-f141-4105-aec0-07f3797c97e9 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:43: 8cb61cbb-1ba8-4137-a8b2-08b927e98412 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:43: 8cb61cbb-1ba8-4137-a8b2-08b927e98412 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:43: 8cb61cbb-1ba8-4137-a8b2-08b927e98412 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:43: 8cb61cbb-1ba8-4137-a8b2-08b927e98412 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 10:48:43: 8cb61cbb-1ba8-4137-a8b2-08b927e98412 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:44: 8c36a00b-67c3-4b49-ad67-0c7573f6b6ec - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:44: 8c36a00b-67c3-4b49-ad67-0c7573f6b6ec - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:44: 8c36a00b-67c3-4b49-ad67-0c7573f6b6ec - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:44: 8c36a00b-67c3-4b49-ad67-0c7573f6b6ec - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 10:48:44: 8c36a00b-67c3-4b49-ad67-0c7573f6b6ec - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:46: 9d75fd43-2fb2-4708-be75-ec01cdef5876 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:46: 9d75fd43-2fb2-4708-be75-ec01cdef5876 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:46: 9d75fd43-2fb2-4708-be75-ec01cdef5876 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:46: 9d75fd43-2fb2-4708-be75-ec01cdef5876 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 10:48:46: 9d75fd43-2fb2-4708-be75-ec01cdef5876 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:47: e0112327-37f3-46f4-9512-355bb75abc2b - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:47: e0112327-37f3-46f4-9512-355bb75abc2b - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:47: e0112327-37f3-46f4-9512-355bb75abc2b - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:47: e0112327-37f3-46f4-9512-355bb75abc2b - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 10:48:47: e0112327-37f3-46f4-9512-355bb75abc2b - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:48: 859fa95d-d866-44a1-b7fb-1c4714b0a53d - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:48: 859fa95d-d866-44a1-b7fb-1c4714b0a53d - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:48: 859fa95d-d866-44a1-b7fb-1c4714b0a53d - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 10:48:48: 859fa95d-d866-44a1-b7fb-1c4714b0a53d - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 10:48:48: 859fa95d-d866-44a1-b7fb-1c4714b0a53d - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 13.4.2018 г. 14:08:39: 90fd308b-7d94-484c-8a38-275072c58aa8 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 14:08:39: 90fd308b-7d94-484c-8a38-275072c58aa8 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 14:08:39: 90fd308b-7d94-484c-8a38-275072c58aa8 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 14:08:39: 90fd308b-7d94-484c-8a38-275072c58aa8 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 14:08:42: 90fd308b-7d94-484c-8a38-275072c58aa8 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 14:08:43: 5abaf661-a293-4407-bd3e-dc6390f939eb - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 14:08:43: 5abaf661-a293-4407-bd3e-dc6390f939eb - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 14:08:43: 5abaf661-a293-4407-bd3e-dc6390f939eb - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 14:08:43: 5abaf661-a293-4407-bd3e-dc6390f939eb - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 14:08:43: 5abaf661-a293-4407-bd3e-dc6390f939eb - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 14:08:44: 45eca8e6-1258-484c-a989-0e6754c2ecd2 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 14:08:44: 45eca8e6-1258-484c-a989-0e6754c2ecd2 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 14:08:44: 45eca8e6-1258-484c-a989-0e6754c2ecd2 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 14:08:44: 45eca8e6-1258-484c-a989-0e6754c2ecd2 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 14:08:44: 45eca8e6-1258-484c-a989-0e6754c2ecd2 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 13.4.2018 г. 14:09:29: 1c69f9ed-032c-4a3f-9c30-05b31d248888 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 14:09:29: 1c69f9ed-032c-4a3f-9c30-05b31d248888 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 14:09:29: 1c69f9ed-032c-4a3f-9c30-05b31d248888 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 14:09:29: 1c69f9ed-032c-4a3f-9c30-05b31d248888 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 14:09:29: 1c69f9ed-032c-4a3f-9c30-05b31d248888 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 14:09:30: 9727eb59-6a77-4bbb-ae88-4204c61d34e1 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 14:09:30: 9727eb59-6a77-4bbb-ae88-4204c61d34e1 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 14:09:30: 9727eb59-6a77-4bbb-ae88-4204c61d34e1 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 14:09:30: 9727eb59-6a77-4bbb-ae88-4204c61d34e1 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 14:09:30: 9727eb59-6a77-4bbb-ae88-4204c61d34e1 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 14:09:31: a20eeadd-258a-4801-8c39-e9896c6f149e - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 14:09:31: a20eeadd-258a-4801-8c39-e9896c6f149e - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 14:09:31: a20eeadd-258a-4801-8c39-e9896c6f149e - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 14:09:31: a20eeadd-258a-4801-8c39-e9896c6f149e - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 14:09:31: a20eeadd-258a-4801-8c39-e9896c6f149e - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:36: 1c39a507-2094-4fd5-ab7c-58a460ab5491 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:36: 1c39a507-2094-4fd5-ab7c-58a460ab5491 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:36: 1c39a507-2094-4fd5-ab7c-58a460ab5491 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:36: 1c39a507-2094-4fd5-ab7c-58a460ab5491 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 15:08:36: 1c39a507-2094-4fd5-ab7c-58a460ab5491 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:37: b4661179-53e9-444b-ad8d-f9cfe8a9c826 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:37: b4661179-53e9-444b-ad8d-f9cfe8a9c826 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:37: b4661179-53e9-444b-ad8d-f9cfe8a9c826 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:37: b4661179-53e9-444b-ad8d-f9cfe8a9c826 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 15:08:37: b4661179-53e9-444b-ad8d-f9cfe8a9c826 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:38: 462daf0b-998d-486f-bcd0-f832a2093b5f - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:38: 462daf0b-998d-486f-bcd0-f832a2093b5f - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:38: 462daf0b-998d-486f-bcd0-f832a2093b5f - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:38: 462daf0b-998d-486f-bcd0-f832a2093b5f - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 15:08:38: 462daf0b-998d-486f-bcd0-f832a2093b5f - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:40: e3c0ec2c-7a3f-4dda-9938-eead16a2412b - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:40: e3c0ec2c-7a3f-4dda-9938-eead16a2412b - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:40: e3c0ec2c-7a3f-4dda-9938-eead16a2412b - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:40: e3c0ec2c-7a3f-4dda-9938-eead16a2412b - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 15:08:40: e3c0ec2c-7a3f-4dda-9938-eead16a2412b - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:41: 66d8b736-2837-43ca-b071-a46979679704 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:41: 66d8b736-2837-43ca-b071-a46979679704 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:41: 66d8b736-2837-43ca-b071-a46979679704 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:41: 66d8b736-2837-43ca-b071-a46979679704 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 15:08:41: 66d8b736-2837-43ca-b071-a46979679704 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:42: 544bb7e2-a728-4ed0-9911-cf7372f5c30d - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:42: 544bb7e2-a728-4ed0-9911-cf7372f5c30d - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:42: 544bb7e2-a728-4ed0-9911-cf7372f5c30d - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 15:08:42: 544bb7e2-a728-4ed0-9911-cf7372f5c30d - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 15:08:42: 544bb7e2-a728-4ed0-9911-cf7372f5c30d - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 13.4.2018 г. 17:45:49: 08052951-23d9-4416-9026-7db6b8033fcc - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 17:45:49: 08052951-23d9-4416-9026-7db6b8033fcc - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 17:45:49: 08052951-23d9-4416-9026-7db6b8033fcc - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 17:45:49: 08052951-23d9-4416-9026-7db6b8033fcc - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 17:45:51: 08052951-23d9-4416-9026-7db6b8033fcc - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 17:45:52: c57c3853-2523-403c-a9f4-a1bb9b03e7b0 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 17:45:52: c57c3853-2523-403c-a9f4-a1bb9b03e7b0 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 17:45:52: c57c3853-2523-403c-a9f4-a1bb9b03e7b0 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 17:45:52: c57c3853-2523-403c-a9f4-a1bb9b03e7b0 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 17:45:52: c57c3853-2523-403c-a9f4-a1bb9b03e7b0 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 17:45:53: 690940e7-cbeb-42bf-af53-89fc6b866366 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 17:45:53: 690940e7-cbeb-42bf-af53-89fc6b866366 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 17:45:53: 690940e7-cbeb-42bf-af53-89fc6b866366 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 17:45:53: 690940e7-cbeb-42bf-af53-89fc6b866366 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 17:45:53: 690940e7-cbeb-42bf-af53-89fc6b866366 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 13.4.2018 г. 17:46:33: 70cefec2-8ef5-42c3-b2db-654e6e68a093 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 17:46:33: 70cefec2-8ef5-42c3-b2db-654e6e68a093 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 17:46:33: 70cefec2-8ef5-42c3-b2db-654e6e68a093 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 17:46:33: 70cefec2-8ef5-42c3-b2db-654e6e68a093 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 17:46:33: 70cefec2-8ef5-42c3-b2db-654e6e68a093 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 17:46:34: 3d756bb4-c22c-477d-8e17-5834a98747d6 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 17:46:34: 3d756bb4-c22c-477d-8e17-5834a98747d6 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 17:46:34: 3d756bb4-c22c-477d-8e17-5834a98747d6 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 17:46:34: 3d756bb4-c22c-477d-8e17-5834a98747d6 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 17:46:34: 3d756bb4-c22c-477d-8e17-5834a98747d6 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 17:46:35: e2963f19-e6a6-4b9d-86f1-fc057829d281 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 17:46:35: e2963f19-e6a6-4b9d-86f1-fc057829d281 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 17:46:35: e2963f19-e6a6-4b9d-86f1-fc057829d281 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 17:46:35: e2963f19-e6a6-4b9d-86f1-fc057829d281 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 17:46:36: e2963f19-e6a6-4b9d-86f1-fc057829d281 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 13.4.2018 г. 21:45:22: f839d652-53fe-40cd-941b-a16c9be43027 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 21:45:22: f839d652-53fe-40cd-941b-a16c9be43027 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 21:45:22: f839d652-53fe-40cd-941b-a16c9be43027 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 21:45:22: f839d652-53fe-40cd-941b-a16c9be43027 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 21:45:22: f839d652-53fe-40cd-941b-a16c9be43027 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 21:45:23: f5e9cc7b-90c1-4790-a66c-35db26f4319b - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 21:45:23: f5e9cc7b-90c1-4790-a66c-35db26f4319b - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 21:45:23: f5e9cc7b-90c1-4790-a66c-35db26f4319b - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 21:45:23: f5e9cc7b-90c1-4790-a66c-35db26f4319b - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 21:45:23: f5e9cc7b-90c1-4790-a66c-35db26f4319b - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 21:45:24: da9df6eb-96b5-42a2-bfbc-285fc248f556 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 21:45:24: da9df6eb-96b5-42a2-bfbc-285fc248f556 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 21:45:24: da9df6eb-96b5-42a2-bfbc-285fc248f556 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 21:45:24: da9df6eb-96b5-42a2-bfbc-285fc248f556 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 21:45:24: da9df6eb-96b5-42a2-bfbc-285fc248f556 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 13.4.2018 г. 23:34:39: a406e21a-13a6-48ad-9313-8e3d6b6283d9 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 23:34:39: a406e21a-13a6-48ad-9313-8e3d6b6283d9 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 23:34:39: a406e21a-13a6-48ad-9313-8e3d6b6283d9 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 23:34:39: a406e21a-13a6-48ad-9313-8e3d6b6283d9 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 23:34:41: a406e21a-13a6-48ad-9313-8e3d6b6283d9 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 23:34:42: c3db0346-2bf3-48cd-a704-3a822b4c55a5 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 23:34:42: c3db0346-2bf3-48cd-a704-3a822b4c55a5 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 23:34:42: c3db0346-2bf3-48cd-a704-3a822b4c55a5 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 23:34:42: c3db0346-2bf3-48cd-a704-3a822b4c55a5 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 23:34:42: c3db0346-2bf3-48cd-a704-3a822b4c55a5 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 23:34:43: 7b7e6358-ae0e-4bf7-b172-1322e913a4fc - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 23:34:43: 7b7e6358-ae0e-4bf7-b172-1322e913a4fc - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 23:34:43: 7b7e6358-ae0e-4bf7-b172-1322e913a4fc - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 23:34:43: 7b7e6358-ae0e-4bf7-b172-1322e913a4fc - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 23:34:43: 7b7e6358-ae0e-4bf7-b172-1322e913a4fc - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:04: 0dbad2c6-8137-4ecb-8dc6-3c93bd1ff98d - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:04: 0dbad2c6-8137-4ecb-8dc6-3c93bd1ff98d - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:04: 0dbad2c6-8137-4ecb-8dc6-3c93bd1ff98d - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:04: 0dbad2c6-8137-4ecb-8dc6-3c93bd1ff98d - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 23:35:04: 0dbad2c6-8137-4ecb-8dc6-3c93bd1ff98d - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:05: 00da1736-c1af-4a8e-b51d-9c8a611ecb8a - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:05: 00da1736-c1af-4a8e-b51d-9c8a611ecb8a - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:05: 00da1736-c1af-4a8e-b51d-9c8a611ecb8a - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:05: 00da1736-c1af-4a8e-b51d-9c8a611ecb8a - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 23:35:05: 00da1736-c1af-4a8e-b51d-9c8a611ecb8a - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:06: 15476285-0ed6-4992-b037-ab578784eaf9 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:06: 15476285-0ed6-4992-b037-ab578784eaf9 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:06: 15476285-0ed6-4992-b037-ab578784eaf9 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:06: 15476285-0ed6-4992-b037-ab578784eaf9 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 23:35:06: 15476285-0ed6-4992-b037-ab578784eaf9 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:26: 5152682a-4340-4d27-a8b7-6dd3fd563f44 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:26: 5152682a-4340-4d27-a8b7-6dd3fd563f44 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:26: 5152682a-4340-4d27-a8b7-6dd3fd563f44 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:26: 5152682a-4340-4d27-a8b7-6dd3fd563f44 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 23:35:26: 5152682a-4340-4d27-a8b7-6dd3fd563f44 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:27: d05d28c0-fd74-4038-8e1a-998ab10f99fd - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:27: d05d28c0-fd74-4038-8e1a-998ab10f99fd - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:27: d05d28c0-fd74-4038-8e1a-998ab10f99fd - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:27: d05d28c0-fd74-4038-8e1a-998ab10f99fd - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 23:35:27: d05d28c0-fd74-4038-8e1a-998ab10f99fd - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:28: 224cb6b5-1370-42d8-aa7a-cd5de2044972 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:28: 224cb6b5-1370-42d8-aa7a-cd5de2044972 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:28: 224cb6b5-1370-42d8-aa7a-cd5de2044972 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 13.4.2018 г. 23:35:28: 224cb6b5-1370-42d8-aa7a-cd5de2044972 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 13.4.2018 г. 23:35:28: 224cb6b5-1370-42d8-aa7a-cd5de2044972 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:36: ba90ad00-87d9-4de4-95e7-acc60ba246e0 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:36: ba90ad00-87d9-4de4-95e7-acc60ba246e0 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:36: ba90ad00-87d9-4de4-95e7-acc60ba246e0 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:36: ba90ad00-87d9-4de4-95e7-acc60ba246e0 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 0:34:36: ba90ad00-87d9-4de4-95e7-acc60ba246e0 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:37: 90dd1cc5-3e61-4e0c-815b-fcbe6df8d3fc - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:37: 90dd1cc5-3e61-4e0c-815b-fcbe6df8d3fc - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:37: 90dd1cc5-3e61-4e0c-815b-fcbe6df8d3fc - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:37: 90dd1cc5-3e61-4e0c-815b-fcbe6df8d3fc - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 0:34:37: 90dd1cc5-3e61-4e0c-815b-fcbe6df8d3fc - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:38: a902980c-7137-4b5f-abc4-efce8072a59f - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:38: a902980c-7137-4b5f-abc4-efce8072a59f - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:38: a902980c-7137-4b5f-abc4-efce8072a59f - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:38: a902980c-7137-4b5f-abc4-efce8072a59f - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 0:34:38: a902980c-7137-4b5f-abc4-efce8072a59f - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:39: fa709c6b-138a-4640-99e4-630be035598b - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:39: fa709c6b-138a-4640-99e4-630be035598b - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:39: fa709c6b-138a-4640-99e4-630be035598b - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:39: fa709c6b-138a-4640-99e4-630be035598b - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 0:34:39: fa709c6b-138a-4640-99e4-630be035598b - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:40: 170d096c-3014-4f11-921a-65b4cb9c25b5 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:40: 170d096c-3014-4f11-921a-65b4cb9c25b5 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:40: 170d096c-3014-4f11-921a-65b4cb9c25b5 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:40: 170d096c-3014-4f11-921a-65b4cb9c25b5 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 0:34:40: 170d096c-3014-4f11-921a-65b4cb9c25b5 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:41: e1237cb8-b4f3-4db4-88c2-50a70bf91541 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:41: e1237cb8-b4f3-4db4-88c2-50a70bf91541 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:41: e1237cb8-b4f3-4db4-88c2-50a70bf91541 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 0:34:41: e1237cb8-b4f3-4db4-88c2-50a70bf91541 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 0:34:41: e1237cb8-b4f3-4db4-88c2-50a70bf91541 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 14.4.2018 г. 3:50:20: 841d4105-13a9-4980-9229-8cfa424b8284 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 3:50:20: 841d4105-13a9-4980-9229-8cfa424b8284 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 3:50:20: 841d4105-13a9-4980-9229-8cfa424b8284 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 3:50:20: 841d4105-13a9-4980-9229-8cfa424b8284 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 3:50:20: 841d4105-13a9-4980-9229-8cfa424b8284 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 14.4.2018 г. 3:50:21: 9f341d5f-ee63-4847-8f8c-f04d80bf8e72 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 3:50:21: 9f341d5f-ee63-4847-8f8c-f04d80bf8e72 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 3:50:21: 9f341d5f-ee63-4847-8f8c-f04d80bf8e72 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 3:50:21: 9f341d5f-ee63-4847-8f8c-f04d80bf8e72 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 3:50:21: 9f341d5f-ee63-4847-8f8c-f04d80bf8e72 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 14.4.2018 г. 3:50:22: 8c6110b9-d8a4-4a78-ac8b-dbcf4b713dbe - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 3:50:22: 8c6110b9-d8a4-4a78-ac8b-dbcf4b713dbe - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 3:50:22: 8c6110b9-d8a4-4a78-ac8b-dbcf4b713dbe - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 3:50:22: 8c6110b9-d8a4-4a78-ac8b-dbcf4b713dbe - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 3:50:22: 8c6110b9-d8a4-4a78-ac8b-dbcf4b713dbe - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:27: 8ee0223e-6742-4ded-85b4-0eaf338fad5a - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:27: 8ee0223e-6742-4ded-85b4-0eaf338fad5a - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:27: 8ee0223e-6742-4ded-85b4-0eaf338fad5a - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:27: 8ee0223e-6742-4ded-85b4-0eaf338fad5a - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 22:03:27: 8ee0223e-6742-4ded-85b4-0eaf338fad5a - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:28: cb593299-46bf-4a18-bd3e-63728906cc2e - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:28: cb593299-46bf-4a18-bd3e-63728906cc2e - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:28: cb593299-46bf-4a18-bd3e-63728906cc2e - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:28: cb593299-46bf-4a18-bd3e-63728906cc2e - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 22:03:29: cb593299-46bf-4a18-bd3e-63728906cc2e - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:30: 44a28f54-a858-405b-bf04-a01a86cee6d7 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:30: 44a28f54-a858-405b-bf04-a01a86cee6d7 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:30: 44a28f54-a858-405b-bf04-a01a86cee6d7 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:30: 44a28f54-a858-405b-bf04-a01a86cee6d7 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 22:03:30: 44a28f54-a858-405b-bf04-a01a86cee6d7 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:42: 04674cda-e795-4725-ace2-2dc2ed09cec7 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:42: 04674cda-e795-4725-ace2-2dc2ed09cec7 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:42: 04674cda-e795-4725-ace2-2dc2ed09cec7 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:42: 04674cda-e795-4725-ace2-2dc2ed09cec7 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 22:03:42: 04674cda-e795-4725-ace2-2dc2ed09cec7 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:43: 85174372-7ad2-4028-9945-83ddee106d93 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:43: 85174372-7ad2-4028-9945-83ddee106d93 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:43: 85174372-7ad2-4028-9945-83ddee106d93 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:43: 85174372-7ad2-4028-9945-83ddee106d93 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 22:03:43: 85174372-7ad2-4028-9945-83ddee106d93 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:44: 0901faa5-4901-490f-945d-798b8a503120 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:44: 0901faa5-4901-490f-945d-798b8a503120 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:44: 0901faa5-4901-490f-945d-798b8a503120 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:44: 0901faa5-4901-490f-945d-798b8a503120 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 22:03:44: 0901faa5-4901-490f-945d-798b8a503120 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:50: 8705f723-124a-45ac-8dbe-828aea6934d7 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:50: 8705f723-124a-45ac-8dbe-828aea6934d7 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:50: 8705f723-124a-45ac-8dbe-828aea6934d7 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:50: 8705f723-124a-45ac-8dbe-828aea6934d7 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 22:03:50: 8705f723-124a-45ac-8dbe-828aea6934d7 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:51: 09d46386-78a4-4747-aae8-5955e533a13e - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:51: 09d46386-78a4-4747-aae8-5955e533a13e - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:51: 09d46386-78a4-4747-aae8-5955e533a13e - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:51: 09d46386-78a4-4747-aae8-5955e533a13e - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 22:03:51: 09d46386-78a4-4747-aae8-5955e533a13e - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:52: 904baf5f-38f0-4360-8fb3-887258edc056 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:52: 904baf5f-38f0-4360-8fb3-887258edc056 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:52: 904baf5f-38f0-4360-8fb3-887258edc056 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 14.4.2018 г. 22:03:52: 904baf5f-38f0-4360-8fb3-887258edc056 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 14.4.2018 г. 22:03:52: 904baf5f-38f0-4360-8fb3-887258edc056 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 15.4.2018 г. 1:15:08: f34dfb2b-965a-424b-86c5-6728813c82d4 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 15.4.2018 г. 1:15:08: f34dfb2b-965a-424b-86c5-6728813c82d4 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 15.4.2018 г. 1:15:08: f34dfb2b-965a-424b-86c5-6728813c82d4 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 15.4.2018 г. 1:15:08: f34dfb2b-965a-424b-86c5-6728813c82d4 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 15.4.2018 г. 1:15:08: f34dfb2b-965a-424b-86c5-6728813c82d4 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 15.4.2018 г. 1:15:09: c25886e3-9dcf-4333-a031-ffdf058eda1b - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 15.4.2018 г. 1:15:09: c25886e3-9dcf-4333-a031-ffdf058eda1b - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 15.4.2018 г. 1:15:09: c25886e3-9dcf-4333-a031-ffdf058eda1b - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 15.4.2018 г. 1:15:09: c25886e3-9dcf-4333-a031-ffdf058eda1b - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 15.4.2018 г. 1:15:09: c25886e3-9dcf-4333-a031-ffdf058eda1b - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 15.4.2018 г. 1:15:10: 8c1759f0-56d2-41ea-852c-a0837f536db9 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 15.4.2018 г. 1:15:10: 8c1759f0-56d2-41ea-852c-a0837f536db9 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 15.4.2018 г. 1:15:10: 8c1759f0-56d2-41ea-852c-a0837f536db9 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 15.4.2018 г. 1:15:10: 8c1759f0-56d2-41ea-852c-a0837f536db9 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 15.4.2018 г. 1:15:10: 8c1759f0-56d2-41ea-852c-a0837f536db9 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:08: 950a9ceb-2baf-44ab-8172-301b5ce2efd5 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:08: 950a9ceb-2baf-44ab-8172-301b5ce2efd5 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:08: 950a9ceb-2baf-44ab-8172-301b5ce2efd5 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:08: 950a9ceb-2baf-44ab-8172-301b5ce2efd5 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 16.4.2018 г. 23:04:09: 950a9ceb-2baf-44ab-8172-301b5ce2efd5 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:10: cd26df37-ecb6-48d9-8b5c-cd0485d72cd9 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:10: cd26df37-ecb6-48d9-8b5c-cd0485d72cd9 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:10: cd26df37-ecb6-48d9-8b5c-cd0485d72cd9 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:10: cd26df37-ecb6-48d9-8b5c-cd0485d72cd9 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 16.4.2018 г. 23:04:13: cd26df37-ecb6-48d9-8b5c-cd0485d72cd9 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:14: 52e82cd6-82b5-4b00-90e6-836f39331f7a - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:14: 52e82cd6-82b5-4b00-90e6-836f39331f7a - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:14: 52e82cd6-82b5-4b00-90e6-836f39331f7a - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:14: 52e82cd6-82b5-4b00-90e6-836f39331f7a - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 16.4.2018 г. 23:04:15: 52e82cd6-82b5-4b00-90e6-836f39331f7a - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:31: 9db0a845-7993-45ab-98cb-bfd81d221371 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:31: 9db0a845-7993-45ab-98cb-bfd81d221371 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:31: 9db0a845-7993-45ab-98cb-bfd81d221371 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:31: 9db0a845-7993-45ab-98cb-bfd81d221371 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 16.4.2018 г. 23:04:31: 9db0a845-7993-45ab-98cb-bfd81d221371 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:32: 811036e2-01cd-46d9-8237-1644189886d2 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:32: 811036e2-01cd-46d9-8237-1644189886d2 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:32: 811036e2-01cd-46d9-8237-1644189886d2 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:32: 811036e2-01cd-46d9-8237-1644189886d2 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 16.4.2018 г. 23:04:32: 811036e2-01cd-46d9-8237-1644189886d2 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:33: d3dc7f12-e26d-4239-90a2-c9902d2c9f05 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:33: d3dc7f12-e26d-4239-90a2-c9902d2c9f05 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:33: d3dc7f12-e26d-4239-90a2-c9902d2c9f05 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:33: d3dc7f12-e26d-4239-90a2-c9902d2c9f05 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 16.4.2018 г. 23:04:33: d3dc7f12-e26d-4239-90a2-c9902d2c9f05 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:57: d175735e-b816-469d-ae84-3a7725655fe6 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:57: d175735e-b816-469d-ae84-3a7725655fe6 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:57: d175735e-b816-469d-ae84-3a7725655fe6 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:57: d175735e-b816-469d-ae84-3a7725655fe6 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 16.4.2018 г. 23:04:57: d175735e-b816-469d-ae84-3a7725655fe6 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:58: 71e12295-1178-418f-aaf7-6f0dcfbcc2df - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:58: 71e12295-1178-418f-aaf7-6f0dcfbcc2df - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:58: 71e12295-1178-418f-aaf7-6f0dcfbcc2df - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:58: 71e12295-1178-418f-aaf7-6f0dcfbcc2df - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 16.4.2018 г. 23:04:58: 71e12295-1178-418f-aaf7-6f0dcfbcc2df - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:59: bb60c54f-f008-4865-abce-b33b17731d24 - AcquireTokenHandlerBase: === Token Acquisition started:
+	Authority: https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/
+	Resource: 499b84ac-1321-427f-aa17-267ca6975798
+	ClientId: 872cd9fa-d31f-45e0-9eab-6e460a02d1f1
+	CacheType: Microsoft.VisualStudio.Services.Client.AccountManagement.AccountManagerAdalCache (0 items)
+	Authentication Target: User
+	
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:59: bb60c54f-f008-4865-abce-b33b17731d24 - TokenCache: Looking up cache for a token...
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:59: bb60c54f-f008-4865-abce-b33b17731d24 - TokenCache: No matching token was found in the cache
+    devenv.exe Information: 0 : 16.4.2018 г. 23:04:59: bb60c54f-f008-4865-abce-b33b17731d24 - AcquireTokenSilentHandler: No token matching arguments found in the cache
+    devenv.exe Error: 0 : 16.4.2018 г. 23:04:59: bb60c54f-f008-4865-abce-b33b17731d24 - <RunAsync>d__0: Microsoft.IdentityModel.Clients.ActiveDirectory.AdalSilentTokenAcquisitionException: Failed to acquire token silently. Call method AcquireToken
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenSilentHandler.SendTokenRequestAsync()
+   at Microsoft.IdentityModel.Clients.ActiveDirectory.AcquireTokenHandlerBase.<RunAsync>d__0.MoveNext()
+	ErrorCode: failed_to_acquire_token_silently
+    Web method running: [https://app.vssps.visualstudio.com/_apis/connectionData?connectOptions=IncludeServices&lastChangeId=1114&lastChangeId64=1114] (GET)connectionData[connectionData]

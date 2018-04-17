@@ -22,7 +22,7 @@ namespace MyExams.Services
         }
         public IEnumerable<Section> GetAllSectionsByTestId(int testId)
         {
-            return _sectionRepository.GetAll().Where(x => x.Test.Id == testId);
+            return _sectionRepository.GetAll().Where(x => x.Test.Id == testId && x.Active);
         }
         public void AddSection(Section section)
         {

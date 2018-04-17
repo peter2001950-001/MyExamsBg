@@ -50,9 +50,9 @@
             url: "/t/GetWrittenQuestion",
             success: function (data) {
                 if (data.status === "OK") {
+                        data.question.optionsArray = [];
                     if (data.question.type == "0") {
                         data.question.choiceText = "Изберете отговор:";
-                        data.question.optionsArray = [];
                         for (var i = 0; i <= data.question.options; i++) {
                             if (i == 0) {
                                 data.question.optionsArray.push("ДР.");

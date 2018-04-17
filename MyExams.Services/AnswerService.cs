@@ -44,7 +44,7 @@ namespace MyExams.Services
             if (questions != null)
             {
                 var question =  questions.Where(x => x.OrderNo == questionNo).FirstOrDefault();
-                return  _answerRepository.GetAll().Where(x => x.Question.Id == question.Id);
+                return  _answerRepository.GetAll().Where(x => x.Question.Id == question.Id&&x.Active);
             }
             return null;
         }
