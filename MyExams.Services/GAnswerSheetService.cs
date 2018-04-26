@@ -33,9 +33,13 @@ namespace MyExams.Services
         {
             return _gWrittenQuestionRepository.GetAll();
         }
+        public GWrittenQuestion GetGWrittenQuestionsBy(int GTestId, int orderNo)
+        {
+            return _gWrittenQuestionRepository.GetWrittenQuestionBy(GTestId, orderNo);
+        }
         public IEnumerable<GWrittenQuestion> GetGWrittenQuestionsBy(int GTestId)
         {
-            return _gWrittenQuestionRepository.Include(x => x.GTest).Where(x => x.GTest.Id == GTestId);
+            return _gWrittenQuestionRepository.GetWrittenQuestionBy(GTestId);
         }
         public IEnumerable<GQuestionToBeChecked> GetAllGQuestionToBeChecked()
         {
@@ -43,9 +47,21 @@ namespace MyExams.Services
         }
         public IEnumerable<GQuestionToBeChecked> GetAllGQuestionToBeCheckedBy(int teacherId)
         {
-            return _gQuestionsToBeCheckedRepository.Where(x => x.Teacher.Id == teacherId);
+            return _gQuestionsToBeCheckedRepository.GetQuestionsToBeCheckedBy(teacherId);
         }
+        public GAnswerSheet GetGAnswerSheetBy(int teacherId, int questionId)
+        {
+            var question = this.GetAllGQuestionToBeCheckedBy(teacherId).Where(x => x.Id == questionId).FirstOrDefault();
+            var answerSheets = GetGAnswerSheetsBy(question.GWrittenQuestion.GTest.Id).ToList();
+            var selectedAS =  answerSheets.Where(x => x.FirstQuestionNo <= question.GWrittenQuestion.GQuestionId && x.LastQuestionNo >= question.GWrittenQuestion.GQuestionId).FirstOrDefault();
 
+            return selectedAS;
+        }
+        public GAnswerSheet GetGAnswerSheetBy(string barcode)
+        {
+            var answerSheet = _gAnswerSheetRepository.WhereIncludeAll(x => x.Barcode == barcode).FirstOrDefault();
+            return answerSheet;
+        }
         public void AddGAnswerSheet(GAnswerSheet gAnswerSheet)
         {
             _gAnswerSheetRepository.Add(gAnswerSheet);
@@ -63,7 +79,16 @@ namespace MyExams.Services
         }
         public void RemoveGQuestionToBeChecked(GQuestionToBeChecked gQuestionToBeChecked)
         {
-            _gQuestionsToBeCheckedRepository.Remove(gQuestionToBeChecked);
+            try
+            {
+                    _gQuestionsToBeCheckedRepository.Remove(gQuestionToBeChecked);
+            }
+            catch (Exception)
+            {
+                var newQuery = _gQuestionsToBeCheckedRepository.Where(x => x.Id == gQuestionToBeChecked.Id).FirstOrDefault();
+                _gQuestionsToBeCheckedRepository.Remove(newQuery);
+            }
+           
             _gQuestionsToBeCheckedRepository.SaveChanges();
         }
 
@@ -81,5 +106,22 @@ namespace MyExams.Services
             }
             return result;
         }
+
+        public void ClearAnswerSheetCache()
+        {
+            _gAnswerSheetRepository.ClearCache();
+        }
+
+        public void ClearGWrittenQuestionCache()
+        {
+            _gWrittenQuestionRepository.ClearCache();
+        }
+
+        public void ClearGQuestionsToBeCheckedCache()
+        {
+            _gQuestionsToBeCheckedRepository.ClearCache();
+        }
+
+       
     }
 }

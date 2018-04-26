@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using MyExams.Database.Contracts;
+using MyExams.Database.CachedRepositories;
 
 namespace MyExams.Database.Repositories
 {
-    public class StudentClassRepository:RepositoryBase<StudentClass>, IStudentClassRepository
+    public class StudentClassRepository: CachedRepositoryBase<StudentClass>, IStudentClassRepository
     {
         public StudentClassRepository(IDatabase _database)
             :base(_database)

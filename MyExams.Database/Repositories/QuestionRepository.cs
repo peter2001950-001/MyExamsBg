@@ -1,4 +1,5 @@
-﻿using MyExams.Database.Contracts;
+﻿using MyExams.Database.CachedRepositories;
+using MyExams.Database.Contracts;
 using MyExams.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyExams.Database.Repositories
 {
-    public class QuestionRepository : RepositoryBase<Question>, IQuestionRepository
+    public class QuestionRepository : CachedRepositoryBase<Question>, IQuestionRepository
     {
         public QuestionRepository(IDatabase database) : base(database)
         {
@@ -18,7 +19,6 @@ namespace MyExams.Database.Repositories
         {
              return  _dbSet.Where(x => x.Id == id).Select(x => x.Points).FirstOrDefault();
         } 
-
         public void Update(Question question)
         {
             var item = _dbSet.Where(x => x.Id == question.Id).FirstOrDefault();

@@ -22,7 +22,6 @@ namespace MyExams.TestProcessing
         private readonly IAnswerService _answerService;
         private readonly IClassService _classService;
         private readonly IGAnswerSheetService _gAnswerSheetService;
-        private string ServerPath;
         public TestGeneration(ITestService testService, ISectionService sectionService, IQuestionService questionService, IAnswerService answerService, IClassService classService, IGAnswerSheetService gAnswerSheetService)
         {
             if (_testService == null) _testService = testService;
@@ -33,10 +32,9 @@ namespace MyExams.TestProcessing
             if (_gAnswerSheetService == null) _gAnswerSheetService = gAnswerSheetService;
         }
 
-        public FileContentResult GenerateFile(Test test, List<Class> classes, Teacher teacher, string serverPath)
+        public FileContentResult GenerateFile(Test test, List<Class> classes, Teacher teacher)
         {
             if (test == null && classes == null) throw new ArgumentNullException();
-            ServerPath = serverPath;
             var allTPTest = new List<TPTest>();
             foreach (var classItem in classes)
             {
@@ -86,14 +84,6 @@ namespace MyExams.TestProcessing
                     SectionId = section.Id,
                     Title = section.SectionTitle
                 };
-                if(section.ImageFileName != null)
-                {
-                    tpSection.ImageFileName = Path.Combine(ServerPath, section.ImageFileName);
-                }
-                else
-                {
-                    tpSection.ImageFileName = null; 
-                }
                 var questions = _questionService.GetAllQuestionsBy(test.Id, section.OrderNo).ToList();
                 var questionGenOrder = new int[questions.Count];
                 if (section.MixupQuestions)

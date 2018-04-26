@@ -112,8 +112,6 @@ namespace MyExams.TestProcessing
                     if (anotherTry.Count == AnswersMatrix[i])
                     {
                         recongizedRowsAndShapes[i].Shapes = anotherTry;
-                        recongizedRowsAndShapes[i].RowShape = GetWholeShape(anotherTry);
-
                     }else if(anotherTry.Count>1 && AnswersMatrix[i] == 1)
                     {
                        
@@ -121,9 +119,8 @@ namespace MyExams.TestProcessing
 
                     }
                 }
-               
+                RowsAndShapes = IsChecked(recongizedRowsAndShapes);
             }
-            RowsAndShapes = IsChecked(recongizedRowsAndShapes);
             return recongizedRowsAndShapes;
 
         }
@@ -274,55 +271,44 @@ namespace MyExams.TestProcessing
 
         private List<Row> IsChecked(List<Row> rows)
         {
-            List<List<double>> percentages = new List<List<double>>();
+            List<List<double>> percentages = new List<List<double>>(); 
             foreach (var row in rows)
             {
-                if (row.Shapes.Count > 1)
+                List<double> rowPercentages = new List<double>();
+                foreach (var item in row.Shapes)
                 {
-                    List<double> rowPercentages = new List<double>();
-                    foreach (var item in row.Shapes)
+                   
+                 Rectangle newRectangle = new Rectangle(item.TopLeftPoint.X, item.TopLeftPoint.Y, (int)item.TopLeftPoint.DistanceTo(item.TopRightPoint), (int)item.TopLeftPoint.DistanceTo(item.BottomLeftPoint));
+
+                double totalPixels = 0;
+                double coloredPixels = 0;
+                for (int x = newRectangle.X + 10; x < newRectangle.Right - 10; x++)
+                {
+                    for (int y = newRectangle.Y + 10; y < newRectangle.Bottom - 10; y++)
                     {
-
-                        Rectangle newRectangle = new Rectangle(item.TopLeftPoint.X, item.TopLeftPoint.Y, (int)item.TopLeftPoint.DistanceTo(item.TopRightPoint), (int)item.TopLeftPoint.DistanceTo(item.BottomLeftPoint));
-
-                        double totalPixels = 0;
-                        double coloredPixels = 0;
-                        for (int x = newRectangle.X + 10; x < newRectangle.Right - 10; x++)
+                        totalPixels++;
+                        var pixel = _lockBitmap.GetPixel(x, y);
+                        if (pixel.R < 120 && pixel.G < 120 && pixel.B > 60&&2*pixel.B>pixel.G+pixel.R)
                         {
-                            for (int y = newRectangle.Y + 10; y < newRectangle.Bottom - 10; y++)
-                            {
-                                totalPixels++;
-                                var pixel = _lockBitmap.GetPixel(x, y);
-                                if (pixel.R < 120 && pixel.G < 120 && pixel.B > 60 && 2 * pixel.B > pixel.G + pixel.R)
-                                {
-                                    coloredPixels++;
-                                }
-                            }
+                            coloredPixels++;
                         }
-                        double result = (coloredPixels / totalPixels) * 100;
-                        rowPercentages.Add(result);
-
                     }
-                    var maxValue = rowPercentages.Where(x => x > 2 && x < 25).DefaultIfEmpty(0).Max();
-                    if (maxValue != 0)
+                }
+                double result = (coloredPixels / totalPixels) * 100;
+                    rowPercentages.Add(result);
+               
+            }
+                var maxValue = rowPercentages.Where(x=>x>2&&x<20).Max();
+                    if(rowPercentages.Where(x => x > 2 && x < 20).Any(x => x + 5 > maxValue && x!=maxValue))
                     {
-                        if (rowPercentages.Where(x => x > 2 && x < 25).Any(x => x + 5 > maxValue && x != maxValue))
-                        {
-                            row.Uncertan = true;
-                        }
-                        else
-                        {
-                            var index = rowPercentages.IndexOf(maxValue);
-                            row.Shapes[index].IsChecked = true;
-                        }
+                        row.Uncertan = true;
                     }
                     else
                     {
-
-                        row.Uncertan = true;
+                        var index = rowPercentages.IndexOf(maxValue);
+                        row.Shapes[index].IsChecked = true;
                     }
-
-                }
+               
             }
             return rows;
         }

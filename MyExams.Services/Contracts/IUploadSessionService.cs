@@ -15,5 +15,6 @@ namespace MyExams.Services.Contracts
         IEnumerable<UploadSessionFileDirectory> GetAllUploadSessionFileDirectory();
         void AddUploadSessionFileDirectory(UploadSessionFileDirectory uploadSessionFileDirectory);
         UploadSession GetUploadSessionBy(FileDirectory fileDirectory);
+        void ClearCache();
     }
 }

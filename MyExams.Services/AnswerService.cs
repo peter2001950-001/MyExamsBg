@@ -44,7 +44,15 @@ namespace MyExams.Services
             if (questions != null)
             {
                 var question =  questions.Where(x => x.OrderNo == questionNo).FirstOrDefault();
-                return  _answerRepository.GetAll().Where(x => x.Question.Id == question.Id&&x.Active);
+<<<<<<< HEAD
+<<<<<<< HEAD
+                return  _answerRepository.Include(x=>x.Question).Where(x => x.Question.Id == question.Id&&x.Active);
+=======
+                return  _answerRepository.GetAll().Where(x => x.Question.Id == question.Id);
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+=======
+                return  _answerRepository.GetAll().Where(x => x.Question.Id == question.Id);
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
             }
             return null;
         }

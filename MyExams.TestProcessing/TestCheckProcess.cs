@@ -71,7 +71,7 @@ namespace MyExams.TestProcessing
                 var barcode = sheetRecognition.BarcodeRecognize();
                 if (barcode!=null)
                 {
-                    var answerSheet = _gAnswerSheetService.GetAllGAnswerSheet().Where(x => x.Barcode == barcode).FirstOrDefault();
+                    var answerSheet = _gAnswerSheetService.GetGAnswerSheetBy(barcode);
                     if (answerSheet != null)
                     {
                         if (answerSheet.AnswerSheetStatus == AnswerSheetStatus.NotChecked)

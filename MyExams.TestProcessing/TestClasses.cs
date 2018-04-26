@@ -34,7 +34,6 @@ namespace MyExams.TestProcessing.TestClasses
     {
         public int SectionId { get; set; }
         public string Title { get; set; }
-        public string ImageFileName { get; set; }
         public List<TPQuestion> Questions { get; set; }
     }
 

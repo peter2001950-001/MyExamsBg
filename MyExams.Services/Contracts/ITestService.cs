@@ -21,5 +21,7 @@ namespace MyExams.Services.Contracts
         IEnumerable<GTest> GetGTestBy(int classId);
         void AddNewGTest(GTest item);
         void Update();
+        void ClearTestCache();
+        void ClearGTestCache();
     }
 }

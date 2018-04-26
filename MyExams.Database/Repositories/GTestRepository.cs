@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyExams.Database.CachedRepositories;
 
 namespace MyExams.Database.Repositories
 {
-    public class GTestRepository : RepositoryBase<GTest>, IGTestRepository
+    public class GTestRepository : CachedRepositoryBase<GTest>, IGTestRepository
     {
         public GTestRepository(IDatabase database) : base(database)
         {

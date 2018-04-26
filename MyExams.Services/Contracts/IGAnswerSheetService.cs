@@ -9,16 +9,22 @@ namespace MyExams.Services.Contracts
 {
    public interface IGAnswerSheetService
     {
+        GAnswerSheet GetGAnswerSheetBy(string barcode);
         IEnumerable<GAnswerSheet> GetAllGAnswerSheet();
         IEnumerable<GAnswerSheet> GetGAnswerSheetsBy(int GTestId);
         IEnumerable<GWrittenQuestion> GetAllGWrittenQuestions();
-        IEnumerable<GWrittenQuestion> GetGWrittenQuestionsBy(int GTestId);
         IEnumerable<GQuestionToBeChecked> GetAllGQuestionToBeChecked();
         IEnumerable<GQuestionToBeChecked> GetAllGQuestionToBeCheckedBy(int teacherId);
+        GWrittenQuestion GetGWrittenQuestionsBy(int GTestId, int orderNo);
+        GAnswerSheet GetGAnswerSheetBy(int teacherId, int questionId);
+        IEnumerable<GWrittenQuestion> GetGWrittenQuestionsBy(int GTestId);
         void AddGAnswerSheet(GAnswerSheet gAnswerSheet);
         void AddGWrittenQuestion(GWrittenQuestion gWrittenQuestion);
         void AddGQuestionToBeChecked(GQuestionToBeChecked gQuestionToBeChecked);
         void RemoveGQuestionToBeChecked(GQuestionToBeChecked gQuestionToBeChecked);
         string BarcodeGenerate();
+        void ClearAnswerSheetCache();
+        void ClearGWrittenQuestionCache();
+        void ClearGQuestionsToBeCheckedCache();
     }
 }

@@ -31,7 +31,7 @@ namespace MyExams.TestProcessing
 
             
             var basePath = System.AppDomain.CurrentDomain.RelativeSearchPath;
-            string ARIALUNI_TFF = Environment.CurrentDirectory + @"\ARIALUNI.TTF";
+            string ARIALUNI_TFF = basePath + @"\ARIALUNI.TTF";
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
             f12 = new Font(bf, 12, Font.NORMAL);
@@ -70,7 +70,7 @@ namespace MyExams.TestProcessing
                         HorizontalAlignment = PdfPCell.ALIGN_RIGHT,
                         Border = Rectangle.BOTTOM_BORDER,
                         PaddingBottom = 5
-                    };
+                };
                     studentTable.AddCell(cellClassNo);
 
                     studentTable.SpacingAfter = 25;
@@ -81,17 +81,32 @@ namespace MyExams.TestProcessing
                     int numberingQuestions = 1;
                     foreach (var section in item.Sections)
                     {
+<<<<<<< HEAD
+<<<<<<< HEAD
                         doc.Add(new Paragraph(section.Title, f12));
                         if (section.ImageFileName != null)
                         {
+                            try
+                            {
                             iTextSharp.text.Image sectionImage = iTextSharp.text.Image.GetInstance(section.ImageFileName);
                             var number = sectionImage.Height / sectionImage.Width;
                             sectionImage.ScaleAbsolute((float)(doc.PageSize.Width * 0.7), (float)(doc.PageSize.Width * 0.7 * number));
                             PdfPTable table = new PdfPTable(1);
                             table.AddCell(sectionImage);
                             doc.Add(table);
+                            }
+                            catch (Exception)
+                            {
+                            }
+                           
                         }
                         
+=======
+                        doc.Add(new Paragraph(section.Title));
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+=======
+                        doc.Add(new Paragraph(section.Title));
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                         foreach (var question in section.Questions)
                         {
                             

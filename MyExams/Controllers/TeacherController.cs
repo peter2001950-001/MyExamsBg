@@ -34,7 +34,7 @@ namespace MyExams.Controllers
         private readonly IUploadSessionService _uploadSessionService;
         private readonly ITestCheckProcess _testCheckProcess;
         private readonly IMonitoringApi _monitoringApi;
-        private const string alphabet = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧЩЬЮЯ";
+
         public int GTestId { get; private set; }
 
         public TeacherController(IClassService classService, IStudentService studentService, ITestService testService, ITeacherService teacherService, ISectionService sectionService, IQuestionService questionService, IAnswerService answerService, ITestGeneration testGeneration, IGAnswerSheetService gAnswerSheetService, ITestCheckProcess testCheckProcess, IFileDirectoryService fileDirectoryService, IUploadSessionService uploadSessionService)
@@ -124,17 +124,25 @@ namespace MyExams.Controllers
                     XmlDocument doc = new XmlDocument();
                     doc.LoadXml(gTest.Xml);
                     List<int> questionIds = new List<int>();
-
+                    
                     List<Section> sections = new List<Section>();
                     Dictionary<int, XmlNode> idNodes = new Dictionary<int, XmlNode>();
                     foreach (XmlNode node in doc.DocumentElement.ChildNodes)
                     {
                         var questionId = int.Parse(node.Attributes["id"].Value);
                         questionIds.Add(questionId);
-                        var question = _questionService.GetById(questionId);
                         idNodes.Add(questionId, node);
+<<<<<<< HEAD
+<<<<<<< HEAD
 
-
+=======
+                      
+                       
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+=======
+                      
+                       
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                     }
                     List<Question> questionList = _questionService.GetAllByIds(questionIds).ToList();
                     foreach (var item in questionList)
@@ -144,50 +152,58 @@ namespace MyExams.Controllers
                             sections.Add(item.Section);
                         }
                     }
-                    List<Question> orderedQuestionList = new List<Question>();
-                    foreach (var qid in questionIds)
-                    {
-                        var question = questionList.Where(x => x.Id == qid).First();
-                        orderedQuestionList.Add(question);
-                    }
-
                     List<Answer> answersList = _answerService.GetAllByQuestionIds(questionIds).ToList();
                     List<object> sectionObjects = new List<object>();
-                    int questionCount = 0;
                     foreach (var section in sections)
                     {
                         List<object> questionObjects = new List<object>();
-                        var questionsOfSection = orderedQuestionList.Where(x => x.Section.Id == section.Id);
-                        foreach (var item in questionsOfSection)
+                        var questionsOfSection = questionList.Where(x => x.Section.Id == section.Id);
+                        foreach (var questionId in questionIds)
                         {
-                            questionCount++;
+                            var item = questionsOfSection.Where(x => x.Id == questionId).First();
                             XmlNode node;
-                            idNodes.TryGetValue(item.Id, out node);
+                            idNodes.TryGetValue(questionId, out node);
                             if (node != null)
                             {
                                 if (node.ChildNodes.Count > 0)
                                 {
-                                    int answerCount = -1;
                                     List<object> answerObjects = new List<object>();
                                     foreach (XmlNode answerNode in node.ChildNodes)
                                     {
+<<<<<<< HEAD
+<<<<<<< HEAD
                                         answerCount++;
+                                        var nodeS = answerNode.Attributes["s"].Value;
+=======
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+=======
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                                         var answer = answersList.FirstOrDefault(x => x.Id == int.Parse(answerNode.Attributes["id"].Value));
-                                        if (answerNode.Attributes["s"].Value == "0" && answer.IsCorrect)
+                                        if (nodeS == "0" && answer.IsCorrect)
                                         {
-                                            answerObjects.Add(new { text = alphabet[answerCount] + ") " + answer.Text, color = "#4dbd74" }); // green color - the answer is correct but not marked
+                                            answerObjects.Add(new { text = answer.Text, color = "#4dbd74" }); // green color - the answer is correct but not marked
                                         }
-                                        else if (answerNode.Attributes["s"].Value == "1")
+                                        else if (nodeS== "1")
                                         {
-                                            answerObjects.Add(new { text = alphabet[answerCount] + ") " + answer.Text, color = "#f43f3f" }); // red color - the answer is not correct but marked
+                                            answerObjects.Add(new { text = answer.Text, color = "#f43f3f" }); // red color - the answer is not correct but marked
                                         }
-                                        else if (answerNode.Attributes["s"].Value == "2")
+                                        else if (nodeS == "2")
                                         {
+<<<<<<< HEAD
+<<<<<<< HEAD
                                             answerObjects.Add(new { text = alphabet[answerCount] + ") " + answer.Text, color = "#4dbd74" });
                                         }
-                                        else if (answerNode.Attributes["s"].Value == "0")
+                                        else if (nodeS == "0")
+=======
+                                            answerObjects.Add(new { text = answer.Text, color = "#4dbd74" });
+                                        }else if(answerNode.Attributes["s"].Value == "0")
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+=======
+                                            answerObjects.Add(new { text = answer.Text, color = "#4dbd74" });
+                                        }else if(answerNode.Attributes["s"].Value == "0")
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                                         {
-                                            answerObjects.Add(new { text = alphabet[answerCount] + ") " + answer.Text, color = "#000000" });
+                                            answerObjects.Add(new { text = answer.Text, color = "#000000" });
                                         }
                                     }
                                     var points = int.Parse(node.Attributes["rp"].Value);
@@ -200,21 +216,18 @@ namespace MyExams.Controllers
                                     {
                                         color = "#f43f3f";
                                     }
-                                    questionObjects.Add(new { text = questionCount + ". " + item.Text, answers = answerObjects, points = points, pointsColor = color, type = 0 });
+                                    questionObjects.Add(new { text = item.Text, answers = answerObjects, points = points, pointsColor = color, type = 0 });
 
                                 }
                                 else
                                 {
-                                    XElement elements = XElement.Parse(gTest.Xml);
-                                    int result = elements.Descendants("q").Select(((element, index) => new { Item = element, Index = index }))
-                                    .Where(x => x.Item.Attribute("id").Value == item.Id.ToString())
-                                    .Select(x => x.Index)
-                                    .First();
-
-                                    var writtenQuestion = _gAnswerSheetService.GetGWrittenQuestionsBy(gTest.Id).Where(x => x.GQuestionId == result).FirstOrDefault();
+                                    var qId = questionIds.IndexOf(item.Id);
+                                    var writtenQuestion = _gAnswerSheetService.GetGWrittenQuestionsBy(gTest.Id, qId);
                                     if (writtenQuestion != null)
                                     {
-                                       
+<<<<<<< HEAD
+<<<<<<< HEAD
+
                                         var image = "";
                                         try
                                         {
@@ -228,9 +241,32 @@ namespace MyExams.Controllers
                                         catch (Exception)
                                         {
 
-                                          
+
                                         }
-                                        
+
+                                        var points = int.Parse(node.Attributes["rp"].Value);
+                                        var color = "";
+                                        if (points > 0)
+                                        {
+                                            color = "#4dbd74";
+                                        }
+                                        else
+                                        {
+                                            color = "#f43f3f";
+                                        }
+
+                                        questionObjects.Add(new { text = questionCount + ". " + item.Text, correctAnswer = item.CorrectAnswer, points = points, image = image, pointsColor = color, type = 1 });
+
+=======
+                                        var srcImage = Image.FromFile(writtenQuestion.FileName);
+                                        using (var stream = new MemoryStream())
+                                        {
+=======
+                                        var srcImage = Image.FromFile(writtenQuestion.FileName);
+                                        using (var stream = new MemoryStream())
+                                        {
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+                                            srcImage.Save(stream, ImageFormat.Jpeg);
                                             var points = int.Parse(node.Attributes["rp"].Value);
                                             var color = "";
                                             if (points > 0)
@@ -242,13 +278,17 @@ namespace MyExams.Controllers
                                                 color = "#f43f3f";
                                             }
 
-                                            questionObjects.Add(new { text = questionCount + ". " +  item.Text, correctAnswer = item.CorrectAnswer, points = points, image =image , pointsColor = color, type = 1 });
-                                        
+                                            questionObjects.Add(new { text = item.Text, correctAnswer = item.CorrectAnswer, points = points, image = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray()), pointsColor = color, type = 1 });
+                                        }
+<<<<<<< HEAD
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+=======
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                                     }
                                 }
                             }
                         }
-                        sectionObjects.Add(new { text = section.SectionTitle, questions = questionObjects });
+                            sectionObjects.Add(new { text = section.SectionTitle, questions = questionObjects });
                     }
                     var studentClass = _classService.GetAllClassStudents().Where(x => x.Student?.Id == gTest.Student.Id && x.Class?.Id == gTest.Class.Id).FirstOrDefault();
 
@@ -302,28 +342,21 @@ namespace MyExams.Controllers
                                 var sections = _sectionService.GetAllSectionsByTestId(test.Id);
 
                                 var sectionToRemove = sections.FirstOrDefault(x => x.OrderNo == index);
-                                if (!sectionToRemove.IsInUse)
+                                var questionsToRemove = _questionService.GetAllQuestionsBy(test.Id, sectionToRemove.OrderNo);
+                                foreach (var item in questionsToRemove)
                                 {
-                                    var questionsToRemove = _questionService.GetAllQuestionsBy(test.Id, sectionToRemove.OrderNo);
-                                    foreach (var item in questionsToRemove)
+                                    if (item.QuestionType == QuestionType.Choice)
                                     {
-                                        if (item.QuestionType == QuestionType.Choice)
+                                        var options = _answerService.GetAllBy(test.Id, sectionToRemove.OrderNo, item.OrderNo);
+                                        foreach (var option in options)
                                         {
-                                            var options = _answerService.GetAllBy(test.Id, sectionToRemove.OrderNo, item.OrderNo);
-                                            foreach (var option in options)
-                                            {
-                                                _answerService.RemoveAnswer(option);
-                                            }
+                                            _answerService.RemoveAnswer(option);
                                         }
-                                        _questionService.RemoveQuestion(item);
                                     }
-                                    _sectionService.RemoveSection(sectionToRemove);
+                                    _questionService.RemoveQuestion(item);
                                 }
-                                else
-                                {
-                                    sectionToRemove.Active = false;
-                                    _testService.Update();
-                                }
+                                _sectionService.RemoveSection(sectionToRemove);
+
                             }
                             break;
                         case "question":
@@ -353,23 +386,15 @@ namespace MyExams.Controllers
                             {
                                 var questions = _questionService.GetAllQuestionsBy(test.Id, sectionId);
                                 var questionToRemove = questions.FirstOrDefault(x => x.OrderNo == index);
-                                if (!questionToRemove.IsInUse)
+                                if (questionToRemove.QuestionType == QuestionType.Choice)
                                 {
-                                    if (questionToRemove.QuestionType == QuestionType.Choice)
+                                    var options = _answerService.GetAllBy(test.Id, sectionId, questionToRemove.OrderNo);
+                                    foreach (var item in options)
                                     {
-                                        var options = _answerService.GetAllBy(test.Id, sectionId, questionToRemove.OrderNo);
-                                        foreach (var item in options)
-                                        {
-                                            _answerService.RemoveAnswer(item);
-                                        }
+                                        _answerService.RemoveAnswer(item);
                                     }
-                                    _questionService.RemoveQuestion(questionToRemove);
                                 }
-                                else
-                                {
-                                    questionToRemove.Active = false;
-                                    _testService.Update();
-                                }
+                                _questionService.RemoveQuestion(questionToRemove);
                             }
 
                             break;
@@ -396,15 +421,7 @@ namespace MyExams.Controllers
                             else if (action == "deleted")
                             {
                                 var option = _answerService.GetAllBy(test.Id, sectionId, questionId).FirstOrDefault(x => x.OrderNo == index);
-                                if (!option.IsInUse)
-                                {
-                                    _answerService.RemoveAnswer(option);
-                                }
-                                else
-                                {
-                                    option.Active = false;
-                                    _testService.Update();
-                                }
+                                _answerService.RemoveAnswer(option);
                             }
                             break;
                         default:
@@ -517,61 +534,6 @@ namespace MyExams.Controllers
             }
             return Json(new { status = "ERR2" });
         }
-        public JsonResult PictureUpload(string testUniqueCode, int sectionId = -1, int questionId = -1, int answerId = -1)
-        {
-            var test = _testService.GetTestByUniqueNumber(testUniqueCode);
-            if (test != null)
-            {
-                if (_teacherService.IsTeacherOfTest(User.Identity.GetUserId(), test.Id))
-                {
-                    if (sectionId != -1 && questionId == -1 && answerId == -1)
-                    {
-                        var section = _sectionService.GetAllSectionsByTestId(test.Id).Where(x => x.OrderNo == sectionId).FirstOrDefault();
-                        if (section != null)
-                        {
-                            if (Request.Files.Count > 0)
-                            {
-                                var fileContent = Request.Files[0];
-                                if (fileContent != null && fileContent.ContentLength > 0)
-                                {
-                                    // get a stream
-                                    var getExtension = Path.GetExtension(fileContent.FileName);
-                                    var newFileName = RandomString(16, false) + getExtension;
-                                    var stream = fileContent.InputStream;
-
-                                    fileContent.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), newFileName));
-
-                                    if (section.ImageFileName != null)
-                                    {
-                                        try
-                                        {
-                                            System.IO.File.Delete(Path.Combine(Server.MapPath("~/App_Data"), section.ImageFileName));
-                                        }
-                                        catch (Exception)
-                                        {
-
-                                        }
-
-                                    }
-
-                                    section.ImageFileName = newFileName;
-                                    var srcImage = Image.FromFile(Path.Combine(Server.MapPath("~/App_Data"), newFileName));
-                                    using (var MemoryStream = new MemoryStream())
-                                    {
-                                        srcImage.Save(MemoryStream, ImageFormat.Jpeg);
-
-                                        _testService.Update();
-                                        return Json(new { status = "OK", image = "data:image/png;base64," + Convert.ToBase64String(MemoryStream.ToArray()) });
-                                    }
-                                }
-                            }
-                        }
-                        return Json(new { status = "ERR1" });
-                    }
-                }
-            }
-            return Json(new { status = "ERR2" });
-        }
 
         public ActionResult ChooseClassesForTest(string testUniqueCode, string chosenClasses)
         {
@@ -597,7 +559,7 @@ namespace MyExams.Controllers
 
                     }
                     var fileName = RandomString(16, true);
-                    Session[fileName] = _testGeneration.GenerateFile(testRef, classRefList, teacher, Server.MapPath("~/App_Data"));
+                    Session[fileName] = _testGeneration.GenerateFile(testRef, classRefList, teacher);
                     return Json(new { status = "OK", fName = fileName });
                 }
             }
@@ -673,18 +635,33 @@ namespace MyExams.Controllers
                                     }
 
                                 }
+<<<<<<< HEAD
+<<<<<<< HEAD
                                 var image = "";
                                 if (section.ImageFileName != null)
                                 {
-                                    var srcImage = Image.FromFile(Path.Combine(Server.MapPath("~/App_Data"), section.ImageFileName));
-                                    using (var MemoryStream = new MemoryStream())
+                                    try
                                     {
-                                        srcImage.Save(MemoryStream, ImageFormat.Jpeg);
+                                        var srcImage = Image.FromFile(Path.Combine(Server.MapPath("~/App_Data"), section.ImageFileName));
+                                        using (var MemoryStream = new MemoryStream())
+                                        {
+                                            srcImage.Save(MemoryStream, ImageFormat.Jpeg);
 
-                                        image = "data:image/png;base64," + Convert.ToBase64String(MemoryStream.ToArray());
+                                            image = "data:image/png;base64," + Convert.ToBase64String(MemoryStream.ToArray());
+                                        }
                                     }
+                                    catch (Exception)
+                                    {
+                                    }
+
                                 }
                                 sectionsList.Add(new { id = section.OrderNo, text = section.SectionTitle, questionsToShow = section.QuestionsToShow, questions = questionsList, mixupQuestions = section.MixupQuestions, image = image });
+=======
+                                sectionsList.Add(new { id = section.OrderNo, text = section.SectionTitle, questionsToShow = section.QuestionsToShow, questions = questionsList, mixupQuestions = section.MixupQuestions });
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+=======
+                                sectionsList.Add(new { id = section.OrderNo, text = section.SectionTitle, questionsToShow = section.QuestionsToShow, questions = questionsList, mixupQuestions = section.MixupQuestions });
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                             }
                         }
                         return Json(new { status = "OK", sections = sectionsList, testTitle = test.TestTitle });
@@ -727,10 +704,18 @@ namespace MyExams.Controllers
                 var count = 0;
                 var classesResultObj = _classService.GetClassObjects(userId, x => x.RecentUsage, Services.OrderByMethod.Descending).Take(3);
                 var testsResultObj = _testService.GetTestObjects(userId, x => x.RecentUsage, Services.OrderByMethod.Descending).Take(3);
-                if (_gAnswerSheetService.GetAllGQuestionToBeChecked().Any(x => x.Teacher?.Id == teacher.Id))
+<<<<<<< HEAD
+<<<<<<< HEAD
+                if (_gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).Count()>0)
+=======
+                if (_gAnswerSheetService.GetAllGQuestionToBeChecked().Any(x => x.Teacher.Id == teacher.Id))
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+=======
+                if (_gAnswerSheetService.GetAllGQuestionToBeChecked().Any(x => x.Teacher.Id == teacher.Id))
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                 {
                     isQuestionsToBeChecked = true;
-                    count = _gAnswerSheetService.GetAllGQuestionToBeChecked().Count(x => x.Teacher.Id == teacher.Id);
+                    count = _gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).Count();
                 }
 
                 return Json(new { status = "OK", classes = classesResultObj, tests = testsResultObj, isQuestionsToBeChecked = isQuestionsToBeChecked, count = count }, JsonRequestBehavior.AllowGet);
@@ -900,6 +885,7 @@ namespace MyExams.Controllers
         {
             while (true)
             {
+                _uploadSessionService.ClearCache();
                 var activeSessions = _uploadSessionService.GetAll().Where(x => x.IsActive == true);
                 if (activeSessions.Count() > 0)
                 {
@@ -949,14 +935,26 @@ namespace MyExams.Controllers
         }
         public void TestResultUpdate(int GtestId)
         {
+            _gAnswerSheetService.ClearAnswerSheetCache();
+            _testService.ClearGTestCache();
+
             var answerSheets = _gAnswerSheetService.GetGAnswerSheetsBy(GtestId).ToList();
             if (answerSheets != null)
             {
                 if (answerSheets.All(x => x.AnswerSheetStatus == AnswerSheetStatus.Checked && x.Xml != null))
                 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+
                     var gTest = _testService.GetAllGTestIncludeAll().FirstOrDefault(x => x.Id == GtestId);
+=======
+                    var gTest = _testService.GetAllGTests().FirstOrDefault(x => x.Id == GtestId);
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+=======
+                    var gTest = _testService.GetAllGTests().FirstOrDefault(x => x.Id == GtestId);
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                     if (gTest != null)
-                    {   
+                    {
                         XmlDocument xml = new XmlDocument();
                         xml.LoadXml(gTest.Xml);
                         int totalPoints = 0;
@@ -996,24 +994,31 @@ namespace MyExams.Controllers
                         gTest.ReceivedPoints = totalPoints;
                         gTest.IsDone = true;
                         _testService.Update();
+<<<<<<< HEAD
+<<<<<<< HEAD
 
-                        
+
                         var marks = _testService.GetAllGTestIncludeAll().Where(x => x.Class.Id == gTest.Class.Id && x.IsDone).Select(x => Math.Round(((double)x.ReceivedPoints / (double)x.MaxPoints) * 6, 2));
                         var classObj = _classService.GetAll().Where(x => x.Id == gTest.Class.Id).First();
                         classObj.AverageMark = Math.Round(marks.Average(), 2);
-                        
+
                         _testService.Update();
 
-                        var testMarks = _testService.GetAllGTestIncludeAll().Where(x=>x.Test.Id == gTest.Test.Id&&x.IsDone).Select(x => Math.Round(((double)x.ReceivedPoints / (double)x.MaxPoints) * 6, 2));
+                        var testMarks = _testService.GetAllGTestIncludeAll().Where(x => x.Test.Id == gTest.Test.Id && x.IsDone).Select(x => Math.Round(((double)x.ReceivedPoints / (double)x.MaxPoints) * 6, 2));
                         var testObj = _testService.GetAllTests().Where(x => x.Id == gTest.Test.Id).First();
-                        testObj.AverageMark = Math.Round(testMarks.Average(),2);
+                        testObj.AverageMark = Math.Round(testMarks.Average(), 2);
                         _testService.Update();
+=======
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+=======
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                     }
                 }
             }
         }
         public JsonResult UploadSessionPull(string sessionIdentifier)
         {
+            _uploadSessionService.ClearCache();
             var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
             var session = _uploadSessionService.GetAll().Where(x => x.SessionIdentifier == sessionIdentifier).FirstOrDefault();
             if (session != null)
@@ -1066,6 +1071,7 @@ namespace MyExams.Controllers
             var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
             if (teacher != null)
             {
+                _gAnswerSheetService.ClearGQuestionsToBeCheckedCache();
                 var questionToBeChecked = _gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).LastOrDefault();
                 if (questionToBeChecked != null)
                 {
@@ -1100,7 +1106,7 @@ namespace MyExams.Controllers
                                 {
                                     srcImage.Save(stream, ImageFormat.Jpeg);
 
-                                    return Json(new { status = "OK", question = new { type = 0, text = question.Text, options = answersCount, correctAnswer = "", src = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray()), id = questionToBeChecked.Id } }, JsonRequestBehavior.AllowGet);
+                                    return Json(new { status = "OK", question = new { type = 0, text = question.Text, options = answersCount, src = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray()), id = questionToBeChecked.Id } }, JsonRequestBehavior.AllowGet);
                                 }
                             }
                         }
@@ -1119,11 +1125,11 @@ namespace MyExams.Controllers
             var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
             if (teacher != null)
             {
-                if (_gAnswerSheetService.GetAllGQuestionToBeChecked().Any(x => x.Teacher.Id == teacher.Id && x.Id == questionId))
+                if (_gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).Any(x=>x.Id == questionId))
                 {
-                    var question = _gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).First(x => x.Id == questionId);
-                    var answerSheets = _gAnswerSheetService.GetGAnswerSheetsBy(question.GWrittenQuestion.GTest.Id);
-                    var answerSheetNeeded = answerSheets.Where(x => x.FirstQuestionNo <= question.GWrittenQuestion.GQuestionId && x.LastQuestionNo >= question.GWrittenQuestion.GQuestionId).FirstOrDefault();
+                    var question = _gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).Where(x => x.Id == questionId).FirstOrDefault();
+                    var answerSheets = _gAnswerSheetService.GetGAnswerSheetsBy(question.GWrittenQuestion.GTest.Id).ToList();
+                    var answerSheetNeeded = _gAnswerSheetService.GetGAnswerSheetBy(teacher.Id, questionId);
                     if (answerSheetNeeded != null)
                     {
                         XmlDocument xml = new XmlDocument();
@@ -1145,29 +1151,24 @@ namespace MyExams.Controllers
                             bool isCorrect = false;
                             for (int i = 0; i < xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes.Count; i++)
                             {
-                                var answerId = int.Parse(xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes[i].Attributes["id"].Value);
-                                var answer = answers.Where(x => x.Id == answerId).FirstOrDefault();
-                                if (answer != null)
+                                if (answers[i].IsCorrect && i == option - 1)
                                 {
-                                    if (answer.IsCorrect && i == option - 1)
-                                    {
-                                        isCorrect = true;
-                                        var answerAttr = xml.CreateAttribute("s"); // short for status
-                                        answerAttr.Value = "2"; //correct code
-                                        xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes[i].Attributes.Append(answerAttr);
-                                    }
-                                    else if (!answer.IsCorrect && i == option - 1)
-                                    {
-                                        var answerAttr = xml.CreateAttribute("s"); // short for status
-                                        answerAttr.Value = "1"; //checked but not correct code
-                                        xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes[i].Attributes.Append(answerAttr);
-                                    }
-                                    else if (i != option - 1)
-                                    {
-                                        var answerAttr = xml.CreateAttribute("s"); // short for status
-                                        answerAttr.Value = "0"; //unchecked
-                                        xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes[i].Attributes.Append(answerAttr);
-                                    }
+                                    isCorrect = true;
+                                    var answerAttr = xml.CreateAttribute("s"); // short for status
+                                    answerAttr.Value = "2"; //correct code
+                                    xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes[i].Attributes.Append(answerAttr);
+                                }
+                                else if (!answers[i].IsCorrect && i == option - 1)
+                                {
+                                    var answerAttr = xml.CreateAttribute("s"); // short for status
+                                    answerAttr.Value = "1"; //checked but not correct code
+                                    xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes[i].Attributes.Append(answerAttr);
+                                }
+                                else if (i != option - 1)
+                                {
+                                    var answerAttr = xml.CreateAttribute("s"); // short for status
+                                    answerAttr.Value = "0"; //unchecked
+                                    xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes[i].Attributes.Append(answerAttr);
                                 }
 
                             }
@@ -1185,22 +1186,18 @@ namespace MyExams.Controllers
                                 xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].Attributes.Append(answerAttr);
 
                             }
-
-
-                        }
-                        using (StringWriter sw = new StringWriter())
-                        {
-                            using (XmlTextWriter xw = new XmlTextWriter(sw))
+                            using (StringWriter sw = new StringWriter())
                             {
-                                xml.WriteTo(xw);
-                                answerSheetNeeded.Xml = sw.ToString();
+                                using (XmlTextWriter xw = new XmlTextWriter(sw))
+                                {
+                                    xml.WriteTo(xw);
+                                    answerSheetNeeded.Xml = sw.ToString();
+                                }
                             }
+                            question.GWrittenQuestion.IsChecked = true;
+                            _testService.Update();
+
                         }
-
-
-
-                        question.GWrittenQuestion.IsChecked = true;
-                        _testService.Update();
                         if (_gAnswerSheetService.GetGWrittenQuestionsBy(question.GWrittenQuestion.GTest.Id).Count(x => x.IsChecked == false) == 0)
                         {
 
@@ -1214,23 +1211,24 @@ namespace MyExams.Controllers
                         _gAnswerSheetService.RemoveGQuestionToBeChecked(question);
                         return Json(new { status = "OK" });
                     }
-                return Json(new { status = "ERR1" });
-                }  return Json(new { status = "ERR2" });
+                    return Json(new { status = "ERR1" });
+                }
+                return Json(new { status = "ERR2" });
             }
             return Json(new { status = "ERR3" });
         }
-private static string RandomString(int length, bool OnlyUppperCase)
-{
-    var random = new Random();
-    string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    if (OnlyUppperCase)
-    {
-        chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    }
+        private static string RandomString(int length, bool OnlyUppperCase)
+        {
+            var random = new Random();
+            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            if (OnlyUppperCase)
+            {
+                chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            }
 
-    return new string(Enumerable.Repeat(chars, length)
-      .Select(s => s[random.Next(s.Length)]).ToArray());
-}
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
 
     }
 }

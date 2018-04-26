@@ -1,4 +1,5 @@
-﻿using MyExams.Database.Contracts;
+﻿using MyExams.Database.CachedRepositories;
+using MyExams.Database.Contracts;
 using MyExams.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyExams.Database.Repositories
 {
-    public class SectionRepository : RepositoryBase<Section>, ISectionRepository
+    public class SectionRepository : CachedRepositoryBase<Section>, ISectionRepository
     {
         public SectionRepository(IDatabase database) : base(database)
         {

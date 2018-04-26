@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace MyExams.Database.Repositories
 {
-    public class RepositoryBase<T>:IRepositoryBase<T> where T : class 
+    public abstract class RepositoryBase<T>:IRepositoryBase<T> where T : class 
     {
+        
         private IDatabase _database;
         protected DbSet<T> _dbSet;
         protected IQueryable<T> _dbList;
@@ -47,6 +48,11 @@ namespace MyExams.Database.Repositories
         {
             _database.SaveChanges();
             _dbList = _dbSet.AsQueryable();
+        }
+
+        public virtual void ClearCache()
+        {
+           
         }
     }
 }

@@ -36,7 +36,7 @@ namespace MyExams.Services.Contracts
             var section = _sectionRepository.GetAll().Where(x => x.Test.Id == testId).FirstOrDefault(c=>c.OrderNo == sectionNo);
             if (section != null)
             {
-                return _questionRepository.GetAll().Where(x => x.Section.Id == section.Id&&x.Active).OrderBy(x=>x.OrderNo);
+                return _questionRepository.GetAll().Where(x => x.Section.Id == section.Id).OrderBy(x=>x.OrderNo);
             }
             return null;
         }

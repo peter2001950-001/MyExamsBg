@@ -1,4 +1,5 @@
-﻿using MyExams.Database.Contracts;
+﻿using MyExams.Database.CachedRepositories;
+using MyExams.Database.Contracts;
 using MyExams.Models;
 using System;
 using System.Collections.Generic;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace MyExams.Database.Repositories
 {
-    public class AnswerRepository : RepositoryBase<Answer>, IAnswerRepository
+    public class AnswerRepository : CachedRepositoryBase<Answer>, IAnswerRepository
     {
         public AnswerRepository(IDatabase database) : base(database)
         {
         }
-        public bool GetIsCorrect(int id)
+        public virtual bool GetIsCorrect(int id)
         {
             return _dbSet.Where(x => x.Id == id).Select(x => x.IsCorrect).FirstOrDefault();
         }

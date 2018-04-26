@@ -7,10 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Data.Entity;
+using MyExams.Database.CachedRepositories;
 
 namespace MyExams.Database.Repositories
 {
-   public class UploadSessionFileDirectoryRepository : RepositoryBase<UploadSessionFileDirectory>, IUploadSessionFileDirectoryRepository
+   public class UploadSessionFileDirectoryRepository : CachedRepositoryBase<UploadSessionFileDirectory>, IUploadSessionFileDirectoryRepository
     {
         public UploadSessionFileDirectoryRepository(IDatabase database) : base(database)
         {

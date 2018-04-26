@@ -20,7 +20,7 @@ namespace MyExams.Services
         }
         public IEnumerable<UploadSession> GetAll()
         {
-            return _uploadSessionRepository.GetAll();
+            return _uploadSessionRepository.Include(x=>x.Teacher);
         }
         public IEnumerable<UploadSessionFileDirectory> GetAllUploadSessionFileDirectory()
         {
@@ -45,6 +45,10 @@ namespace MyExams.Services
             _uploadSessionRepository.Add(uploadSession);
             _uploadSessionRepository.SaveChanges();
         }
-        
+        public void ClearCache()
+        {
+            _uploadSessionFileDirectoryRepository.ClearCache();
+            _uploadSessionRepository.ClearCache();
+        }
     }
 }

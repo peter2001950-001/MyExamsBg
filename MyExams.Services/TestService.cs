@@ -78,6 +78,7 @@ namespace MyExams.Services
         }
         public Test GetTestByUniqueNumber(string uniqueNumber)
         {
+            _testRepository.ClearCache();
             var test = _testRepository.GetAll().Where(x => x.UniqueNumber == uniqueNumber).FirstOrDefault(); ;
             if (test != null)
             {
@@ -98,6 +99,15 @@ namespace MyExams.Services
         {
             _gTestRepository.Add(item);
             _gTestRepository.SaveChanges();
+        }
+        public void ClearTestCache()
+        {
+            _gTestRepository.ClearCache();
+            
+        }
+        public void ClearGTestCache()
+        {
+            _testRepository.ClearCache();
         }
         public void Update()
         {

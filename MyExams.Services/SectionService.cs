@@ -22,7 +22,15 @@ namespace MyExams.Services
         }
         public IEnumerable<Section> GetAllSectionsByTestId(int testId)
         {
-            return _sectionRepository.GetAll().Where(x => x.Test.Id == testId && x.Active);
+<<<<<<< HEAD
+<<<<<<< HEAD
+            return _sectionRepository.Include(x => x.Test).Where(x => x.Test.Id == testId && x.Active).ToList();
+=======
+            return _sectionRepository.GetAll().Where(x => x.Test.Id == testId);
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+=======
+            return _sectionRepository.GetAll().Where(x => x.Test.Id == testId);
+>>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
         }
         public void AddSection(Section section)
         {

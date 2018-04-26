@@ -157,7 +157,7 @@ function Question(questionText, questionId, focus, type, sectionId) {
 }
 
 
-function Section(sectionText, sectionId, mixupQuestions, questionsToShow, isQuestionsToShowSet, image) {
+function Section(sectionText, sectionId, mixupQuestions, questionsToShow, isQuestionsToShowSet) {
     var self = this;
     self.isQuestionsToShowSet = isQuestionsToShowSet;
     self.sectionText = ko.observable(sectionText);
@@ -168,40 +168,12 @@ function Section(sectionText, sectionId, mixupQuestions, questionsToShow, isQues
     self.questionsToShow = ko.observable(questionsToShow);
     self.isAlert = ko.observable(false);
     self.alert = ko.observableArray();
-    self.image = ko.observable(image);
     self.addQuestion = function (question) {
         self.questions.push(question);
         if (subscribeActivate) {
             if (!isQuestionsToShowSet) self.questionsToShow(self.questionsToShow() + 1);
         }
     }.bind(this);
-    self.uploadFiles = function (file, sectionId) {
-        console.log(sectionId);
-            if (window.FormData !== undefined) {
-                var data = new FormData();
-                data.append("file" + 0, file);
-                $.ajax({
-                    type: "POST",
-                    url: '/t/PictureUpload?testUniqueCode=' + testUniqueCode + "&sectionId=" + sectionId,
-                    contentType: false,
-                    processData: false,
-                    data: data,
-                    success: function (result) {
-                        if (result.status == "OK") {
-                            alert("Успешно качен");
-                            self.image(result.image);
-                        };
-                    },
-                    error: function (xhr, status, p3, p4) {
-                        var err = "Error " + " " + status + " " + p3 + " " + p4;
-                        if (xhr.responseText && xhr.responseText[0] == "{")
-                            err = JSON.parse(xhr.responseText).Message;
-                        console.log(err);
-                    }
-                });
-            }
-        
-    }
     self.questions.subscribe(function (item) {
         if (subscribeActivate) {
             $.ajax({
@@ -276,7 +248,7 @@ function TestDesignViewModel() {
                             console.log(Object.keys(data.sections[i].questions).length);
                             areSet = false;
                         }
-                        self.sections.push(new Section(data.sections[i].text, data.sections[i].id, data.sections[i].mixupQuestions, questionsToShow, areSet, data.sections[i].image));
+                        self.sections.push(new Section(data.sections[i].text, data.sections[i].id, data.sections[i].mixupQuestions, questionsToShow, areSet));
                         for (var p in data.sections[i].questions) {
 
                             self.sections()[i].addQuestion(new Question(data.sections[i].questions[p].text, data.sections[i].questions[p].id, false, data.sections[i].questions[p].type, data.sections[i].id));
@@ -498,7 +470,7 @@ function TestDesignViewModel() {
         self.addBtnVisiblity(true);
     }
     self.AddSection = function () {
-        self.sections.push(new Section("", self.sections().length, true, 0, false, ""));
+        self.sections.push(new Section("", self.sections().length));
       
     }
     self.AddAnswer = function (item, parentId) {
