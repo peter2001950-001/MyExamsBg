@@ -153,6 +153,7 @@ namespace MyExams.Controllers
                         }
                     }
                     List<Answer> answersList = _answerService.GetAllByQuestionIds(questionIds).ToList();
+                    List<GWrittenQuestion> writtenQuestions = _gAnswerSheetService.GetGWrittenQuestionsBy(gTest.Id).ToList();
                     List<object> sectionObjects = new List<object>();
                     foreach (var section in sections)
                     {
@@ -221,8 +222,14 @@ namespace MyExams.Controllers
                                 }
                                 else
                                 {
+<<<<<<< HEAD
                                     var qId = questionIds.IndexOf(item.Id);
                                     var writtenQuestion = _gAnswerSheetService.GetGWrittenQuestionsBy(gTest.Id, qId);
+=======
+                                   var result =  questionIds.IndexOf(item.Id);
+
+                                    var writtenQuestion = writtenQuestions.Where(x => x.GQuestionId == result).FirstOrDefault();
+>>>>>>> HEAD@{3}
                                     if (writtenQuestion != null)
                                     {
 <<<<<<< HEAD
@@ -449,31 +456,17 @@ namespace MyExams.Controllers
                         var question = _questionService.GetAllQuestionsBy(test.Id, obj.sectionId).Where(x => x.OrderNo == obj.question.id).FirstOrDefault(x => x.Active == true);
                         if (question != null)
                         {
-                            question.Text = obj.question.text;
-                            question.Points = obj.question.points;
+                            var newQuestion = _questionService.QuestionHasChanged(obj, question);
+             
                             if (question.QuestionType == QuestionType.Choice)
                             {
-                                var options = _answerService.GetAllBy(test.Id, obj.sectionId, obj.question.id).Where(x => x.Active == true);
+                                var options = _answerService.GetAllBy(test.Id, obj.sectionId, obj.question.id).ToList();
                                 foreach (var item in options)
                                 {
                                     var option = obj.question.options.Where(x => x.id == item.OrderNo).FirstOrDefault();
-                                    if (option != null)
-                                    {
-                                        item.Text = option.text;
-                                        item.IsCorrect = option.isCorrect;
-                                    }
-                                    _answerService.Update(item);
+                                    _answerService.AnswerHasChanged(option, item);
                                 }
-                                question.MixupAnswers = obj.question.mixupOptions;
                             }
-                            else if (question.QuestionType == QuestionType.Text)
-                            {
-                                string[] sizes = { "Кратък", "Среден", "Дълъг" };
-                                var index = Array.IndexOf(sizes, obj.question.selectedAnswerSize);
-                                question.QuestionAnswerSize = (QuestionAnswerSize)index;
-                                question.CorrectAnswer = obj.question.correctAnswer;
-                            }
-                            _questionService.Update(question);
                             return Json(new { status = "OK" });
                         }
                         return Json(new { status = "ERR1" });
@@ -484,28 +477,7 @@ namespace MyExams.Controllers
             }
             return Json(new { status = "ERR4" });
         }
-        public class ParseQuestionClass
-        {
-            public string testCode { get; set; }
-            public int sectionId { get; set; }
-            public Question question { get; set; }
-            public class Question
-            {
-                public int id { get; set; }
-                public string text { get; set; }
-                public List<Option> options { get; set; }
-                public string correctAnswer { get; set; }
-                public string selectedAnswerSize { get; set; }
-                public bool mixupOptions { get; set; }
-                public int points { get; set; }
-                public class Option
-                {
-                    public int id { get; set; }
-                    public string text { get; set; }
-                    public bool isCorrect { get; set; }
-                }
-            }
-        }
+        
 
         public ActionResult SectionUpdate(string testUniqueCode, string name, bool mixupQuestions, int index, int questionsToShow)
         {
@@ -600,7 +572,7 @@ namespace MyExams.Controllers
                     var testObj = _testService.GetTestByUniqueNumber(testUniqueCode);
                     if (testObj != null)
                     {
-                        var sections = _sectionService.GetAllSectionsByTestId(testObj.Id);
+                        var sections = _sectionService.GetAllSectionsByTestId(testObj.Id).OrderBy(x=>x.OrderNo).ToList();
                         List<object> sectionsList = new List<object>();
 
                         foreach (var section in sections)
@@ -609,7 +581,7 @@ namespace MyExams.Controllers
                             {
                                 var questionsList = new List<object>();
 
-                                var questions = _questionService.GetAllQuestionsBy(test.Id, section.OrderNo);
+                                var questions = _questionService.GetAllQuestionsBy(test.Id, section.OrderNo).OrderBy(x=>x.OrderNo).ToList();
                                 foreach (var question in questions)
                                 {
                                     if (question.Active)
@@ -617,7 +589,7 @@ namespace MyExams.Controllers
                                         var optionsList = new List<object>();
                                         if (question.QuestionType == QuestionType.Choice)
                                         {
-                                            var options = _answerService.GetAllBy(test.Id, section.OrderNo, question.OrderNo);
+                                            var options = _answerService.GetAllBy(test.Id, section.OrderNo, question.OrderNo).OrderBy(x=>x.OrderNo).ToList();
                                             foreach (var option in options)
                                             {
                                                 if (option.Active)

@@ -24,6 +24,7 @@ namespace MyExams.Services
         {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             return _sectionRepository.Include(x => x.Test).Where(x => x.Test.Id == testId && x.Active).ToList();
 =======
             return _sectionRepository.GetAll().Where(x => x.Test.Id == testId);
@@ -31,6 +32,9 @@ namespace MyExams.Services
 =======
             return _sectionRepository.GetAll().Where(x => x.Test.Id == testId);
 >>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+=======
+            return _sectionRepository.Where(x => x.Test.Id == testId && x.Active);
+>>>>>>> HEAD@{3}
         }
         public void AddSection(Section section)
         {

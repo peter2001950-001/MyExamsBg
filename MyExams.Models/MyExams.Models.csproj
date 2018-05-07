@@ -48,6 +48,7 @@
     <Compile Include="GQuestionToBeChecked.cs" />
     <Compile Include="GTest.cs" />
     <Compile Include="GWrittenQuestion.cs" />
+    <Compile Include="ParseQuestionClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Question.cs" />
     <Compile Include="Section.cs" />

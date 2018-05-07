@@ -11,6 +11,10 @@ namespace MyExams.Database.Contracts
 {
     public interface IGAnswerSheetRepository:IRepositoryBase<GAnswerSheet>
     {
+<<<<<<< HEAD
         IEnumerable<GAnswerSheet> WhereIncludeAll(Expression<Func<GAnswerSheet, bool>> where);
+=======
+        IEnumerable<GAnswerSheet> GetGAnswerSheetsBy(int gTestId);
+>>>>>>> HEAD@{3}
     }
 }

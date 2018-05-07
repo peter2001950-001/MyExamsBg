@@ -12,10 +12,12 @@ namespace MyExams.Services.Contracts
     {
         private readonly IQuestionRepository _questionRepository;
         private readonly ISectionRepository _sectionRepository;
-        public QuestionService(IQuestionRepository questionRepository, ISectionRepository sectionRepository)
+        private readonly IAnswerRepository _answerRepository;
+        public QuestionService(IQuestionRepository questionRepository, ISectionRepository sectionRepository, IAnswerRepository answerRepository)
         {
             _questionRepository = questionRepository;
             _sectionRepository = sectionRepository;
+            _answerRepository = answerRepository;
         }
         public void AddQuestion(Question question)
         {
@@ -33,28 +35,89 @@ namespace MyExams.Services.Contracts
 
         public IEnumerable<Question> GetAllQuestionsBy(int testId, int sectionNo)
         {
-            var section = _sectionRepository.GetAll().Where(x => x.Test.Id == testId).FirstOrDefault(c=>c.OrderNo == sectionNo);
+            var section = _sectionRepository.Where(x => x.Test.Id == testId).FirstOrDefault(c=>c.OrderNo == sectionNo);
             if (section != null)
             {
+<<<<<<< HEAD
                 return _questionRepository.GetAll().Where(x => x.Section.Id == section.Id).OrderBy(x=>x.OrderNo);
+=======
+                return _questionRepository.Where(x => x.Section.Id == section.Id&&x.Active).OrderBy(x=>x.OrderNo);
+>>>>>>> HEAD@{3}
             }
             return null;
         }
         public Question GetById(int id)
         {
-            var question = _questionRepository.Include(x => x.Section).FirstOrDefault(x=>x.Id==id);
+            var question = _questionRepository.Where(x=>x.Id==id).FirstOrDefault();
             return question;
         }
         public IEnumerable<Question> GetAllByIds(List<int> ids)
         {
-            return _questionRepository.Include(x=>x.Section).Where(x => ids.Contains(x.Id));
+            return _questionRepository.Where(x => ids.Contains(x.Id));
         }
 
         public int GetPoints(int id)
         {
             return _questionRepository.GetPoints(id);
         }
+        public Question QuestionHasChanged(ParseQuestionClass questionClass, Question question)
+        {
+            if(question.Text != questionClass.question.text||question.Points !=questionClass.question.points||question.MixupAnswers != questionClass.question.mixupOptions)
+            {
+                if (!question.IsInUse)
+                {
+                    question.Text = questionClass.question.text;
+                    question.Points = questionClass.question.points;
+                    question.MixupAnswers = questionClass.question.mixupOptions;
 
+                    if (question.QuestionType == QuestionType.Text)
+                    {
+                        string[] sizes = { "Кратък", "Среден", "Дълъг" };
+                        var index = Array.IndexOf(sizes, questionClass.question.selectedAnswerSize);
+                        question.QuestionAnswerSize = (QuestionAnswerSize)index;
+                        question.CorrectAnswer = questionClass.question.correctAnswer;
+                    }
+                    _questionRepository.SaveChanges();
+                }
+                else
+                {
+                    var newQuestion = new Question()
+                    {
+                        Active = true,
+                        Text = questionClass.question.text,
+                        QuestionType = question.QuestionType,
+                        IsInUse = false,
+                        OrderNo = question.OrderNo,
+                        Section = question.Section,
+                        Points = questionClass.question.points
+
+                    };
+                    if (question.QuestionType == QuestionType.Text)
+                    {
+                        newQuestion.MixupAnswers = false;
+                        string[] sizes = { "Кратък", "Среден", "Дълъг" };
+                        var index = Array.IndexOf(sizes, questionClass.question.selectedAnswerSize);
+                        newQuestion.QuestionAnswerSize = (QuestionAnswerSize)index;
+                        newQuestion.CorrectAnswer = questionClass.question.correctAnswer;
+                    }
+                    _questionRepository.Add(newQuestion);
+                    _questionRepository.SaveChanges();
+                    if (question.QuestionType == QuestionType.Choice)
+                    {
+                        var allAnswers = _answerRepository.Where(x => x.Question.Id == question.Id).ToList();
+                        foreach (var item in allAnswers)
+                        {
+                            item.Question = newQuestion;
+                        }
+                    }
+                    question.Active = false;
+                    _questionRepository.SaveChanges();
+                    return newQuestion;
+                }
+                
+            }
+            return null;
+        }
         public void RemoveQuestion(Question question)
         {
             var questions = _questionRepository.GetAll().Where(x => x.Section.Id == question.Section.Id);

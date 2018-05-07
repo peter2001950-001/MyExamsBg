@@ -46,6 +46,7 @@ namespace MyExams.Services
                 var question =  questions.Where(x => x.OrderNo == questionNo).FirstOrDefault();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 return  _answerRepository.Include(x=>x.Question).Where(x => x.Question.Id == question.Id&&x.Active);
 =======
                 return  _answerRepository.GetAll().Where(x => x.Question.Id == question.Id);
@@ -53,12 +54,45 @@ namespace MyExams.Services
 =======
                 return  _answerRepository.GetAll().Where(x => x.Question.Id == question.Id);
 >>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+=======
+                return  _answerRepository.Where(x => x.Question.Id == question.Id&&x.Active);
+>>>>>>> HEAD@{3}
             }
             return null;
         }
         public bool GetIsCorrect(int id)
         {
             return _answerRepository.GetIsCorrect(id);
+        }
+        public Answer AnswerHasChanged(ParseQuestionClass.Question.Option option, Answer answer)
+        {
+            if(answer.IsCorrect != option.isCorrect || answer.Text != option.text)
+            {
+                if (!answer.IsInUse)
+                {
+                    answer.Text = option.text;
+                    answer.IsCorrect = option.isCorrect;
+                    _answerRepository.SaveChanges();
+                }
+                else
+                {
+                    var newAnswer = new Answer()
+                    {
+                        Active = true,
+                        IsInUse = false,
+                        IsCorrect = option.isCorrect,
+                        Text = option.text,
+                        Question = answer.Question,
+                        OrderNo = answer.OrderNo
+                    };
+                    _answerRepository.Add(newAnswer);
+                    _answerRepository.SaveChanges();
+                    answer.Active = false;
+                    _answerRepository.SaveChanges();
+                    return newAnswer;
+                }
+            }
+            return null;
         }
         public void RemoveAnswer(Answer answer)
         {

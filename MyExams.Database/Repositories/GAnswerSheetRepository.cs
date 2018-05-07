@@ -19,6 +19,7 @@ namespace MyExams.Database.Repositories
         public GAnswerSheetRepository(IDatabase database) : base(database)
         {
         }
+<<<<<<< HEAD
         public IEnumerable<GAnswerSheet> WhereIncludeAll(Expression<Func<GAnswerSheet, bool>> where)
         {
             cacheStringGetAll += where.ToString();
@@ -37,6 +38,11 @@ namespace MyExams.Database.Repositories
                 }
             }
             return result;
+=======
+        public IEnumerable<GAnswerSheet> GetGAnswerSheetsBy(int gTestId)
+        {
+            return _dbSet.Where(x => x.GTest.Id == gTestId).Include(x => x.GTest);
+>>>>>>> HEAD@{3}
         }
     }
 }

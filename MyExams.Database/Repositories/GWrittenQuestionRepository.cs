@@ -3,6 +3,7 @@ using MyExams.Database.Contracts;
 using MyExams.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace MyExams.Database.Repositories
         public GWrittenQuestionRepository(IDatabase database) : base(database)
         {
         }
+<<<<<<< HEAD
 
         public GWrittenQuestion GetWrittenQuestionBy(int gTestId, int orderNo)
         {
@@ -50,6 +52,11 @@ namespace MyExams.Database.Repositories
         {
             HttpRuntime.Cache.Remove(cacheString);
             base.ClearCache();
+=======
+        public IEnumerable<GWrittenQuestion> GetWrittenQuestionsBy(int gTestId)
+        {
+           return _dbSet.Where(x => x.GTest.Id == gTestId).Include(x => x.GTest);
+>>>>>>> HEAD@{3}
         }
     }
 }
