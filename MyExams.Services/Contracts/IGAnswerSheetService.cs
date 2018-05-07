@@ -15,7 +15,6 @@ namespace MyExams.Services.Contracts
         IEnumerable<GWrittenQuestion> GetAllGWrittenQuestions();
         IEnumerable<GQuestionToBeChecked> GetAllGQuestionToBeChecked();
         IEnumerable<GQuestionToBeChecked> GetAllGQuestionToBeCheckedBy(int teacherId);
-        GWrittenQuestion GetGWrittenQuestionsBy(int GTestId, int orderNo);
         GAnswerSheet GetGAnswerSheetBy(int teacherId, int questionId);
         IEnumerable<GWrittenQuestion> GetGWrittenQuestionsBy(int GTestId);
         void AddGAnswerSheet(GAnswerSheet gAnswerSheet);

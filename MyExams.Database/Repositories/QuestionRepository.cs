@@ -1,4 +1,4 @@
-﻿using MyExams.Database.CachedRepositories;
+﻿
 using MyExams.Database.Contracts;
 using MyExams.Models;
 using System;
@@ -11,7 +11,7 @@ using System.Data.Entity;
 
 namespace MyExams.Database.Repositories
 {
-    public class QuestionRepository : CachedRepositoryBase<Question>, IQuestionRepository
+    public class QuestionRepository : RepositoryBase<Question>, IQuestionRepository
     {
         public QuestionRepository(IDatabase database) : base(database)
         {

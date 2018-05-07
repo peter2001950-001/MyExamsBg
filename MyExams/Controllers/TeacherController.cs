@@ -121,6 +121,7 @@ namespace MyExams.Controllers
                 var gTest = _testService.GetAllGTestIncludeAll().Where(x => x.Id == id).FirstOrDefault();
                 if (gTest != null)
                 {
+                    var alphabet = "АБВГДЕЖЗИЙКЛМНОПРСТ";
                     XmlDocument doc = new XmlDocument();
                     doc.LoadXml(gTest.Xml);
                     List<int> questionIds = new List<int>();
@@ -132,17 +133,6 @@ namespace MyExams.Controllers
                         var questionId = int.Parse(node.Attributes["id"].Value);
                         questionIds.Add(questionId);
                         idNodes.Add(questionId, node);
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-                      
-                       
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
-=======
-                      
-                       
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                     }
                     List<Question> questionList = _questionService.GetAllByIds(questionIds).ToList();
                     foreach (var item in questionList)
@@ -157,13 +147,15 @@ namespace MyExams.Controllers
                     List<object> sectionObjects = new List<object>();
                     foreach (var section in sections)
                     {
+                        var questionCount = 0;
                         List<object> questionObjects = new List<object>();
                         var questionsOfSection = questionList.Where(x => x.Section.Id == section.Id);
-                        foreach (var questionId in questionIds)
+                        foreach (var item in questionsOfSection)
                         {
-                            var item = questionsOfSection.Where(x => x.Id == questionId).First();
+                            questionCount++;
+                            var answerCount = -1;
                             XmlNode node;
-                            idNodes.TryGetValue(questionId, out node);
+                            idNodes.TryGetValue(item.Id, out node);
                             if (node != null)
                             {
                                 if (node.ChildNodes.Count > 0)
@@ -171,15 +163,10 @@ namespace MyExams.Controllers
                                     List<object> answerObjects = new List<object>();
                                     foreach (XmlNode answerNode in node.ChildNodes)
                                     {
-<<<<<<< HEAD
-<<<<<<< HEAD
                                         answerCount++;
                                         var nodeS = answerNode.Attributes["s"].Value;
-=======
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
-=======
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                                         var answer = answersList.FirstOrDefault(x => x.Id == int.Parse(answerNode.Attributes["id"].Value));
+                                        answer.Text = alphabet[answerCount] + ") " + answer.Text;
                                         if (nodeS == "0" && answer.IsCorrect)
                                         {
                                             answerObjects.Add(new { text = answer.Text, color = "#4dbd74" }); // green color - the answer is correct but not marked
@@ -190,19 +177,9 @@ namespace MyExams.Controllers
                                         }
                                         else if (nodeS == "2")
                                         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-                                            answerObjects.Add(new { text = alphabet[answerCount] + ") " + answer.Text, color = "#4dbd74" });
+                                            answerObjects.Add(new { text = answer.Text, color = "#4dbd74" });
                                         }
                                         else if (nodeS == "0")
-=======
-                                            answerObjects.Add(new { text = answer.Text, color = "#4dbd74" });
-                                        }else if(answerNode.Attributes["s"].Value == "0")
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
-=======
-                                            answerObjects.Add(new { text = answer.Text, color = "#4dbd74" });
-                                        }else if(answerNode.Attributes["s"].Value == "0")
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                                         {
                                             answerObjects.Add(new { text = answer.Text, color = "#000000" });
                                         }
@@ -222,18 +199,10 @@ namespace MyExams.Controllers
                                 }
                                 else
                                 {
-<<<<<<< HEAD
-                                    var qId = questionIds.IndexOf(item.Id);
-                                    var writtenQuestion = _gAnswerSheetService.GetGWrittenQuestionsBy(gTest.Id, qId);
-=======
                                    var result =  questionIds.IndexOf(item.Id);
-
                                     var writtenQuestion = writtenQuestions.Where(x => x.GQuestionId == result).FirstOrDefault();
->>>>>>> HEAD@{3}
                                     if (writtenQuestion != null)
                                     {
-<<<<<<< HEAD
-<<<<<<< HEAD
 
                                         var image = "";
                                         try
@@ -263,34 +232,7 @@ namespace MyExams.Controllers
                                         }
 
                                         questionObjects.Add(new { text = questionCount + ". " + item.Text, correctAnswer = item.CorrectAnswer, points = points, image = image, pointsColor = color, type = 1 });
-
-=======
-                                        var srcImage = Image.FromFile(writtenQuestion.FileName);
-                                        using (var stream = new MemoryStream())
-                                        {
-=======
-                                        var srcImage = Image.FromFile(writtenQuestion.FileName);
-                                        using (var stream = new MemoryStream())
-                                        {
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
-                                            srcImage.Save(stream, ImageFormat.Jpeg);
-                                            var points = int.Parse(node.Attributes["rp"].Value);
-                                            var color = "";
-                                            if (points > 0)
-                                            {
-                                                color = "#4dbd74";
-                                            }
-                                            else
-                                            {
-                                                color = "#f43f3f";
-                                            }
-
-                                            questionObjects.Add(new { text = item.Text, correctAnswer = item.CorrectAnswer, points = points, image = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray()), pointsColor = color, type = 1 });
-                                        }
-<<<<<<< HEAD
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
-=======
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+                                        
                                     }
                                 }
                             }
@@ -607,8 +549,6 @@ namespace MyExams.Controllers
                                     }
 
                                 }
-<<<<<<< HEAD
-<<<<<<< HEAD
                                 var image = "";
                                 if (section.ImageFileName != null)
                                 {
@@ -628,12 +568,7 @@ namespace MyExams.Controllers
 
                                 }
                                 sectionsList.Add(new { id = section.OrderNo, text = section.SectionTitle, questionsToShow = section.QuestionsToShow, questions = questionsList, mixupQuestions = section.MixupQuestions, image = image });
-=======
-                                sectionsList.Add(new { id = section.OrderNo, text = section.SectionTitle, questionsToShow = section.QuestionsToShow, questions = questionsList, mixupQuestions = section.MixupQuestions });
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
-=======
-                                sectionsList.Add(new { id = section.OrderNo, text = section.SectionTitle, questionsToShow = section.QuestionsToShow, questions = questionsList, mixupQuestions = section.MixupQuestions });
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+
                             }
                         }
                         return Json(new { status = "OK", sections = sectionsList, testTitle = test.TestTitle });
@@ -676,15 +611,8 @@ namespace MyExams.Controllers
                 var count = 0;
                 var classesResultObj = _classService.GetClassObjects(userId, x => x.RecentUsage, Services.OrderByMethod.Descending).Take(3);
                 var testsResultObj = _testService.GetTestObjects(userId, x => x.RecentUsage, Services.OrderByMethod.Descending).Take(3);
-<<<<<<< HEAD
-<<<<<<< HEAD
+
                 if (_gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).Count()>0)
-=======
-                if (_gAnswerSheetService.GetAllGQuestionToBeChecked().Any(x => x.Teacher.Id == teacher.Id))
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
-=======
-                if (_gAnswerSheetService.GetAllGQuestionToBeChecked().Any(x => x.Teacher.Id == teacher.Id))
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                 {
                     isQuestionsToBeChecked = true;
                     count = _gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).Count();
@@ -915,16 +843,8 @@ namespace MyExams.Controllers
             {
                 if (answerSheets.All(x => x.AnswerSheetStatus == AnswerSheetStatus.Checked && x.Xml != null))
                 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-
                     var gTest = _testService.GetAllGTestIncludeAll().FirstOrDefault(x => x.Id == GtestId);
-=======
-                    var gTest = _testService.GetAllGTests().FirstOrDefault(x => x.Id == GtestId);
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
-=======
-                    var gTest = _testService.GetAllGTests().FirstOrDefault(x => x.Id == GtestId);
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
+
                     if (gTest != null)
                     {
                         XmlDocument xml = new XmlDocument();
@@ -966,11 +886,9 @@ namespace MyExams.Controllers
                         gTest.ReceivedPoints = totalPoints;
                         gTest.IsDone = true;
                         _testService.Update();
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 
-                        var marks = _testService.GetAllGTestIncludeAll().Where(x => x.Class.Id == gTest.Class.Id && x.IsDone).Select(x => Math.Round(((double)x.ReceivedPoints / (double)x.MaxPoints) * 6, 2));
+                        var marks = _testService.GetAllGTestIncludeAll().Where(x => x.Class?.Id == gTest.Class.Id && x.IsDone).Select(x => Math.Round(((double)x.ReceivedPoints / (double)x.MaxPoints) * 6, 2));
                         var classObj = _classService.GetAll().Where(x => x.Id == gTest.Class.Id).First();
                         classObj.AverageMark = Math.Round(marks.Average(), 2);
 
@@ -980,10 +898,6 @@ namespace MyExams.Controllers
                         var testObj = _testService.GetAllTests().Where(x => x.Id == gTest.Test.Id).First();
                         testObj.AverageMark = Math.Round(testMarks.Average(), 2);
                         _testService.Update();
-=======
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
-=======
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                     }
                 }
             }
@@ -1158,7 +1072,9 @@ namespace MyExams.Controllers
                                 xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].Attributes.Append(answerAttr);
 
                             }
-                            using (StringWriter sw = new StringWriter())
+                          
+                        }
+                        using (StringWriter sw = new StringWriter())
                             {
                                 using (XmlTextWriter xw = new XmlTextWriter(sw))
                                 {
@@ -1168,8 +1084,6 @@ namespace MyExams.Controllers
                             }
                             question.GWrittenQuestion.IsChecked = true;
                             _testService.Update();
-
-                        }
                         if (_gAnswerSheetService.GetGWrittenQuestionsBy(question.GWrittenQuestion.GTest.Id).Count(x => x.IsChecked == false) == 0)
                         {
 

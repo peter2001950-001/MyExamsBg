@@ -50,7 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Repositories\CachedBaseRepository.cs" />
     <Compile Include="Contracts\IAnswerRepository.cs" />
     <Compile Include="Contracts\IClassRepository.cs" />
     <Compile Include="Contracts\IFileDirectoryRepository.cs" />

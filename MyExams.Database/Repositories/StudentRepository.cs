@@ -1,4 +1,4 @@
-﻿using MyExams.Database.CachedRepositories;
+﻿
 using MyExams.Database.Contracts;
 using MyExams.Models;
 using System;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyExams.Database.Repositories
 {
-    public class StudentRepository : CachedRepositoryBase<Student>, IStudentRepository
+    public class StudentRepository : RepositoryBase<Student>, IStudentRepository
     {
         public StudentRepository(IDatabase database) : base(database)
         {

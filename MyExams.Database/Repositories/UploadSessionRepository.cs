@@ -1,4 +1,4 @@
-﻿using MyExams.Database.CachedRepositories;
+﻿
 using MyExams.Database.Contracts;
 using MyExams.Models;
 using System;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyExams.Database.Repositories
 {
-    public class UploadSessionRepository : CachedRepositoryBase<UploadSession>, IUploadSessionRepository
+    public class UploadSessionRepository : RepositoryBase<UploadSession>, IUploadSessionRepository
     {
         public UploadSessionRepository(IDatabase database) : base(database)
         {

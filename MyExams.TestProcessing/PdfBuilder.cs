@@ -71,43 +71,14 @@ namespace MyExams.TestProcessing
                 foreach (var item in list)
                 {
                     var gTest = _testService.GetAllGTests().Where(x => x.Id == item.GTestId).First();
-<<<<<<< HEAD
-                    doc.NewPage();
-                   
-                    //Adding Student Details Table 
-                    PdfPTable studentTable = new PdfPTable(2)
-                    {
-                        WidthPercentage = 100
-                    };
-                    PdfPCell cellName = new PdfPCell(new Phrase("Име:   " + item.StudentDetails.FullName, f12))
-                    {
-                        Border = Rectangle.BOTTOM_BORDER,
-                        PaddingBottom = 5
-                    };
-                    studentTable.AddCell(cellName);
-                    PdfPCell cellClassNo = new PdfPCell(new Phrase("№" + item.StudentDetails.NoInClass + "  Клас: " + item.StudentDetails.ClassName, f12))
-                    {
-                        HorizontalAlignment = PdfPCell.ALIGN_RIGHT,
-                        Border = Rectangle.BOTTOM_BORDER,
-                        PaddingBottom = 5
-                };
-                    studentTable.AddCell(cellClassNo);
-
-                    studentTable.SpacingAfter = 25;
-                    doc.Add(studentTable);
-
-                    // Adding Questions 
-                    var currentPage = doc.PageNumber;
-=======
-                    CurrentTest = item;
+                     CurrentTest = item;
                     if (list.First() != item) doc.NewPage();
                     var currentPage = writer.PageNumber;
->>>>>>> HEAD@{3}
                     int numberingQuestions = 1;
+                   
+                 
                     foreach (var section in item.Sections)
                     {
-<<<<<<< HEAD
-<<<<<<< HEAD
                         doc.Add(new Paragraph(section.Title, f12));
                         if (section.ImageFileName != null)
                         {
@@ -126,12 +97,6 @@ namespace MyExams.TestProcessing
                            
                         }
                         
-=======
-                        doc.Add(new Paragraph(section.Title));
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
-=======
-                        doc.Add(new Paragraph(section.Title));
->>>>>>> parent of 37a36a8... GTest preview question order fixed, picture upload to section added
                         foreach (var question in section.Questions)
                         {
                             
@@ -165,7 +130,7 @@ namespace MyExams.TestProcessing
                     string[] letters = { "А", "Б", "В", "Г", "Д", "Е", "Ж", "З", "И" };
                     Random rm = new Random();
 
-                    int currentYPixel = (int)doc.PageSize.Height - 160;
+                    int currentYPixel = (int)doc.PageSize.Height - 130;
                     int rowCount = -1;
                     int firstQuestion = 0;
                     int pageNo = 1;

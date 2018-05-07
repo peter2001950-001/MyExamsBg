@@ -33,19 +33,10 @@ namespace MyExams.Services
         {
             return _gWrittenQuestionRepository.GetAll();
         }
-<<<<<<< HEAD
-        public GWrittenQuestion GetGWrittenQuestionsBy(int GTestId, int orderNo)
-        {
-            return _gWrittenQuestionRepository.GetWrittenQuestionBy(GTestId, orderNo);
-        }
-        public IEnumerable<GWrittenQuestion> GetGWrittenQuestionsBy(int GTestId)
-        {
-            return _gWrittenQuestionRepository.GetWrittenQuestionBy(GTestId);
-=======
+      
         public IEnumerable<GWrittenQuestion> GetGWrittenQuestionsBy(int gTestId)
         {
             return _gWrittenQuestionRepository.GetWrittenQuestionsBy(gTestId);
->>>>>>> HEAD@{3}
         }
         public IEnumerable<GQuestionToBeChecked> GetAllGQuestionToBeChecked()
         {
@@ -53,7 +44,7 @@ namespace MyExams.Services
         }
         public IEnumerable<GQuestionToBeChecked> GetAllGQuestionToBeCheckedBy(int teacherId)
         {
-            return _gQuestionsToBeCheckedRepository.GetQuestionsToBeCheckedBy(teacherId);
+            return _gQuestionsToBeCheckedRepository.Where(x => x.Teacher.Id == teacherId);
         }
         public GAnswerSheet GetGAnswerSheetBy(int teacherId, int questionId)
         {

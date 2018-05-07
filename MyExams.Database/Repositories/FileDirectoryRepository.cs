@@ -1,4 +1,4 @@
-﻿using MyExams.Database.CachedRepositories;
+﻿
 using MyExams.Database.Contracts;
 using MyExams.Models;
 using System;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyExams.Database.Repositories
 {
-    public class FileDirectoryRepository : CachedRepositoryBase<FileDirectory>, IFileDirectoryRepository
+    public class FileDirectoryRepository : RepositoryBase<FileDirectory>, IFileDirectoryRepository
     {
         public FileDirectoryRepository(IDatabase database) : base(database)
         {

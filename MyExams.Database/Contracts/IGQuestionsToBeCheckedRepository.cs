@@ -9,6 +9,5 @@ namespace MyExams.Database.Contracts
 {
     public interface IGQuestionsToBeCheckedRepository: IRepositoryBase<GQuestionToBeChecked>
     {
-        IEnumerable<GQuestionToBeChecked> GetQuestionsToBeCheckedBy(int teacherId);
     }
 }

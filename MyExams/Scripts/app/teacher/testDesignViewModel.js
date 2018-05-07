@@ -16,39 +16,39 @@ function QuestionOption(optionText, optionNum, id, questionId, sectionId) {
         return "Отговор " + self.optionNum();
     }, self)
     self.CheckOption = function () {
-      
+
         if (self.checkLabel() == "done") {
-           
-                self.checkLabel("check_circle");
-                self.checkedClass("option-checked");
-                self.isChecked(true);
-            } else {
-                 self.checkLabel("done");
-                self.checkedClass("");
-                self.isChecked(false);
-            }
+
+            self.checkLabel("check_circle");
+            self.checkedClass("option-checked");
+            self.isChecked(true);
+        } else {
+            self.checkLabel("done");
+            self.checkedClass("");
+            self.isChecked(false);
+        }
     };
     self.CheckOptionShow = function (item, parentId) {
-        
+
         self.isCheckOptionVisible(true);
     }
     self.CheckOptionHide = function (item, parentId) {
-       
+
         if (self.isChecked() == false) {
             self.isCheckOptionVisible(false);
         }
-      
+
     }
     self.optionText.subscribe(function (item) {
         if (subscribeActivate) {
-              testDesignViewModel.onQuestionUpdate(self.sectionId, self.questionId);
+            testDesignViewModel.onQuestionUpdate(self.sectionId, self.questionId);
         }
     });
     self.isChecked.subscribe(function (item) {
         if (subscribeActivate) {
             testDesignViewModel.onQuestionUpdate(self.sectionId, self.questionId);
         }
-       
+
 
     });
 }
@@ -65,8 +65,8 @@ function Question(questionText, questionId, focus, type, sectionId) {
     self.addOption = function (optionText, optionNum) {
         if (!firstTime) {
 
-        var option = new QuestionOption(optionText, optionNum, self.options().length, self.questionId, self.sectionId);
-        self.options.push(option);
+            var option = new QuestionOption(optionText, optionNum, self.options().length, self.questionId, self.sectionId);
+            self.options.push(option);
         } else {
             firstTime = false;
         }
@@ -149,15 +149,15 @@ function Question(questionText, questionId, focus, type, sectionId) {
                 }
             });
         }
-        
-              
+
+
     }, self, "arrayChange");
-   
-  
+
+
 }
 
 
-function Section(sectionText, sectionId, mixupQuestions, questionsToShow, isQuestionsToShowSet) {
+function Section(sectionText, sectionId, mixupQuestions, questionsToShow, isQuestionsToShowSet, image) {
     var self = this;
     self.isQuestionsToShowSet = isQuestionsToShowSet;
     self.sectionText = ko.observable(sectionText);
@@ -168,12 +168,40 @@ function Section(sectionText, sectionId, mixupQuestions, questionsToShow, isQues
     self.questionsToShow = ko.observable(questionsToShow);
     self.isAlert = ko.observable(false);
     self.alert = ko.observableArray();
+    self.image = ko.observable(image);
     self.addQuestion = function (question) {
         self.questions.push(question);
         if (subscribeActivate) {
             if (!isQuestionsToShowSet) self.questionsToShow(self.questionsToShow() + 1);
         }
     }.bind(this);
+    self.uploadFiles = function (file, sectionId) {
+        console.log(sectionId);
+        if (window.FormData !== undefined) {
+            var data = new FormData();
+            data.append("file" + 0, file);
+            $.ajax({
+                type: "POST",
+                url: '/t/PictureUpload?testUniqueCode=' + testUniqueCode + "&sectionId=" + sectionId,
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (result) {
+                    if (result.status == "OK") {
+                        alert("Успешно качен");
+                        self.image(result.image);
+                    };
+                },
+                error: function (xhr, status, p3, p4) {
+                    var err = "Error " + " " + status + " " + p3 + " " + p4;
+                    if (xhr.responseText && xhr.responseText[0] == "{")
+                        err = JSON.parse(xhr.responseText).Message;
+                    console.log(err);
+                }
+            });
+        }
+
+    }
     self.questions.subscribe(function (item) {
         if (subscribeActivate) {
             $.ajax({
@@ -196,7 +224,7 @@ function Section(sectionText, sectionId, mixupQuestions, questionsToShow, isQues
                 }
             });
         }
-       
+
     }, self, "arrayChange");
     self.mixupQuestions.subscribe(function (item) {
         if (subscribeActivate) {
@@ -207,7 +235,7 @@ function Section(sectionText, sectionId, mixupQuestions, questionsToShow, isQues
         if (subscribeActivate) {
             testDesignViewModel.onSectionUpdate(self.sectionId);
         }
-        });
+    });
     self.questionsToShow.subscribe(function (item) {
         if (subscribeActivate) {
             self.isQuestionsToShowSet = true;
@@ -248,7 +276,7 @@ function TestDesignViewModel() {
                             console.log(Object.keys(data.sections[i].questions).length);
                             areSet = false;
                         }
-                        self.sections.push(new Section(data.sections[i].text, data.sections[i].id, data.sections[i].mixupQuestions, questionsToShow, areSet));
+                        self.sections.push(new Section(data.sections[i].text, data.sections[i].id, data.sections[i].mixupQuestions, questionsToShow, areSet, data.sections[i].image));
                         for (var p in data.sections[i].questions) {
 
                             self.sections()[i].addQuestion(new Question(data.sections[i].questions[p].text, data.sections[i].questions[p].id, false, data.sections[i].questions[p].type, data.sections[i].id));
@@ -256,12 +284,12 @@ function TestDesignViewModel() {
 
                                 for (var q in data.sections[i].questions[p].options) {
 
-                                    
+
                                     self.sections()[i].questions()[p].addOption(data.sections[i].questions[p].options[q].text, bgAlphabet[data.sections[i].questions[p].options[q].id]);
 
                                     if (data.sections[i].questions[p].options[q].isCorrect == true) {
 
-                                        
+
                                         self.sections()[i].questions()[p].options()[q].isChecked(true);
                                         self.sections()[i].questions()[p].options()[q].checkLabel("check_circle");
                                         self.sections()[i].questions()[p].options()[q].checkedClass("option-checked");
@@ -299,7 +327,7 @@ function TestDesignViewModel() {
                         data.classes[i].isChecked = false;
                         var studentLabel = (data.classes[i].studentsCount != 1) ? "ученици" : "ученик";
                         data.classes[i].label = data.classes[i].name + " (" + data.classes[i].subject + ") - " + data.classes[i].studentsCount + " " + studentLabel;
-                        
+
                     }
                     self.classes(data.classes);
                 }
@@ -338,7 +366,7 @@ function TestDesignViewModel() {
 
     self.onQuestionUpdate = function (sectionId, questionId) {
         var question = self.sections()[sectionId].questions()[questionId];
-        var questionObj = { id: questionId, text:  question.questionText()};
+        var questionObj = { id: questionId, text: question.questionText() };
         if (question.type() == "0") {
             questionObj.options = [];
             for (var i in question.options()) {
@@ -350,20 +378,20 @@ function TestDesignViewModel() {
             questionObj.selectedAnswerSize = question.selectedAnswerSize();
 
         }
-       
-        if(parseInt(question.points())){
+
+        if (parseInt(question.points())) {
             questionObj.points = parseInt(question.points());
         } else {
             question.points("");
         }
-        
+
         $.ajax({
             type: "post",
             datatype: "json",
             contenttype: "application/json",
             url: "/t/questionupdate",
             data: {
-             data:  JSON.stringify({
+                data: JSON.stringify({
                     testCode: testUniqueCode,
                     sectionId: sectionId,
                     question: questionObj
@@ -408,7 +436,7 @@ function TestDesignViewModel() {
             });
         }
     }
-  
+
     self.testName.subscribe(function (item) {
         $.ajax({
             type: "post",
@@ -416,7 +444,7 @@ function TestDesignViewModel() {
             contenttype: "application/json",
             url: "/t/testnameupdate",
             data: {
-                
+
                 testUniqueCode: testUniqueCode,
                 name: self.testName()
             },
@@ -427,7 +455,7 @@ function TestDesignViewModel() {
             }
         });
     })
-    
+
 
 
     self.sections.subscribe(function (changes) {
@@ -449,20 +477,19 @@ function TestDesignViewModel() {
                     }
                 }
             });
-        console.log(changes);
+            console.log(changes);
         }
     }, null, "arrayChange")
-    self.AddQuestion = function (item)
-    {
+    self.AddQuestion = function (item) {
         self.addBtnVisiblity(false);
-        
+
     }
     self.AddChoiceQuestion = function (item) {
-      
+
         var question = new Question("", self.sections()[item.sectionId].questions().length, true, 0, item.sectionId);
         self.sections()[item.sectionId].addQuestion(question);
         self.addBtnVisiblity(true);
-        
+
     }
     self.AddTextQuestion = function (item) {
         var question = new Question("", self.sections()[item.sectionId].questions().length, true, 1, item.sectionId);
@@ -470,8 +497,8 @@ function TestDesignViewModel() {
         self.addBtnVisiblity(true);
     }
     self.AddSection = function () {
-        self.sections.push(new Section("", self.sections().length));
-      
+        self.sections.push(new Section("", self.sections().length, true, 0, false, ""));
+
     }
     self.AddAnswer = function (item, parentId) {
 
@@ -486,28 +513,27 @@ function TestDesignViewModel() {
         if (item != undefined && parentId != undefined) {
             self.sections()[section.sectionId].questions()[parentId].CheckOption(item.id);
         }
-       
-        
-    }
-   
-    self.DeleteOption = function (item, parentId, section) {
-        
-        if (! self.sections()[section.sectionId].questions()[parentId].options()[item.id].firstTime)
-        {
-             self.sections()[section.sectionId].questions()[parentId].options.remove( self.sections()[section.sectionId].questions()[parentId].options()[item.id]);
-            for (var i = item.id; i <  self.sections()[section.sectionId].questions()[parentId].options().length; i++) {
-                
-                 self.sections()[section.sectionId].questions()[parentId].options()[i].id -= 1;
-                 self.sections()[section.sectionId].questions()[parentId].options()[i].optionNum(bgAlphabet[ self.sections()[section.sectionId].questions()[parentId].options()[i].id]);
-               
-            }
-        } else {
-             self.sections()[section.sectionId].questions()[parentId].options()[item.id].firstTime = false;
-        }
-        
+
+
     }
 
-    
+    self.DeleteOption = function (item, parentId, section) {
+
+        if (!self.sections()[section.sectionId].questions()[parentId].options()[item.id].firstTime) {
+            self.sections()[section.sectionId].questions()[parentId].options.remove(self.sections()[section.sectionId].questions()[parentId].options()[item.id]);
+            for (var i = item.id; i < self.sections()[section.sectionId].questions()[parentId].options().length; i++) {
+
+                self.sections()[section.sectionId].questions()[parentId].options()[i].id -= 1;
+                self.sections()[section.sectionId].questions()[parentId].options()[i].optionNum(bgAlphabet[self.sections()[section.sectionId].questions()[parentId].options()[i].id]);
+
+            }
+        } else {
+            self.sections()[section.sectionId].questions()[parentId].options()[item.id].firstTime = false;
+        }
+
+    }
+
+
     function getLetter(item, parentId) {
 
         return bgAlphabet[self.sections()[parentId].questions()[item.questionId].options().length];

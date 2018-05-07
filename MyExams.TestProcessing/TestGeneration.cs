@@ -35,11 +35,7 @@ namespace MyExams.TestProcessing
         public FileContentResult GenerateFile(Test test, List<Class> classes, Teacher teacher)
         {
             if (test == null && classes == null) throw new ArgumentNullException();
-<<<<<<< HEAD
-=======
-            ServerPath = serverPath;
             UpdateIsInUseProperty(test);
->>>>>>> HEAD@{3}
             var allTPTest = new List<TPTest>();
             foreach (var classItem in classes)
             {

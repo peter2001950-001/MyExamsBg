@@ -1,4 +1,4 @@
-﻿using MyExams.Database.CachedRepositories;
+﻿
 using MyExams.Database.Contracts;
 using MyExams.Models;
 using System;
@@ -12,37 +12,19 @@ using System.Web;
 
 namespace MyExams.Database.Repositories
 {
-    public class GAnswerSheetRepository : CachedRepositoryBase<GAnswerSheet>, IGAnswerSheetRepository
+    public class GAnswerSheetRepository : RepositoryBase<GAnswerSheet>, IGAnswerSheetRepository
     {
         private static readonly object CacheLockObject = new object();
-        private string cacheStringGetAll = "GAnswerSheet-WhereIncludeAll-";
         public GAnswerSheetRepository(IDatabase database) : base(database)
         {
         }
-<<<<<<< HEAD
         public IEnumerable<GAnswerSheet> WhereIncludeAll(Expression<Func<GAnswerSheet, bool>> where)
         {
-            cacheStringGetAll += where.ToString();
-            var result = HttpRuntime.Cache[cacheStringGetAll] as List<GAnswerSheet>;
-            if (result == null)
-            {
-                lock (CacheLockObject)
-                {
-                    result = HttpRuntime.Cache[cacheStringGetAll] as List<GAnswerSheet>;
-                    if (result == null)
-                    {
-                        result = _dbSet.Where(where).Include(x => x.GTest).ToList();
-                        HttpRuntime.Cache.Insert(cacheStringGetAll, result, null, DateTime.Now.AddSeconds(60), TimeSpan.Zero);
-
-                    }
-                }
-            }
-            return result;
-=======
+           return _dbSet.Where(where).Include(x => x.GTest);
+        }
         public IEnumerable<GAnswerSheet> GetGAnswerSheetsBy(int gTestId)
         {
             return _dbSet.Where(x => x.GTest.Id == gTestId).Include(x => x.GTest);
->>>>>>> HEAD@{3}
         }
     }
 }

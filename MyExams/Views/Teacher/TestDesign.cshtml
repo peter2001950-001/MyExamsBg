@@ -35,8 +35,13 @@
     <div class="question-group" data-bind="foreach: sections">
         <div class="section">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Наименование на секцията" data-bind="value: sectionText, hasFocus: focus" />
-                <input type="text" class="form-control" placeholder="Текст към съответната секция..." data-bind="value: sectionText, hasFocus: focus" />
+                <div class="input-group">
+                    <textarea class="form-control" placeholder="Текст към съответната секция..." data-bind="value: sectionText, hasFocus: focus"></textarea>
+                    <input type="file" id="uploadFile" class="input-group-addon" accept="image/*" style="display:none" data-bind="event: { change: function() { uploadFiles($element.files[0], sectionId) }}" />
+                    <label class="input-group-addon" for="uploadFile">
+                        Качи снимка
+                    </label>
+                </div>
             </div>
             <div data-bind="foreach: questions">
                 <div class="question">
