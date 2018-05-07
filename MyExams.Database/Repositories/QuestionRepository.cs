@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System.Data.Entity;
 
 namespace MyExams.Database.Repositories
 {
@@ -12,6 +14,10 @@ namespace MyExams.Database.Repositories
     {
         public QuestionRepository(IDatabase database) : base(database)
         {
+        }
+        public override IEnumerable<Question> Where(Expression<Func<Question, bool>> where)
+        {
+            return _dbSet.Where(where).Include(x => x.Section);
         }
 
         public int GetPoints(int id)

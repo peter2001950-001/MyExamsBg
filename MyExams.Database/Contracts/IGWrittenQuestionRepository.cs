@@ -9,5 +9,6 @@ namespace MyExams.Database.Contracts
 {
     public interface IGWrittenQuestionRepository: IRepositoryBase<GWrittenQuestion>
     {
+        IEnumerable<GWrittenQuestion> GetWrittenQuestionsBy(int gTestId);
     }
 }

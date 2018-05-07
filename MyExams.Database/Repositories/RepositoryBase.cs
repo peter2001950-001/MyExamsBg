@@ -32,7 +32,7 @@ namespace MyExams.Database.Repositories
         }
         public virtual IEnumerable<T> GetAll()
         {
-            return _dbList.ToList();
+            return _dbList.AsEnumerable();
         }
         public virtual IEnumerable<T> Where(Expression<Func<T, bool>> where)
         {

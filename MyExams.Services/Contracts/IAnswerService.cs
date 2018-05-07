@@ -12,6 +12,7 @@ namespace MyExams.Services.Contracts
         IEnumerable<Answer> GetAll();
         IEnumerable<Answer> GetAllByQuestionIds(List<int> ids);
         IEnumerable<Answer> GetAllBy(int testId, int sectionNo, int questionNo);
+        Answer AnswerHasChanged(ParseQuestionClass.Question.Option option, Answer answer);
         void AddAnswer(Answer answer);
         void Update(Answer answer);
         bool GetIsCorrect(int id);

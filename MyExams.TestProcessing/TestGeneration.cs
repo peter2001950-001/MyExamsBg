@@ -37,6 +37,7 @@ namespace MyExams.TestProcessing
         {
             if (test == null && classes == null) throw new ArgumentNullException();
             ServerPath = serverPath;
+            UpdateIsInUseProperty(test);
             var allTPTest = new List<TPTest>();
             foreach (var classItem in classes)
             {
@@ -230,6 +231,25 @@ namespace MyExams.TestProcessing
                 counter++;
             }
             return result.ToArray();
+        }
+        private void UpdateIsInUseProperty(Test test)
+        {
+            var sections = _sectionService.GetAllSectionsByTestId(test.Id);
+            foreach (var section in sections)
+            {
+                section.IsInUse = true;
+                var questions = _questionService.GetAllQuestionsBy(test.Id, section.OrderNo);
+                foreach (var question in questions)
+                {
+                    question.IsInUse = true;
+                    var answers = _answerService.GetAllBy(test.Id, section.OrderNo, question.OrderNo);
+                    foreach (var answer in answers)
+                    {
+                        answer.IsInUse = true;
+                    }
+                }
+            }
+            _testService.Update();
         }
     }
 }

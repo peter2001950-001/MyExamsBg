@@ -17,6 +17,7 @@ namespace MyExams.Services.Contracts
         void RemoveQuestion(Question question);
         Question GetById(int id);
         IEnumerable<Question> GetAllByIds(List<int> ids);
+        Question QuestionHasChanged(ParseQuestionClass questionClass, Question question);
 
 
     }

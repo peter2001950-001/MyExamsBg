@@ -25,17 +25,17 @@ namespace MyExams.Services
         {
             return _gAnswerSheetRepository.GetAll();
         }
-        public IEnumerable<GAnswerSheet> GetGAnswerSheetsBy(int GTestId)
+        public IEnumerable<GAnswerSheet> GetGAnswerSheetsBy(int gTestId)
         {
-          return  _gAnswerSheetRepository.Include(x => x.GTest).Where(x => x.GTest.Id == GTestId);
+            return _gAnswerSheetRepository.GetGAnswerSheetsBy(gTestId);
         }
         public IEnumerable<GWrittenQuestion> GetAllGWrittenQuestions()
         {
             return _gWrittenQuestionRepository.GetAll();
         }
-        public IEnumerable<GWrittenQuestion> GetGWrittenQuestionsBy(int GTestId)
+        public IEnumerable<GWrittenQuestion> GetGWrittenQuestionsBy(int gTestId)
         {
-            return _gWrittenQuestionRepository.Include(x => x.GTest).Where(x => x.GTest.Id == GTestId);
+            return _gWrittenQuestionRepository.GetWrittenQuestionsBy(gTestId);
         }
         public IEnumerable<GQuestionToBeChecked> GetAllGQuestionToBeChecked()
         {

@@ -16,13 +16,14 @@ namespace MyExams.TestProcessing
 {
     class PdfBuilder
     {
-        private Font f12;
-        private Font f12Bold;
-        private Font f7;
+        private static Font f12;
+        private static Font f12Bold;
+        private static Font f7;
         private string bgAlphabet = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЬЮЯ";
 
         private readonly ITestService _testService;
         private readonly IGAnswerSheetService _gAnswerSheetService;
+        private static TPTest CurrentTest;
 
         public PdfBuilder(ITestService testService, IGAnswerSheetService gAnswerSheetService)
         {
@@ -31,13 +32,29 @@ namespace MyExams.TestProcessing
 
             
             var basePath = System.AppDomain.CurrentDomain.RelativeSearchPath;
-            string ARIALUNI_TFF = Environment.CurrentDirectory + @"\ARIALUNI.TTF";
+            string ARIALUNI_TFF = basePath + @"\ARIALUNI.TTF";
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
             f12 = new Font(bf, 12, Font.NORMAL);
             f12Bold = new Font(bf, 12, Font.BOLD);
             f7 = new Font(bf, 7, Font.NORMAL);
 
+        }
+
+        private class Header : PdfPageEventHelper
+        {
+            public override void OnStartPage(PdfWriter writer, Document document)
+            {
+                var studentTable = GetStudentTable();
+                if (studentTable != null)
+                {
+                    document.Add(studentTable);
+                }
+                else
+                {
+                    document.Add(new Phrase("  "));
+                }
+            }
         }
 
         public FileContentResult TPTestToPdf(List<TPTest> list)
@@ -47,37 +64,16 @@ namespace MyExams.TestProcessing
             {
                 var doc = new Document(PageSize.A4, 50, 50, 70, 70);
                 var writer = PdfWriter.GetInstance(doc, ms);
-              
+                Header header = new Header();
+                writer.PageEvent = header;
+                CurrentTest = list[0];
                 doc.Open();
                 foreach (var item in list)
                 {
                     var gTest = _testService.GetAllGTests().Where(x => x.Id == item.GTestId).First();
-                    doc.NewPage();
-                   
-                    //Adding Student Details Table 
-                    PdfPTable studentTable = new PdfPTable(2)
-                    {
-                        WidthPercentage = 100
-                    };
-                    PdfPCell cellName = new PdfPCell(new Phrase("Име:   " + item.StudentDetails.FullName, f12))
-                    {
-                        Border = Rectangle.BOTTOM_BORDER,
-                        PaddingBottom = 5
-                    };
-                    studentTable.AddCell(cellName);
-                    PdfPCell cellClassNo = new PdfPCell(new Phrase("№" + item.StudentDetails.NoInClass + "  Клас: " + item.StudentDetails.ClassName, f12))
-                    {
-                        HorizontalAlignment = PdfPCell.ALIGN_RIGHT,
-                        Border = Rectangle.BOTTOM_BORDER,
-                        PaddingBottom = 5
-                    };
-                    studentTable.AddCell(cellClassNo);
-
-                    studentTable.SpacingAfter = 25;
-                    doc.Add(studentTable);
-
-                    // Adding Questions 
-                    var currentPage = doc.PageNumber;
+                    CurrentTest = item;
+                    if (list.First() != item) doc.NewPage();
+                    var currentPage = writer.PageNumber;
                     int numberingQuestions = 1;
                     foreach (var section in item.Sections)
                     {
@@ -108,6 +104,12 @@ namespace MyExams.TestProcessing
                             numberingQuestions++;
                         }
                     }
+                    if (writer.PageNumber % 2 != 0)
+                    {
+                      CurrentTest = null;
+                      doc.NewPage();
+                       CurrentTest = item;
+                    }
                     doc.NewPage();
 
        //AnswerSheet Generation
@@ -119,14 +121,14 @@ namespace MyExams.TestProcessing
                     string[] letters = { "А", "Б", "В", "Г", "Д", "Е", "Ж", "З", "И" };
                     Random rm = new Random();
 
-                    int currentYPixel = (int)doc.PageSize.Height - 70;
+                    int currentYPixel = (int)doc.PageSize.Height - 160;
                     int rowCount = -1;
                     int firstQuestion = 0;
                     int pageNo = 1;
 
-                    // Students Details 
-                    studentTable.WriteSelectedRows(0, -1, 60, currentYPixel + 20, cb);
-                    currentYPixel -= 35;
+                    //// Students Details 
+                    //studentTable.WriteSelectedRows(0, -1, 60, currentYPixel + 20, cb);
+                    //currentYPixel -= 35;
 
 
                     //Barcode 
@@ -204,7 +206,7 @@ namespace MyExams.TestProcessing
                                 {
                                     doc.NewPage();
                                     currentYPixel = (int)doc.PageSize.Height - 70;
-                                    studentTable.WriteSelectedRows(0, -1, 60, currentYPixel + 20, cb);
+                                   //studentTable.WriteSelectedRows(0, -1, 60, currentYPixel + 20, cb);
                                     currentYPixel -= 35;
 
                                     gTest.TotalAnswerSheets++;
@@ -249,13 +251,44 @@ namespace MyExams.TestProcessing
 
                     barcodeMemoryStream.Dispose();
                     barcodeBitmap.Dispose();
-                   
+                    if (writer.PageNumber % 2 != 0)
+                    {
+                       CurrentTest = null;
+                        doc.NewPage();
+                       CurrentTest = item;
+                    }
                 }
                 
                 doc.Close();
                 bytes = ms.ToArray();
             }
             return new FileContentResult(bytes, "application/pdf");
+        }
+
+        private static PdfPTable GetStudentTable()
+        {
+            if (CurrentTest == null) return null;
+            //Adding Student Details Table 
+            PdfPTable studentTable = new PdfPTable(2)
+            {
+                WidthPercentage = 100
+            };
+            PdfPCell cellName = new PdfPCell(new Phrase("Име:   " + CurrentTest.StudentDetails.FullName, f12))
+            {
+                Border = Rectangle.BOTTOM_BORDER,
+                PaddingBottom = 5
+            };
+            studentTable.AddCell(cellName);
+            PdfPCell cellClassNo = new PdfPCell(new Phrase("№" + CurrentTest.StudentDetails.NoInClass + "  Клас: " + CurrentTest.StudentDetails.ClassName, f12))
+            {
+                HorizontalAlignment = PdfPCell.ALIGN_RIGHT,
+                Border = Rectangle.BOTTOM_BORDER,
+                PaddingBottom = 5
+            };
+            studentTable.AddCell(cellClassNo);
+
+            studentTable.SpacingAfter = 25;
+            return studentTable;
         }
         private PdfPTable DisplayQuestion(string questionText, params string[] options)
         {

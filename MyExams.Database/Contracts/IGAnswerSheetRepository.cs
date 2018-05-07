@@ -10,5 +10,6 @@ namespace MyExams.Database.Contracts
 {
     public interface IGAnswerSheetRepository:IRepositoryBase<GAnswerSheet>
     {
+        IEnumerable<GAnswerSheet> GetGAnswerSheetsBy(int gTestId);
     }
 }
