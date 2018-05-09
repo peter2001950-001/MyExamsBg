@@ -77,6 +77,9 @@ namespace MyExams.TestProcessing
                     int numberingQuestions = 1;
                    
                  
+                    // Adding Questions 
+                  
+
                     foreach (var section in item.Sections)
                     {
                         doc.Add(new Paragraph(section.Title, f12));
@@ -130,7 +133,7 @@ namespace MyExams.TestProcessing
                     string[] letters = { "А", "Б", "В", "Г", "Д", "Е", "Ж", "З", "И" };
                     Random rm = new Random();
 
-                    int currentYPixel = (int)doc.PageSize.Height - 130;
+                    int currentYPixel = (int)doc.PageSize.Height - 160;
                     int rowCount = -1;
                     int firstQuestion = 0;
                     int pageNo = 1;

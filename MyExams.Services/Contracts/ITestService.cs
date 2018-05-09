@@ -19,6 +19,7 @@ namespace MyExams.Services.Contracts
         IEnumerable<GTest> GetAllGTests();
         GTest GetGTestBy(GAnswerSheet answerSheet);
         IEnumerable<GTest> GetGTestBy(int classId);
+        List<object> GetAnalysisBy(List<int> gTestIds, Test test);
         void AddNewGTest(GTest item);
         void Update();
         void ClearTestCache();

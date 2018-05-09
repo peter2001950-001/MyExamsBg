@@ -34,10 +34,12 @@ namespace MyExams.Controllers
         private readonly IUploadSessionService _uploadSessionService;
         private readonly ITestCheckProcess _testCheckProcess;
         private readonly IMonitoringApi _monitoringApi;
+        private readonly IGQuestionService _gQuestionService;
+        private readonly IGAnswerService _gAnswerService;
 
         public int GTestId { get; private set; }
 
-        public TeacherController(IClassService classService, IStudentService studentService, ITestService testService, ITeacherService teacherService, ISectionService sectionService, IQuestionService questionService, IAnswerService answerService, ITestGeneration testGeneration, IGAnswerSheetService gAnswerSheetService, ITestCheckProcess testCheckProcess, IFileDirectoryService fileDirectoryService, IUploadSessionService uploadSessionService)
+        public TeacherController(IClassService classService, IStudentService studentService, ITestService testService, ITeacherService teacherService, ISectionService sectionService, IQuestionService questionService, IAnswerService answerService, ITestGeneration testGeneration, IGAnswerSheetService gAnswerSheetService, ITestCheckProcess testCheckProcess, IFileDirectoryService fileDirectoryService, IUploadSessionService uploadSessionService, IGQuestionService gQuestionService, IGAnswerService gAnswerService)
         {
             _classService = classService;
             _studentService = studentService;
@@ -52,6 +54,8 @@ namespace MyExams.Controllers
             _uploadSessionService = uploadSessionService;
             _testCheckProcess = testCheckProcess;
             _monitoringApi = JobStorage.Current.GetMonitoringApi();
+            _gQuestionService = gQuestionService;
+            _gAnswerService = gAnswerService;
         }
         // GET: Teacher
         public ActionResult Index()
@@ -122,69 +126,89 @@ namespace MyExams.Controllers
                 if (gTest != null)
                 {
                     var alphabet = "АБВГДЕЖЗИЙКЛМНОПРСТ";
-                    XmlDocument doc = new XmlDocument();
-                    doc.LoadXml(gTest.Xml);
-                    List<int> questionIds = new List<int>();
-                    
-                    List<Section> sections = new List<Section>();
-                    Dictionary<int, XmlNode> idNodes = new Dictionary<int, XmlNode>();
-                    foreach (XmlNode node in doc.DocumentElement.ChildNodes)
-                    {
-                        var questionId = int.Parse(node.Attributes["id"].Value);
-                        questionIds.Add(questionId);
-                        idNodes.Add(questionId, node);
-                    }
-                    List<Question> questionList = _questionService.GetAllByIds(questionIds).ToList();
-                    foreach (var item in questionList)
+                    var gQuestions = _gQuestionService.GetAllBy(gTest.Id).OrderBy(x => x.OrderNo).ToList();
+                    List<GWrittenQuestion> writtenQuestions = _gAnswerSheetService.GetGWrittenQuestionsBy(gTest.Id).ToList();
+
+                    var sections = new List<Section>();
+                    foreach (var item in gQuestions)
                     {
                         if (!sections.Any(x => x.Id == item.Section.Id))
                         {
                             sections.Add(item.Section);
                         }
                     }
-                    List<Answer> answersList = _answerService.GetAllByQuestionIds(questionIds).ToList();
-                    List<GWrittenQuestion> writtenQuestions = _gAnswerSheetService.GetGWrittenQuestionsBy(gTest.Id).ToList();
+
+                    var questionCount = 0;
                     List<object> sectionObjects = new List<object>();
                     foreach (var section in sections)
                     {
-                        var questionCount = 0;
                         List<object> questionObjects = new List<object>();
-                        var questionsOfSection = questionList.Where(x => x.Section.Id == section.Id);
+                        var questionsOfSection = gQuestions.Where(x => x.Section.Id == section.Id).ToList();
                         foreach (var item in questionsOfSection)
                         {
                             questionCount++;
                             var answerCount = -1;
-                            XmlNode node;
-                            idNodes.TryGetValue(item.Id, out node);
-                            if (node != null)
+                            if (item.GAnswers.Count > 0)
                             {
-                                if (node.ChildNodes.Count > 0)
+                                List<object> answerObjects = new List<object>();
+                                foreach (var answer in item.GAnswers.OrderBy(x => x.OrderNo))
                                 {
-                                    List<object> answerObjects = new List<object>();
-                                    foreach (XmlNode answerNode in node.ChildNodes)
+                                    answerCount++;
+                                    var answerText = alphabet[answerCount] + ") " + answer.Answer.Text;
+                                    if (answer.CheckState == CheckState.NotChecked && answer.Answer.IsCorrect)
                                     {
-                                        answerCount++;
-                                        var nodeS = answerNode.Attributes["s"].Value;
-                                        var answer = answersList.FirstOrDefault(x => x.Id == int.Parse(answerNode.Attributes["id"].Value));
-                                        answer.Text = alphabet[answerCount] + ") " + answer.Text;
-                                        if (nodeS == "0" && answer.IsCorrect)
+                                        answerObjects.Add(new { text = answerText, color = "#4dbd74" }); // green color - the answer is correct but not marked
+                                    }
+                                    else if (answer.CheckState == CheckState.Checked)
+                                    {
+                                        answerObjects.Add(new { text = answerText, color = "#f43f3f" }); // red color - the answer is not correct but marked
+                                    }
+                                    else if (answer.CheckState == CheckState.Correct)
+                                    {
+                                        answerObjects.Add(new { text = answerText, color = "#4dbd74" });
+                                    }
+                                    else if (answer.CheckState == CheckState.NotChecked)
+                                    {
+                                        answerObjects.Add(new { text = answerText, color = "#000000" });
+                                    }
+                                }
+                                var points = item.ReceivedPoints;
+                                var color = "";
+                                if (points > 0)
+                                {
+                                    color = "#4dbd74";
+                                }
+                                else
+                                {
+                                    color = "#f43f3f";
+                                }
+                                questionObjects.Add(new { text = questionCount + ". " + item.Question.Text, answers = answerObjects, points = points, pointsColor = color, type = 0 });
+
+                            }
+                            else
+                            {
+                                var result = questionsOfSection.IndexOf(questionsOfSection.First(x => x.Id == item.Id));
+                                var writtenQuestion = writtenQuestions.Where(x => x.GQuestionId == result).FirstOrDefault();
+                                if (writtenQuestion != null)
+                                {
+
+                                    var image = "";
+                                    try
+                                    {
+                                        var srcImage = Image.FromFile(writtenQuestion.FileName);
+                                        using (var stream = new MemoryStream())
                                         {
-                                            answerObjects.Add(new { text = answer.Text, color = "#4dbd74" }); // green color - the answer is correct but not marked
-                                        }
-                                        else if (nodeS== "1")
-                                        {
-                                            answerObjects.Add(new { text = answer.Text, color = "#f43f3f" }); // red color - the answer is not correct but marked
-                                        }
-                                        else if (nodeS == "2")
-                                        {
-                                            answerObjects.Add(new { text = answer.Text, color = "#4dbd74" });
-                                        }
-                                        else if (nodeS == "0")
-                                        {
-                                            answerObjects.Add(new { text = answer.Text, color = "#000000" });
+                                            srcImage.Save(stream, ImageFormat.Jpeg);
+                                            image = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray());
                                         }
                                     }
-                                    var points = int.Parse(node.Attributes["rp"].Value);
+                                    catch (Exception)
+                                    {
+
+
+                                    }
+
+                                    var points = item.ReceivedPoints;
                                     var color = "";
                                     if (points > 0)
                                     {
@@ -194,50 +218,14 @@ namespace MyExams.Controllers
                                     {
                                         color = "#f43f3f";
                                     }
-                                    questionObjects.Add(new { text = item.Text, answers = answerObjects, points = points, pointsColor = color, type = 0 });
 
-                                }
-                                else
-                                {
-                                   var result =  questionIds.IndexOf(item.Id);
-                                    var writtenQuestion = writtenQuestions.Where(x => x.GQuestionId == result).FirstOrDefault();
-                                    if (writtenQuestion != null)
-                                    {
+                                    questionObjects.Add(new { text = questionCount + ". " + item.Question.Text, correctAnswer = item.Question.CorrectAnswer, points = points, image = image, pointsColor = color, type = 1 });
 
-                                        var image = "";
-                                        try
-                                        {
-                                            var srcImage = Image.FromFile(writtenQuestion.FileName);
-                                            using (var stream = new MemoryStream())
-                                            {
-                                                srcImage.Save(stream, ImageFormat.Jpeg);
-                                                image = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray());
-                                            }
-                                        }
-                                        catch (Exception)
-                                        {
-
-
-                                        }
-
-                                        var points = int.Parse(node.Attributes["rp"].Value);
-                                        var color = "";
-                                        if (points > 0)
-                                        {
-                                            color = "#4dbd74";
-                                        }
-                                        else
-                                        {
-                                            color = "#f43f3f";
-                                        }
-
-                                        questionObjects.Add(new { text = questionCount + ". " + item.Text, correctAnswer = item.CorrectAnswer, points = points, image = image, pointsColor = color, type = 1 });
-                                        
-                                    }
                                 }
                             }
+
                         }
-                            sectionObjects.Add(new { text = section.SectionTitle, questions = questionObjects });
+                        sectionObjects.Add(new { text = section.SectionTitle, questions = questionObjects });
                     }
                     var studentClass = _classService.GetAllClassStudents().Where(x => x.Student?.Id == gTest.Student.Id && x.Class?.Id == gTest.Class.Id).FirstOrDefault();
 
@@ -399,7 +387,7 @@ namespace MyExams.Controllers
                         if (question != null)
                         {
                             var newQuestion = _questionService.QuestionHasChanged(obj, question);
-             
+
                             if (question.QuestionType == QuestionType.Choice)
                             {
                                 var options = _answerService.GetAllBy(test.Id, obj.sectionId, obj.question.id).ToList();
@@ -419,7 +407,7 @@ namespace MyExams.Controllers
             }
             return Json(new { status = "ERR4" });
         }
-        
+
 
         public ActionResult SectionUpdate(string testUniqueCode, string name, bool mixupQuestions, int index, int questionsToShow)
         {
@@ -514,7 +502,7 @@ namespace MyExams.Controllers
                     var testObj = _testService.GetTestByUniqueNumber(testUniqueCode);
                     if (testObj != null)
                     {
-                        var sections = _sectionService.GetAllSectionsByTestId(testObj.Id).OrderBy(x=>x.OrderNo).ToList();
+                        var sections = _sectionService.GetAllSectionsByTestId(testObj.Id).OrderBy(x => x.OrderNo).ToList();
                         List<object> sectionsList = new List<object>();
 
                         foreach (var section in sections)
@@ -523,7 +511,7 @@ namespace MyExams.Controllers
                             {
                                 var questionsList = new List<object>();
 
-                                var questions = _questionService.GetAllQuestionsBy(test.Id, section.OrderNo).OrderBy(x=>x.OrderNo).ToList();
+                                var questions = _questionService.GetAllQuestionsBy(test.Id, section.OrderNo).OrderBy(x => x.OrderNo).ToList();
                                 foreach (var question in questions)
                                 {
                                     if (question.Active)
@@ -531,7 +519,7 @@ namespace MyExams.Controllers
                                         var optionsList = new List<object>();
                                         if (question.QuestionType == QuestionType.Choice)
                                         {
-                                            var options = _answerService.GetAllBy(test.Id, section.OrderNo, question.OrderNo).OrderBy(x=>x.OrderNo).ToList();
+                                            var options = _answerService.GetAllBy(test.Id, section.OrderNo, question.OrderNo).OrderBy(x => x.OrderNo).ToList();
                                             foreach (var option in options)
                                             {
                                                 if (option.Active)
@@ -579,6 +567,36 @@ namespace MyExams.Controllers
             }
             return Json(new { status = "ERR3" });
         }
+
+        public JsonResult GetTestStat(string testUniqueCode, bool all, string classesIds = "")
+        {
+            var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
+            if (teacher != null)
+            {
+                var test = _testService.GetTestByUniqueNumber(testUniqueCode);
+                if (_teacherService.IsTeacherOfTest(User.Identity.GetUserId(), test.Id))
+                {
+                    if (all)
+                    {
+                        var gTests = _testService.GetAllGTestIncludeAll().Where(x => x.Teacher.Id == teacher.Id).Where(x => x.IsDone).Where(x => x.Test.Id == test.Id).ToList();
+                        var classes = gTests.Select(x => x.Class).Distinct();
+
+                        var marks = gTests.Select(x => Math.Round((double)x.ReceivedPoints / (double)x.MaxPoints * 6, 2) < 2 ? 2 : Math.Round((double)x.ReceivedPoints / (double)x.MaxPoints * 6, 2));
+                        if (marks.Count() != 0)
+                        {
+                            var gQuestions = _gQuestionService.GetAllBy(gTests.Select(x => x.Id).ToList());
+
+                            var questionsObj = _testService.GetAnalysisBy(gTests.Select(x => x.Id).ToList(), test);
+                            var classesObj = classes.Select(x => new { text = x.Name, id = x.Id, isChecked = true }).ToList();
+
+                            return Json(new { status = "OK", averageMark = Math.Round(marks.DefaultIfEmpty(0).Average(), 2), twos = marks.Count(x => x >= 2 && x < 3), threes = marks.Count(x => x >= 3 && x < 3.5), fours = marks.Count(x => x >= 3.5 && x < 4.5), fives = marks.Count(x => x >= 4.5 && x < 5.5), sixs = marks.Count(x => x >= 5.5), questions = questionsObj, classes = classesObj }, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                    return Json(new { status = "NONE" });
+                }
+            }
+            return Json(new { status = "ERR" });
+        }
         public ActionResult Class(string id)
         {
             var userId = User.Identity.GetUserId();
@@ -612,7 +630,7 @@ namespace MyExams.Controllers
                 var classesResultObj = _classService.GetClassObjects(userId, x => x.RecentUsage, Services.OrderByMethod.Descending).Take(3);
                 var testsResultObj = _testService.GetTestObjects(userId, x => x.RecentUsage, Services.OrderByMethod.Descending).Take(3);
 
-                if (_gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).Count()>0)
+                if (_gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).Count() > 0)
                 {
                     isQuestionsToBeChecked = true;
                     count = _gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).Count();
@@ -786,12 +804,13 @@ namespace MyExams.Controllers
             while (true)
             {
                 _uploadSessionService.ClearCache();
-                var activeSessions = _uploadSessionService.GetAll().Where(x => x.IsActive == true);
+                Thread.Sleep(1000);
+                var activeSessions = _uploadSessionService.GetAll().Where(x => x.IsActive == true).ToList();
                 if (activeSessions.Count() > 0)
                 {
                     foreach (var uploadSession in activeSessions)
                     {
-                        var uploadSessionFiles = _uploadSessionService.GetUploadSessionFileDirectoriesBy(uploadSession);
+                        var uploadSessionFiles = _uploadSessionService.GetUploadSessionFileDirectoriesBy(uploadSession).ToList();
                         int totalFinished = 0;
                         foreach (var item in uploadSessionFiles)
                         {
@@ -810,7 +829,8 @@ namespace MyExams.Controllers
                             {
                                 if (file.AnswerSheet != null)
                                 {
-                                    if (file.AnswerSheet.AnswerSheetStatus == AnswerSheetStatus.Checked)
+                                    var answerSheet = _gAnswerSheetService.GetAllGAnswerSheet().Where(x => x.Id == file.AnswerSheet.Id).First();
+                                    if (answerSheet.AnswerSheetStatus == AnswerSheetStatus.Checked)
                                     {
                                         var id = _testService.GetGTestBy(file.AnswerSheet).Id;
                                         if (!enqueueTests.Any(x => x == id))
@@ -825,7 +845,7 @@ namespace MyExams.Controllers
                         _testService.Update();
 
                     }
-                    Thread.Sleep(1000);
+
                 }
                 else
                 {
@@ -841,60 +861,28 @@ namespace MyExams.Controllers
             var answerSheets = _gAnswerSheetService.GetGAnswerSheetsBy(GtestId).ToList();
             if (answerSheets != null)
             {
-                if (answerSheets.All(x => x.AnswerSheetStatus == AnswerSheetStatus.Checked && x.Xml != null))
+                if (answerSheets.All(x => x.AnswerSheetStatus == AnswerSheetStatus.Checked))
                 {
                     var gTest = _testService.GetAllGTestIncludeAll().FirstOrDefault(x => x.Id == GtestId);
 
                     if (gTest != null)
                     {
-                        XmlDocument xml = new XmlDocument();
-                        xml.LoadXml(gTest.Xml);
-                        int totalPoints = 0;
-                        var totalQuestions = answerSheets.Max(x => x.LastQuestionNo);
-                        var orderedAnswerSheets = answerSheets.OrderBy(x => x.FirstQuestionNo).ToList();
-                        int asCounter = 0;
-                        XmlDocument currentDoc = new XmlDocument();
-                        currentDoc.LoadXml(orderedAnswerSheets[0].Xml);
-                        for (int i = 0; i <= totalQuestions; i++)
-                        {
-                            if (i <= orderedAnswerSheets[asCounter].LastQuestionNo)
-                            {
-                                var node = xml.ImportNode(currentDoc.DocumentElement.ChildNodes[i], true);
-                                xml.DocumentElement.ReplaceChild(node, xml.DocumentElement.ChildNodes[i]);
-                                totalPoints += int.Parse(xml.DocumentElement.ChildNodes[i].Attributes["rp"].Value);
-                            }
-                            else
-                            {
+                        var questions = _gQuestionService.GetAllBy(gTest.Id);
 
-                                answerSheets.First(x => x.Id == orderedAnswerSheets[asCounter].Id).Xml = null;
-                                _testService.Update();
-                                asCounter++;
-                                currentDoc.LoadXml(orderedAnswerSheets[asCounter].Xml);
-                                i--;
-                            }
-                        }
-                        answerSheets.First(x => x.Id == orderedAnswerSheets[asCounter].Id).Xml = null;
-                        _testService.Update();
-                        using (StringWriter sw = new StringWriter())
-                        {
-                            using (XmlTextWriter xw = new XmlTextWriter(sw))
-                            {
-                                xml.WriteTo(xw);
-                                gTest.Xml = sw.ToString();
-                            }
-                        }
+                        int totalPoints = questions.Sum(x => x.ReceivedPoints);
+
                         gTest.ReceivedPoints = totalPoints;
                         gTest.IsDone = true;
                         _testService.Update();
 
 
-                        var marks = _testService.GetAllGTestIncludeAll().Where(x => x.Class?.Id == gTest.Class.Id && x.IsDone).Select(x => Math.Round(((double)x.ReceivedPoints / (double)x.MaxPoints) * 6, 2));
+                        var marks = _testService.GetAllGTestIncludeAll().Where(x => x.Class?.Id == gTest.Class.Id && x.IsDone).Select(x => Math.Round(((double)x.ReceivedPoints / (double)x.MaxPoints) * 6, 2) < 2 ? 2 : Math.Round(((double)x.ReceivedPoints / (double)x.MaxPoints) * 6, 2));
                         var classObj = _classService.GetAll().Where(x => x.Id == gTest.Class.Id).First();
                         classObj.AverageMark = Math.Round(marks.Average(), 2);
 
                         _testService.Update();
 
-                        var testMarks = _testService.GetAllGTestIncludeAll().Where(x => x.Test.Id == gTest.Test.Id && x.IsDone).Select(x => Math.Round(((double)x.ReceivedPoints / (double)x.MaxPoints) * 6, 2));
+                        var testMarks = _testService.GetAllGTestIncludeAll().Where(x => x.Test.Id == gTest.Test.Id && x.IsDone).Select(x => Math.Round(((double)x.ReceivedPoints / (double)x.MaxPoints) * 6, 2) < 2 ? 2 : Math.Round(((double)x.ReceivedPoints / (double)x.MaxPoints) * 6, 2));
                         var testObj = _testService.GetAllTests().Where(x => x.Id == gTest.Test.Id).First();
                         testObj.AverageMark = Math.Round(testMarks.Average(), 2);
                         _testService.Update();
@@ -965,38 +953,33 @@ namespace MyExams.Controllers
                     {
 
                         var gTest = _testService.GetAllGTests().Where(x => x.Id == questionToBeChecked.GWrittenQuestion.GTest.Id).First();
-                        XmlDocument xml = new XmlDocument();
-                        xml.LoadXml(gTest.Xml);
-
-                        var questionId = xml.DocumentElement.ChildNodes[questionToBeChecked.GWrittenQuestion.GQuestionId].Attributes["id"].Value;
-                        var question = _questionService.GetAll().Where(x => x.Id == int.Parse(questionId)).FirstOrDefault();
+                        var gQuestions = _gQuestionService.GetAllBy(gTest.Id).OrderBy(x => x.OrderNo).ToList();
 
 
-                        if (question != null)
+                        var gQuestion = gQuestions[questionToBeChecked.GWrittenQuestion.GQuestionId];
+
+
+                        if (questionToBeChecked.GWrittenQuestion.QuestionType == QuestionType.Text)
                         {
-                            if (questionToBeChecked.GWrittenQuestion.QuestionType == QuestionType.Text)
+                            var srcImage = Image.FromFile(questionToBeChecked.GWrittenQuestion.FileName);
+                            using (var stream = new MemoryStream())
                             {
-                                var srcImage = Image.FromFile(questionToBeChecked.GWrittenQuestion.FileName);
-                                using (var stream = new MemoryStream())
-                                {
-                                    srcImage.Save(stream, ImageFormat.Jpeg);
+                                srcImage.Save(stream, ImageFormat.Jpeg);
 
-                                    return Json(new { status = "OK", question = new { type = 1, text = question.Text, options = question.Points, correctAnswer = question.CorrectAnswer, src = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray()), id = questionToBeChecked.Id } }, JsonRequestBehavior.AllowGet);
-                                }
-                            }
-                            else
-                            {
-                                var answersCount = _answerService.GetAll().Where(x => x.Question?.Id == question.Id).Count();
-                                var srcImage = Image.FromFile(questionToBeChecked.GWrittenQuestion.FileName);
-                                using (var stream = new MemoryStream())
-                                {
-                                    srcImage.Save(stream, ImageFormat.Jpeg);
-
-                                    return Json(new { status = "OK", question = new { type = 0, text = question.Text, options = answersCount, src = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray()), id = questionToBeChecked.Id } }, JsonRequestBehavior.AllowGet);
-                                }
+                                return Json(new { status = "OK", question = new { type = 1, text = gQuestion.Question.Text, options = gQuestion.Question.Points, correctAnswer = gQuestion.Question.CorrectAnswer, src = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray()), id = questionToBeChecked.Id } }, JsonRequestBehavior.AllowGet);
                             }
                         }
-                        return Json(new { status = "ERR1" }, JsonRequestBehavior.AllowGet);
+                        else
+                        {
+                            var answersCount = gQuestion.GAnswers.Count;
+                            var srcImage = Image.FromFile(questionToBeChecked.GWrittenQuestion.FileName);
+                            using (var stream = new MemoryStream())
+                            {
+                                srcImage.Save(stream, ImageFormat.Jpeg);
+
+                                return Json(new { status = "OK", question = new { type = 0, text = gQuestion.Question.Text, options = answersCount, src = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray()), id = questionToBeChecked.Id } }, JsonRequestBehavior.AllowGet);
+                            }
+                        }
 
                     }
                     return Json(new { status = "ERR2" }, JsonRequestBehavior.AllowGet);
@@ -1011,82 +994,59 @@ namespace MyExams.Controllers
             var teacher = _teacherService.GetTeacherByUserId(User.Identity.GetUserId());
             if (teacher != null)
             {
-                if (_gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).Any(x=>x.Id == questionId))
+                if (_gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).Any(x => x.Id == questionId))
                 {
                     var question = _gAnswerSheetService.GetAllGQuestionToBeCheckedBy(teacher.Id).Where(x => x.Id == questionId).FirstOrDefault();
                     var answerSheets = _gAnswerSheetService.GetGAnswerSheetsBy(question.GWrittenQuestion.GTest.Id).ToList();
                     var answerSheetNeeded = _gAnswerSheetService.GetGAnswerSheetBy(teacher.Id, questionId);
                     if (answerSheetNeeded != null)
                     {
-                        XmlDocument xml = new XmlDocument();
-                        xml.LoadXml(answerSheetNeeded.Xml);
+
+                        var gQuestions = _gQuestionService.GetAllBy(question.GWrittenQuestion.GTest.Id).OrderBy(x => x.OrderNo).ToList();
                         if (question.GWrittenQuestion.QuestionType == QuestionType.Text)
                         {
-                            var answerAttr = xml.CreateAttribute("rp");
-                            answerAttr.Value = option.ToString();
-                            xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].Attributes.Append(answerAttr);
-
+                            gQuestions[question.GWrittenQuestion.GQuestionId].ReceivedPoints = option;
                         }
                         else
                         {
-                            // option 0 - none of them, 1 - A, 2 - B ......
-                            var questionStringId = xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].Attributes["id"].Value;
-                            var questionObj = _questionService.GetAll().Where(x => x.Id == int.Parse(questionStringId)).First();
-                            var answers = _answerService.GetAll().Where(x => x.Question?.Id == questionObj.Id).OrderBy(x => x.OrderNo).ToList();
 
+                            var answers = gQuestions[question.GWrittenQuestion.GQuestionId].GAnswers.OrderBy(x => x.OrderNo).ToList();
                             bool isCorrect = false;
-                            for (int i = 0; i < xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes.Count; i++)
+                            for (int i = 0; i < answers.Count; i++)
                             {
-                                if (answers[i].IsCorrect && i == option - 1)
+                                if (answers[i].Answer.IsCorrect && i == option - 1)
                                 {
+                                    answers[i].CheckState = CheckState.Correct; // correct
                                     isCorrect = true;
-                                    var answerAttr = xml.CreateAttribute("s"); // short for status
-                                    answerAttr.Value = "2"; //correct code
-                                    xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes[i].Attributes.Append(answerAttr);
                                 }
-                                else if (!answers[i].IsCorrect && i == option - 1)
+                                else if (!answers[i].Answer.IsCorrect && i == option - 1)
                                 {
-                                    var answerAttr = xml.CreateAttribute("s"); // short for status
-                                    answerAttr.Value = "1"; //checked but not correct code
-                                    xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes[i].Attributes.Append(answerAttr);
+                                    answers[i].CheckState = CheckState.Checked; // checked but not correct
                                 }
                                 else if (i != option - 1)
                                 {
-                                    var answerAttr = xml.CreateAttribute("s"); // short for status
-                                    answerAttr.Value = "0"; //unchecked
-                                    xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].ChildNodes[i].Attributes.Append(answerAttr);
+                                    answers[i].CheckState = CheckState.NotChecked;
                                 }
 
                             }
+                            _testService.Update();
                             if (isCorrect)
                             {
-                                var answerAttr = xml.CreateAttribute("rp");
-                                answerAttr.Value = questionObj.Points.ToString();
-                                xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].Attributes.Append(answerAttr);
-
+                                gQuestions[question.GWrittenQuestion.GQuestionId].ReceivedPoints = gQuestions[question.GWrittenQuestion.GQuestionId].Question.Points;
                             }
                             else
                             {
-                                var answerAttr = xml.CreateAttribute("rp");
-                                answerAttr.Value = "0";
-                                xml.DocumentElement.ChildNodes[question.GWrittenQuestion.GQuestionId].Attributes.Append(answerAttr);
+                                gQuestions[question.GWrittenQuestion.GQuestionId].ReceivedPoints = 0;
 
                             }
-                          
+
                         }
-                        using (StringWriter sw = new StringWriter())
-                            {
-                                using (XmlTextWriter xw = new XmlTextWriter(sw))
-                                {
-                                    xml.WriteTo(xw);
-                                    answerSheetNeeded.Xml = sw.ToString();
-                                }
-                            }
-                            question.GWrittenQuestion.IsChecked = true;
-                            _testService.Update();
+
+                        question.GWrittenQuestion.IsChecked = true;
+                        _testService.Update();
+
                         if (_gAnswerSheetService.GetGWrittenQuestionsBy(question.GWrittenQuestion.GTest.Id).Count(x => x.IsChecked == false) == 0)
                         {
-
                             foreach (var item in answerSheets)
                             {
                                 item.AnswerSheetStatus = AnswerSheetStatus.Checked;

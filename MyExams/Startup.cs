@@ -90,6 +90,19 @@ namespace MyExams
         .Bind<IUploadSessionFileDirectoryRepository>()
         .To<UploadSessionFileDirectoryRepository>()
         .InRequestScope();
+            kernel
+       .Bind<IGQuestionRepository>()
+       .To<GQuestionRepository>()
+       .InRequestScope();
+            kernel
+       .Bind<IGAnswerRepository>()
+       .To<GAnswerRepository>()
+       .InRequestScope();
+            kernel
+     .Bind<IGAnswerService>()
+     .To<GAnswerService>()
+     .InRequestScope();
+
 
 
 
@@ -131,6 +144,10 @@ namespace MyExams
            .Bind<IFileDirectoryService>()
            .To<FileDirectoryService>()
            .InRequestScope();
+            kernel
+          .Bind<IGQuestionService>()
+          .To<GQuestionService>()
+          .InRequestScope();
 
 
 

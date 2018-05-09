@@ -15,8 +15,8 @@ namespace MyExams.Services
         private readonly IUploadSessionFileDirectoryRepository _uploadSessionFileDirectoryRepository;
         public UploadSessionService(IUploadSessionRepository uploadSessionRepository, IUploadSessionFileDirectoryRepository uploadSessionFileDirectoryRepository)
         {
-            if (_uploadSessionRepository == null) _uploadSessionRepository = uploadSessionRepository;
-            if (_uploadSessionFileDirectoryRepository == null) _uploadSessionFileDirectoryRepository = uploadSessionFileDirectoryRepository;
+           _uploadSessionRepository = uploadSessionRepository;
+           _uploadSessionFileDirectoryRepository = uploadSessionFileDirectoryRepository;
         }
         public IEnumerable<UploadSession> GetAll()
         {
@@ -38,7 +38,7 @@ namespace MyExams.Services
         }
         public IEnumerable<UploadSessionFileDirectory> GetUploadSessionFileDirectoriesBy(UploadSession uploadSession)
         {
-           return _uploadSessionFileDirectoryRepository.Include(x => x.AnswerSheet).Where(x => x.UploadSession.Id == uploadSession.Id);
+           return _uploadSessionFileDirectoryRepository.WhereIncludeAll(x => x.UploadSession.Id == uploadSession.Id);
         }
         public void AddUploadSession(UploadSession uploadSession)
         {

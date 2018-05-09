@@ -53,7 +53,9 @@
     <Compile Include="Contracts\IAnswerRepository.cs" />
     <Compile Include="Contracts\IClassRepository.cs" />
     <Compile Include="Contracts\IFileDirectoryRepository.cs" />
+    <Compile Include="Contracts\IGAnswerRepository.cs" />
     <Compile Include="Contracts\IGAnswerSheetRepository.cs" />
+    <Compile Include="Contracts\IGQuestionRepository.cs" />
     <Compile Include="Contracts\IGQuestionsToBeCheckedRepository.cs" />
     <Compile Include="Contracts\IGTestRepository.cs" />
     <Compile Include="Contracts\IGWrittenQuestionRepository.cs" />
@@ -73,7 +75,9 @@
     <Compile Include="Repositories\AnswerRepository.cs" />
     <Compile Include="Repositories\ClassRepository.cs" />
     <Compile Include="Repositories\FileDirectoryRepository.cs" />
+    <Compile Include="Repositories\GAnswerRepository.cs" />
     <Compile Include="Repositories\GAnswerSheetRepository.cs" />
+    <Compile Include="Repositories\GQuestionRepository.cs" />
     <Compile Include="Repositories\GQuestionsToBeChecked.cs" />
     <Compile Include="Repositories\GTestRepository.cs" />
     <Compile Include="Repositories\GWrittenQuestionRepository.cs" />

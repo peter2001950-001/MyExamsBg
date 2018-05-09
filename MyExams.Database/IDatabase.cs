@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyExams.Database
 {
-    public interface IDatabase
+    public interface IDatabase: IDisposable
     {
 
         DbSet<T> Set<T>() where T: class;

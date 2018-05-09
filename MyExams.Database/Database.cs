@@ -11,7 +11,7 @@ using MyExams.Models;
 
 namespace MyExams.Database
 {
-    public class Database : DbContext, IDatabase
+    public class Database : DbContext, IDatabase, IDisposable
     {
         public Database() : base("DefaultConnection")
         {
@@ -31,10 +31,14 @@ namespace MyExams.Database
         public DbSet<FileDirectory> FileDirectories {get; set;}
         public DbSet<UploadSession> UploadSessions { get; set; }
         public DbSet<UploadSessionFileDirectory> UploadSessionsFileDirectories { get; set; }
+        public DbSet<GQuestion> GQuestions { get; set; }
+        public DbSet<GAnswer> GAnswers { get; set; }
         public void SaveChanges()
         {
             base.SaveChanges();
+           
         }
+      
 
     }
 }

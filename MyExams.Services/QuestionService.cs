@@ -126,7 +126,14 @@ namespace MyExams.Services.Contracts
                     item.OrderNo--;
                 }
             }
-            _questionRepository.Remove(question);
+            if (question.IsInUse)
+            {
+                question.Active = false;
+            }
+            else
+            {
+                _questionRepository.Remove(question);
+            }
             _questionRepository.SaveChanges();
         }
 

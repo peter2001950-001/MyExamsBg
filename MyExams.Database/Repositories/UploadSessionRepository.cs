@@ -3,6 +3,7 @@ using MyExams.Database.Contracts;
 using MyExams.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,10 @@ namespace MyExams.Database.Repositories
         public UploadSessionRepository(IDatabase database) : base(database)
         {
         }
-
+        public override IEnumerable<UploadSession> GetAll()
+        {
+            return _dbSet.AsNoTracking().AsEnumerable();
+        }
         public override void Add(UploadSession item)
         {
             if(item.SessionIdentifier == null)
@@ -26,6 +30,10 @@ namespace MyExams.Database.Repositories
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
             base.Add(item);
+        }
+        public override void ClearCache()
+        {
+            
         }
     }
 }

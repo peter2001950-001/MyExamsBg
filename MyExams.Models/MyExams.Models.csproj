@@ -44,7 +44,9 @@
     <Compile Include="Answer.cs" />
     <Compile Include="Class.cs" />
     <Compile Include="FileDirectory.cs" />
+    <Compile Include="GAnswer.cs" />
     <Compile Include="GAnswerSheet.cs" />
+    <Compile Include="GQuestion.cs" />
     <Compile Include="GQuestionToBeChecked.cs" />
     <Compile Include="GTest.cs" />
     <Compile Include="GWrittenQuestion.cs" />

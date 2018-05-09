@@ -93,7 +93,14 @@ namespace MyExams.Services
                     item.OrderNo--;
                 }
             }
-            _answerRepository.Remove(answer);
+            if (answer.IsInUse)
+            {
+                answer.Active = false;
+            }
+            else
+            {
+                _answerRepository.Remove(answer);
+            }
             _answerRepository.SaveChanges();
         }
       

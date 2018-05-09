@@ -1,4 +1,5 @@
 ﻿var subscribeActivate = false;
+var hasLoaded = false;
 function QuestionOption(optionText, optionNum, id, questionId, sectionId) {
     var self = this;
     self.optionText = ko.observable(optionText);
@@ -204,6 +205,7 @@ function Section(sectionText, sectionId, mixupQuestions, questionsToShow, isQues
     }
     self.questions.subscribe(function (item) {
         if (subscribeActivate) {
+            console.log(subscribeActivate);
             $.ajax({
                 type: "post",
                 datatype: "json",
@@ -253,67 +255,75 @@ function TestDesignViewModel() {
     self.sections = ko.observableArray();
     self.testName = ko.observable();
     self.classes = ko.observable();
+    self.statClasses = ko.observable();
+    self.statQuestions = ko.observable();
     self.showLoading = ko.observable(false);
 
     self.GetTest = function () {
-        $.ajax({
-            type: "post",
-            datatype: "json",
-            contenttype: "application/json",
-            url: "/t/gettest",
-            data: {
-                testUniqueCode: testUniqueCode
-            },
-            success: function (data) {
-                if (data.status === "OK") {
-                    var questionSizeOptions = ["Кратък", "Среден", "Дълъг"];
-                    self.testName(data.testTitle);
-                    for (var i in data.sections) {
-                        var questionsToShow = data.sections[i].questionsToShow;
-                        var areSet = true;
-                        if (data.sections[i].questionsToShow == 0) {
-                            questionsToShow = Object.keys(data.sections[i].questions).length;
-                            console.log(Object.keys(data.sections[i].questions).length);
-                            areSet = false;
-                        }
-                        self.sections.push(new Section(data.sections[i].text, data.sections[i].id, data.sections[i].mixupQuestions, questionsToShow, areSet, data.sections[i].image));
-                        for (var p in data.sections[i].questions) {
-
-                            self.sections()[i].addQuestion(new Question(data.sections[i].questions[p].text, data.sections[i].questions[p].id, false, data.sections[i].questions[p].type, data.sections[i].id));
-                            if (data.sections[i].questions[p].type == "0") {
-
-                                for (var q in data.sections[i].questions[p].options) {
-
-
-                                    self.sections()[i].questions()[p].addOption(data.sections[i].questions[p].options[q].text, bgAlphabet[data.sections[i].questions[p].options[q].id]);
-
-                                    if (data.sections[i].questions[p].options[q].isCorrect == true) {
-
-
-                                        self.sections()[i].questions()[p].options()[q].isChecked(true);
-                                        self.sections()[i].questions()[p].options()[q].checkLabel("check_circle");
-                                        self.sections()[i].questions()[p].options()[q].checkedClass("option-checked");
-                                        self.sections()[i].questions()[p].options()[q].isCheckOptionVisible(true);
-                                    }
-                                }
-                                self.sections()[i].questions()[p].mixupOptions(data.sections[i].questions[p].mixupOptions);
-                            } else if (data.sections[i].questions[p].type == "1") {
-
-                                self.sections()[i].questions()[p].selectedAnswerSize(questionSizeOptions[data.sections[i].questions[p].answerSize]);
-                                self.sections()[i].questions()[p].correctAnswer(data.sections[i].questions[p].correctAnswer);
+            $("#question-list").removeClass("d-none");
+            $("#results").addClass("d-none");
+            $("#lastExams-link").addClass("active");
+            $("#marks-link").removeClass("active");
+        if (!hasLoaded) {
+            subscribeActivate = false;
+            $.ajax({
+                type: "post",
+                datatype: "json",
+                contenttype: "application/json",
+                url: "/t/gettest",
+                data: {
+                    testUniqueCode: testUniqueCode
+                },
+                success: function (data) {
+                    if (data.status === "OK") {
+                        var questionSizeOptions = ["Кратък", "Среден", "Дълъг"];
+                        self.testName(data.testTitle);
+                        for (var i in data.sections) {
+                            var questionsToShow = data.sections[i].questionsToShow;
+                            var areSet = true;
+                            if (data.sections[i].questionsToShow == 0) {
+                                questionsToShow = Object.keys(data.sections[i].questions).length;
+                                console.log(Object.keys(data.sections[i].questions).length);
+                                areSet = false;
                             }
-                            self.sections()[i].questions()[p].points(data.sections[i].questions[p].points);
-                        }
-                    }
-                    subscribeActivate = true;
-                    document.body.scrollTop = 0;
-                    document.documentElement.scrollTop = 0;
-                }
-            }
-        });
-    }
-    self.GetResults = function () {
+                            self.sections.push(new Section(data.sections[i].text, data.sections[i].id, data.sections[i].mixupQuestions, questionsToShow, areSet, data.sections[i].image));
+                            for (var p in data.sections[i].questions) {
 
+                                self.sections()[i].addQuestion(new Question(data.sections[i].questions[p].text, data.sections[i].questions[p].id, false, data.sections[i].questions[p].type, data.sections[i].id));
+                                if (data.sections[i].questions[p].type == "0") {
+
+                                    for (var q in data.sections[i].questions[p].options) {
+
+
+                                        self.sections()[i].questions()[p].addOption(data.sections[i].questions[p].options[q].text, bgAlphabet[data.sections[i].questions[p].options[q].id]);
+
+                                        if (data.sections[i].questions[p].options[q].isCorrect == true) {
+
+
+                                            self.sections()[i].questions()[p].options()[q].isChecked(true);
+                                            self.sections()[i].questions()[p].options()[q].checkLabel("check_circle");
+                                            self.sections()[i].questions()[p].options()[q].checkedClass("option-checked");
+                                            self.sections()[i].questions()[p].options()[q].isCheckOptionVisible(true);
+                                        }
+                                    }
+                                    self.sections()[i].questions()[p].mixupOptions(data.sections[i].questions[p].mixupOptions);
+                                } else if (data.sections[i].questions[p].type == "1") {
+
+                                    self.sections()[i].questions()[p].selectedAnswerSize(questionSizeOptions[data.sections[i].questions[p].answerSize]);
+                                    self.sections()[i].questions()[p].correctAnswer(data.sections[i].questions[p].correctAnswer);
+                                }
+                                self.sections()[i].questions()[p].points(data.sections[i].questions[p].points);
+                            }
+                        }
+                        console.log(subscribeActivate);
+                        subscribeActivate = true;
+                        hasLoaded = true;
+                        document.body.scrollTop = 0;
+                        document.documentElement.scrollTop = 0;
+                    }
+                }
+            });
+        }
     }
     self.ShowPrintMenu = function () {
         $.ajax({
@@ -531,6 +541,78 @@ function TestDesignViewModel() {
             self.sections()[section.sectionId].questions()[parentId].options()[item.id].firstTime = false;
         }
 
+    }
+    self.GetStat = function () {
+        $("#question-list").addClass("d-none");
+        $("#results").removeClass("d-none");
+        $("#lastExams-link").removeClass("active");
+        $("#marks-link").addClass("active");
+        console.log("before");
+        $.ajax({
+            type: "get",
+            datatype: "json",
+            contenttype: "application/json",
+            url: "/t/GetTestStat",
+            data: {
+                testUniqueCode: testUniqueCode,
+                all:true
+            },
+            success: function (data) {
+
+                console.log(data);
+                if (data.status === "OK") {
+                    console.log(data);
+                    for (var i in data.questions) {
+                        if (data.questions[i].answers == undefined) {
+                            data.questions[i].answers = {};
+                            console.log(i);
+                        }
+                    }
+                    self.statClasses(data.classes);
+                    self.statQuestions(data.questions);
+                    console.log(data);
+                    var ctx = document.getElementById("marksStat").getContext("2d");
+                    var myChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: ["Двойки", "Тройки", "Четворки", "Петици", "Шестици"],
+                            datasets: [{
+                                label: '# of Votes',
+                                data: [data.twos, data.threes, data.fours, data.fives, data.sixs],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)'
+                                    
+                                ],
+                                borderColor: [
+                                    'rgba(255,99,132,1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(255, 159, 64, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    gridLines:{
+                                        display: false
+                                    }, display: false
+                                }]
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
 

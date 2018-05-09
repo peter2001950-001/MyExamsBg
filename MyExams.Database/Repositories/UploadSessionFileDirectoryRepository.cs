@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Data.Entity;
+using System.Linq.Expressions;
 
 namespace MyExams.Database.Repositories
 {
@@ -19,6 +20,10 @@ namespace MyExams.Database.Repositories
         public override IEnumerable<UploadSessionFileDirectory> Include<TKey>(System.Linq.Expressions.Expression<Func<UploadSessionFileDirectory, TKey>> expression)
         {
             return _dbSet.Include(x=>x.FileDirectory).Include(expression);
+        }
+        public IEnumerable<UploadSessionFileDirectory> WhereIncludeAll(Expression<Func<UploadSessionFileDirectory, bool>> where)
+        {
+            return _dbSet.Where(where).Include(x => x.AnswerSheet).Include(x => x.FileDirectory).AsNoTracking();
         }
     }
 }

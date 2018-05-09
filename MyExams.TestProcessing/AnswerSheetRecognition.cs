@@ -103,6 +103,7 @@ namespace MyExams.TestProcessing
                 }
                 recongizedRowsAndShapes.Add(new Row() {  Shapes = row, Uncertan =false, RowShape = GetWholeShape(row)});
             }
+
             for (int i = 0; i < recongizedRowsAndShapes.Count; i++)
             {
                 if (recongizedRowsAndShapes[i].Shapes.Count != AnswersMatrix[i])

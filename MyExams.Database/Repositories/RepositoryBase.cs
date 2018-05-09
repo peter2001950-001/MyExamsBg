@@ -12,7 +12,7 @@ namespace MyExams.Database.Repositories
     public abstract class RepositoryBase<T>:IRepositoryBase<T> where T : class 
     {
         
-        private IDatabase _database;
+        protected IDatabase _database;
         protected DbSet<T> _dbSet;
         protected IQueryable<T> _dbList;
         public RepositoryBase(IDatabase database)
@@ -52,7 +52,8 @@ namespace MyExams.Database.Repositories
 
         public virtual void ClearCache()
         {
-           
+            
+            _database.SaveChanges();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace MyExams
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
             bundles.Add(new ScriptBundle("~/bundles/dashboard").Include(
-                      "~/Scripts/dashboard.js", "~/Scripts/admin.js"));
+                      "~/Scripts/Charts.min.js"));
             bundles.Add(new ScriptBundle("~/bundles/home").Include(
                    "~/Scripts/jquery.ba-cond.min.js", "~/Scripts/jquery.easing.min.js", "~/Scripts/jquery.easing.min.js", "~/Scripts/jquery.fancybox.pack.js",
                    "~/Scripts/jquery.parallax-1.1.3.js", "~/Scripts/jquery.singlePageNav.min.js", "~/Scripts/jquery.slitslider.js", "~/Scripts/main.js",

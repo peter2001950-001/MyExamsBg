@@ -22,7 +22,8 @@ namespace MyExams.TestProcessing
         private readonly IAnswerService _answerService;
         private readonly IClassService _classService;
         private readonly IGAnswerSheetService _gAnswerSheetService;
-        public TestGeneration(ITestService testService, ISectionService sectionService, IQuestionService questionService, IAnswerService answerService, IClassService classService, IGAnswerSheetService gAnswerSheetService)
+        private readonly IGQuestionService _gQuestionService;
+        public TestGeneration(ITestService testService, ISectionService sectionService, IQuestionService questionService, IAnswerService answerService, IClassService classService, IGAnswerSheetService gAnswerSheetService, IGQuestionService gQuestionService)
         {
             if (_testService == null) _testService = testService;
             if (_sectionService == null) _sectionService = sectionService;
@@ -30,6 +31,7 @@ namespace MyExams.TestProcessing
             if (_answerService == null) _answerService = answerService;
             if (_classService == null) _classService = classService;
             if (_gAnswerSheetService == null) _gAnswerSheetService = gAnswerSheetService;
+            if (_gQuestionService == null) _gQuestionService = gQuestionService;
         }
 
         public FileContentResult GenerateFile(Test test, List<Class> classes, Teacher teacher)
@@ -115,7 +117,8 @@ namespace MyExams.TestProcessing
                         AnswerSize = questions[num].QuestionAnswerSize,
                         maxPoints = questions[num].Points,
                         Title = questions[num].Text,
-                        Type = questions[num].QuestionType
+                        Type = questions[num].QuestionType,
+                         Answers = new List<TPAnswers>()
                     };
                     if (questions[num].QuestionType == QuestionType.Choice)
                     {
@@ -132,8 +135,7 @@ namespace MyExams.TestProcessing
                                 answersGenOrder[i] = i;
                             }
                         }
-
-                        var tpAnswers = new List<TPAnswers>();
+                        
                         foreach (var answerNum in answersGenOrder)
                         {
                             var tpAnswer = new TPAnswers()
@@ -141,11 +143,9 @@ namespace MyExams.TestProcessing
                                 AnswerId = answers[answerNum].Id,
                                 Text = answers[answerNum].Text
                             };
-                            tpAnswers.Add(tpAnswer);
+                            tpQuestion.Answers.Add(tpAnswer);
 
                         }
-                        tpQuestion.Answers = tpAnswers;
-
                     }
                     tpQuestions.Add(tpQuestion);
                 }
@@ -164,42 +164,46 @@ namespace MyExams.TestProcessing
                 Teacher = teacher,
                  Class = classObj
             };
-            string xml;
-            using (var sw = new StringWriter())
-            {
-                using (var xmlWriter = XmlWriter.Create(sw))
-                {
-                    xmlWriter.WriteStartDocument();
-                    xmlWriter.WriteStartElement("qs"); // short for questions
 
-                    foreach (var section in tpTest.Sections)
-                    {
-                        for (int i = 0; i < section.Questions.Count; i++)
-                        {
-                            xmlWriter.WriteStartElement("q"); // short for question
-                            xmlWriter.WriteAttributeString("id", section.Questions[i].QuestionId.ToString());
-
-                            if (section.Questions[i].Type == QuestionType.Choice)
-                            {
-                                for (int p = 0; p < section.Questions[i].Answers.Count; p++)
-                                {
-                                    xmlWriter.WriteStartElement("a"); // short for answer
-                                    xmlWriter.WriteAttributeString("id", section.Questions[i].Answers[p].AnswerId.ToString());
-                                    xmlWriter.WriteEndElement();
-                                }
-                            }
-                            xmlWriter.WriteEndElement();
-                        }
-                    }
-                    xmlWriter.WriteEndDocument();
-                }
-                xml = sw.ToString();
-            }
-            gTest.Xml = xml;
             _testService.AddNewGTest(gTest);
            
             tpTest.GTestId = gTest.Id;
+            SaveGTest(tpTest, gTest);
+            
             return tpTest;
+        }
+        private void SaveGTest(TPTest test, GTest gTest)
+        {
+            var sections = _sectionService.GetAllSectionsByTestId(test.TestId).OrderBy(x=>x.OrderNo).ToList();
+            List<int> questionIds = test.Sections.SelectMany(x => x.Questions.Select(p=>p.QuestionId)).ToList();
+            var questions = _questionService.GetAllByIds(questionIds);
+            var answers = _answerService.GetAllByQuestionIds(questionIds);
+            for(int i = 0; i<sections.Count; i++)
+            {
+                for (int p = 0; p < test.Sections[i].Questions.Count; p++)
+                {
+                    var gQuestion = new GQuestion()
+                    {
+                        Question = questions.Where(x => x.Id == test.Sections[i].Questions[p].QuestionId).FirstOrDefault(),
+                        OrderNo = p,
+                        Section = sections[i],
+                        GTest = gTest
+                    };
+                    for (int q = 0; q < test.Sections[i].Questions[p].Answers.Count; q++)
+                    {
+                        var gAnswer = new GAnswer()
+                        {
+                            Answer = answers.Where(x => x.Id == test.Sections[i].Questions[p].Answers[q].AnswerId).FirstOrDefault(),
+                            OrderNo = q, 
+                             CheckState = CheckState.NoInfo
+                        };
+                        
+                        gQuestion.GAnswers.Add(gAnswer);
+                    }
+                    _gQuestionService.AddNewGQuestion(gQuestion);
+                    
+                }
+            }
         }
 
         private static int[] GenerateNonRepeatingNumbers(int minValue, int maxValue, int count)

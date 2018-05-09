@@ -87,4 +87,4 @@ function ClassViewModel() {
 var vm = new ClassViewModel();
 ko.applyBindings(vm);
 
-vm.GetLastExams();
+vm.GetStudents();

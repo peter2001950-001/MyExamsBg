@@ -15,12 +15,22 @@ namespace MyExams.Services
         private readonly ITestRepository _testRepository;
         private readonly IGTestRepository _gTestRepository;
         private readonly IGAnswerSheetRepository _gAnswerSheetRepository;
-        public TestService(ITestRepository testRepository, IGTestRepository  gTestRepository, IGAnswerSheetRepository gAnswerSheetRepository)
+        private readonly IGQuestionService _gQuestionService;
+        private readonly ISectionService _sectionService;
+        private readonly IQuestionService _questionService;
+        private readonly IAnswerService _answerService;
+        private readonly IGAnswerService _gAnswerService;
+        public TestService(ITestRepository testRepository, IGTestRepository  gTestRepository, IGAnswerSheetRepository gAnswerSheetRepository, IGQuestionService gQuestionService, ISectionService sectionService, IAnswerService answerService, IQuestionService questionService, IGAnswerService gAnswerService)
         {
             _testRepository = testRepository;
             _gTestRepository = gTestRepository;
             _gAnswerSheetRepository = gAnswerSheetRepository;
-        }
+            _gQuestionService = gQuestionService;
+            _sectionService = sectionService;
+            _questionService = questionService;
+            _answerService = answerService;
+            _gAnswerService = gAnswerService;
+    }
 
         public void AddNewTest(Test item)
         {
@@ -94,6 +104,45 @@ namespace MyExams.Services
         public IEnumerable<GTest> GetAllGTestIncludeAll()
         {
             return _gTestRepository.IncludeAll();
+        }
+        public List<object> GetAnalysisBy(List<int> gTestIds, Test test)
+        {
+            var gQuestions = _gQuestionService.GetAllBy(gTestIds);
+            var sections = _sectionService.GetAllSectionsByTestId(test.Id);
+            var questionsObj = new List<object>();
+            foreach (var section in sections)
+            {
+                var questions = _questionService.GetAllQuestionsBy(test.Id, section.OrderNo).ToList();
+
+                foreach (var item in questions)
+                {
+                    var gQuestionsMatched = gQuestions.Where(x => x.Question.Id == item.Id);
+                    double points = gQuestionsMatched.Sum(x => x.ReceivedPoints);
+                    double totalPoints = gQuestionsMatched.Sum(x => x.Question.Points);
+                    double percentage = Math.Round(points / totalPoints * 100);
+                    if (item.QuestionType == QuestionType.Choice)
+                    {
+                        var answers = _answerService.GetAllBy(test.Id, section.OrderNo, item.OrderNo).ToList();
+
+                        List<object> answersObj = new List<object>();
+                        foreach (var answer in answers)
+                        {
+                            var gAnswers = _gAnswerService.GetAllBy(answer.Id);
+                            double checkedCount = gAnswers.Count(x => x.CheckState == CheckState.Checked || x.CheckState == CheckState.Correct);
+                            double totalCount = gAnswers.Count(x => x.CheckState != CheckState.NoInfo);
+                            double checkedPercentage = Math.Round(checkedCount / totalCount * 100);
+                            answersObj.Add(new { text = answer.Text, id = answer.OrderNo, percentage = checkedPercentage });
+                        }
+                        questionsObj.Add(new { text = item.Text, percentage = percentage, answers = answersObj });
+                    }
+                    else
+                    {
+                        questionsObj.Add(new { text = item.Text, percentage = percentage });
+                    }
+                }
+                
+            }
+            return questionsObj;
         }
         public void AddNewGTest(GTest item)
         {
